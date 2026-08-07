@@ -117,8 +117,8 @@ private struct ExpandedBody: View {
                     .font(.subheadline)
                     .lineLimit(1)
                 Spacer()
-                if state.showsOpenButton {
-                    OpenAppButton()
+                if let target = state.openTarget {
+                    OpenButton(target: target)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -126,12 +126,22 @@ private struct ExpandedBody: View {
     }
 }
 
-/// 앱을 실제로 여는 유일한 지점. `openAppWhenRun = true`라 탭하면 Cue가 전면으로 뜬다.
-private struct OpenAppButton: View {
+/// 실제로 무언가를 여는 유일한 지점. `openAppWhenRun = true`라 탭해야 열린다.
+private struct OpenButton: View {
+    let target: CueOpenTarget
+
     var body: some View {
-        Button(intent: CueOpenAppIntent()) {
-            Label("열기", systemImage: "arrow.up.forward.app")
-                .font(.caption)
+        Group {
+            switch target {
+            case .app:
+                Button(intent: CueOpenAppIntent()) {
+                    Label("열기", systemImage: "arrow.up.forward.app").font(.caption)
+                }
+            case .url(let urlString):
+                Button(intent: CueOpenURLIntent(urlString: urlString)) {
+                    Label("열기", systemImage: "safari").font(.caption)
+                }
+            }
         }
         .buttonStyle(.bordered)
         .tint(.blue)
@@ -252,8 +262,8 @@ private struct LockScreenView: View {
                         .font(.headline)
                         .lineLimit(2)
                     Spacer()
-                    if state.showsOpenButton {
-                        OpenAppButton()
+                    if let target = state.openTarget {
+                        OpenButton(target: target)
                     }
                 }
             }

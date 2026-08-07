@@ -14,11 +14,11 @@ struct CueAttributes: ActivityAttributes {
         var resultText: String?
         /// 이 시각이 지나면 자동 실행된다. 컴팩트 뷰의 카운트다운에 쓴다.
         var commitAt: Date?
-        /// 결과 화면에 "열기" 버튼을 띄울지. `.openApp` 액션을 실행했을 때만 참이다.
+        /// 결과 화면의 "열기" 버튼이 열 대상. 없으면 버튼도 없다.
         ///
-        /// `LiveActivityIntent`는 앱을 전면으로 못 올린다. 그래서 실행 자체는 백그라운드에서
-        /// 끝내고, 앱을 여는 것만 `openAppWhenRun = true`인 별도 인텐트 버튼으로 넘긴다.
-        var showsOpenButton: Bool = false
+        /// `LiveActivityIntent`는 앱도 링크도 못 연다. 그래서 실행 자체는 백그라운드에서 끝내고,
+        /// 여는 것만 `openAppWhenRun = true`인 별도 인텐트 버튼으로 넘긴다.
+        var openTarget: CueOpenTarget? = nil
 
         struct Item: Codable, Hashable {
             /// `CueAction.id`의 문자열 표현.

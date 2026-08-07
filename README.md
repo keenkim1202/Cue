@@ -7,8 +7,9 @@
 | | |
 |---|---|
 | 최소 버전 | iOS 18.0 (`ControlWidget` 요구사항) |
-| 개발 환경 | Xcode 26.6 / iOS 26.5 SDK |
+| 개발 환경 | Xcode 26.6 / iOS 26.5 SDK / **Swift 6 언어 모드** |
 | 액션 버튼 | iPhone 15 Pro 이상 (시뮬레이터에는 없다) |
+| 언어 | 한국어 · 영어 |
 
 ## 왜 이걸 만들었나
 
@@ -54,6 +55,7 @@ Cue는 그 피드백 레이어가 본체다.
 | `mark` | 지금 시각을 로그에 남긴다 |
 | `stopwatch` | 스톱워치 시작 / 정지 |
 | `openApp` | 결과 화면에 **"열기" 버튼**을 띄운다 — 이것만 앱을 실제로 전면에 올린다 |
+| `openURL` | 같은 방식으로 링크를 연다. **https 주소만** 된다 — `OpenURLIntent`가 커스텀 스킴을 거부한다 |
 
 ## 하나의 AppIntent, 다섯 표면
 
@@ -87,7 +89,9 @@ MyAction/
 │   ├── CueActionRunner.swift               액션 실행
 │   ├── CuePresenting.swift                 표시 계층 프로토콜 (테스트 seam)
 │   ├── CueLiveActivityController.swift     CuePresenting의 유일한 실제 구현
-│   └── CueIntents.swift                    인텐트 6개 + AppShortcutsProvider
+│   ├── CueHaptics.swift                    순환 · 확정 촉각 피드백
+│   ├── CueIntents.swift                    인텐트 7개 + AppShortcutsProvider
+│   └── Localizable.xcstrings               ko(원본) · en
 ├── MyAction/                             앱 타깃
 │   ├── MyActionApp.swift
 │   ├── ContentView.swift                   누름 테스트 · 세트 선택 · 실행 기록 · 설정 안내
@@ -99,7 +103,7 @@ MyAction/
 │   └── CueControls.swift                   컨트롤 2개
 └── MyActionTests/                        단위 테스트 타깃
     ├── CueTestHarness.swift                SpyPresenter + 격리된 저장소
-    └── CueEngineTests.swift                24개
+    └── CueEngineTests.swift                26개
 ```
 
 | | |
@@ -157,14 +161,58 @@ App Group에는 변경 알림이 없다. 액션 버튼이나 컨트롤이 다른
 `objectWillChange`가 나가 List 전체가 초당 4회 다시 그려진다. 조건부 대입이라 유휴 상태의 리렌더는
 0이다. 스톱워치 표시는 `Text(timerInterval:)`이라 폴링과 무관하게 스스로 갱신된다.
 
-### 앱 열기를 왜 분리했나
+### 여는 일을 왜 분리했나
 
-`LiveActivityIntent`는 앱을 전면으로 못 올린다. 반대로 `openAppWhenRun = true`인 인텐트는 앱을 열 수
+`LiveActivityIntent`는 앱도 링크도 열지 못한다. 반대로 `openAppWhenRun = true`인 인텐트는 열 수
 있지만 Live Activity를 시작할 수 없다. 하나의 인텐트가 둘 다 할 수 없다.
 
-그래서 둘로 나눴다. 액션 실행은 백그라운드에서 끝내고, **여는 것만** `CueOpenAppIntent`가 맡는다.
-`openApp` 액션을 확정하면 결과 카드에 "열기" 버튼이 붙고, 앱이 뜨는 것은 사용자의 탭 한 번 뒤다.
-버튼이 붙은 카드는 탭할 틈이 있도록 20초간 남는다(보통 결과는 2.5초).
+그래서 둘로 나눴다. 액션 실행은 백그라운드에서 끝내고, **여는 것만** 별도 인텐트가 맡는다 —
+`CueOpenAppIntent`(앱)와 `CueOpenURLIntent`(링크). 결과 카드에 "열기" 버튼이 붙고, 실제로 열리는
+것은 사용자의 탭 한 번 뒤다. 버튼이 붙은 카드는 탭할 틈이 있도록 20초간 남는다(보통 결과는 2.5초).
+
+`OpenURLIntent`는 **https 주소만** 연다. 커스텀 스킴은 열리지 않으므로
+([포럼 762586](https://developer.apple.com/forums/thread/762586)) `CueActionRunner`가 미리 걸러
+실패로 기록한다. 유니버설 링크라면 해당 앱이, 아니면 Safari가 뜬다.
+
+### 저장소 부트스트랩
+
+기본 구성을 심는 것은 **앱만** 한다(`CueStore.bootstrapIfNeeded()`, 앱 시작 시 1회). 게터는 저장된
+값이 없으면 시드를 돌려주기만 하고 쓰지 않는다 — 게터가 공유 저장소를 건드리면 앱과 위젯 확장이
+동시에 첫 실행될 때 서로 다른 값을 쓸 수 있다.
+
+시드의 식별자는 **고정**돼 있다. `UUID()`로 매번 새로 만들면 카드에 찍힌 액션 id가 다른 프로세스에서
+안 맞아 항목 탭이 조용히 무시된다.
+
+### 촉각 피드백
+
+화면을 보지 않고 누르는 게 전제이므로, 순환마다 가벼운 임팩트를, 확정에는 성공/실패를 구분한
+패턴을 준다(`CueHaptics`).
+
+**다만 앱이 전면에 있을 때만 울린다.** iOS는 백그라운드 프로세스의 햅틱 요청을 무시하므로 액션
+버튼이나 컨트롤에서 인텐트가 돌 때는 발동하지 않는다. 그때 나는 진동은 시스템이 액션 버튼 자체에
+대해 주는 것이다. 전면 여부를 코드로 확인하지는 않는다 — `UIApplication.shared`가 앱 확장에서
+막혀 있고, iOS가 알아서 무시하므로 결과가 같다.
+
+### 동시성
+
+**Swift 6 언어 모드**다. 공유 상태의 격리는 두 갈래로 나뉜다.
+
+| 대상 | 격리 | 이유 |
+|---|---|---|
+| `CueStore` · `CueEngine` · `CueActionRunner` | `@MainActor` | 상태 기계와 저장소. 사용자 입력당 한 번 도는 작은 작업이라 메인 액터로 묶는 편이 안전하다 |
+| `CuePresenting` · `CueLiveActivityController` | `Sendable` (격리 없음) | `Activity`가 Sendable이 아니다. MainActor에서 붙잡아 두고 `await activity.update(...)`를 부르면 액터 밖으로 내보내는 셈이라 컴파일되지 않는다. 구현이 스스로 액티비티를 찾아 같은 컨텍스트에서 쓴다 |
+
+### 로컬라이제이션
+
+`Shared/Localizable.xcstrings` 하나를 앱과 위젯 확장 **양쪽**에 넣는다. Live Activity 문자열은
+확장 번들에서 해석되므로 한쪽만으로는 부족하다. 원본 언어는 한국어, 영어 번역이 들어 있다.
+
+주의할 점 두 가지.
+
+- `Text(String)`은 문자열을 **그대로** 그린다. 현지화 키로 취급되려면 `Text(LocalizedStringKey)`여야
+  한다. 문자열을 인자로 받는 헬퍼(`ContentView.row`)가 여기 걸렸었다.
+- 세트·액션 이름은 **사용자 데이터**다. 시드를 만들 때 `String(localized:)`로 그 시점 언어에 맞춰
+  찍고, 이후에는 번역하지 않는다. 사용자가 이름을 바꿀 수 있기 때문이다.
 
 ## 빌드
 
@@ -186,7 +234,7 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-Swift Testing 24개, 약 2초, 경고 0건.
+Swift Testing 26개, 약 2초, 경고 0건.
 
 상태 기계가 Live Activity 권한이나 시스템 UI에 매달리지 않도록 seam 세 개를 뒀다.
 
@@ -208,6 +256,7 @@ Swift Testing 24개, 약 2초, 경고 0건.
 | 액션 결과 | 스톱워치 시작↔정지 / `openApp`이 "열기" 버튼을 붙이고 해제 시각을 늘림 / 다른 경로에는 안 붙음 / 실패한 액션도 실패로 기록 |
 | 카운트다운 | 지나간 `commitAt` → `nil`(위젯 확장 트랩 방지) / 남은 `commitAt` → 유효 구간 / `commitAt` 없음 → `nil` |
 | 스냅샷 어긋남 | 카드가 만들어진 뒤 세트가 바뀌면 그 카드의 탭은 무시된다 |
+| 링크 열기 | 주소를 실은 "열기" 버튼을 붙이고 해제 시각을 늘림 / https가 아니면 실패로 기록하고 버튼도 안 붙음 |
 | 로그 | 최신 우선 · 상한(30) 유지 |
 
 ## 검증 현황
@@ -230,7 +279,10 @@ Swift Testing 24개, 약 2초, 경고 0건.
 | **"열기" 버튼 탭 → 앱이 전면에 뜸** | 잠금 상태에서 탭 → Cue 화면 전환, 동시에 다이나믹 아일랜드가 비워짐(`endAll()`) |
 | 유휴 시 오작동 없음 | 재설치 후 30초 · 40초 유휴 두 번, 로그 비어 있음 |
 | 컨트롤 · 인텐트 등록 | appex에 컨트롤 kind 2개, 두 타깃의 `Metadata.appintents`에 인텐트 6개 |
-| 상태 기계 로직 | 단위 테스트 24개 |
+| 상태 기계 로직 | 단위 테스트 26개 |
+| Swift 6 언어 모드 | 앱 · 확장 · 테스트 전부 경고 0건으로 빌드, 26개 통과 |
+| 영어 로컬라이제이션 | `-AppleLanguages "(en)"`으로 실행해 화면 전체가 영어로 뜨는 것 확인 (스크린샷). 번들에 `en.lproj` · `ko.lproj`가 앱과 확장 양쪽에 들어감 |
+| Swift 6 전환 후 더블 탭 회귀 없음 | 0.651초 간격 2회 탭 → 두 번째 탭 후 0.475초에 이미 `Stopwatch · Started`, 자동 커밋 시점보다 앞섬 |
 
 ### 검증되지 않음
 
@@ -244,6 +296,10 @@ Swift Testing 24개, 약 2초, 경고 0건.
   검증됐다.
 - **다이나믹 아일랜드 확장(롱프레스) 뷰** — 코드는 있으나 캡처하지 못했다.
 - **손전등 액션** — 시뮬레이터에 토치가 없어 실패로 기록된다.
+- **촉각 피드백** — 시뮬레이터에 햅틱 엔진이 없어 실기기 확인이 필요하다. 백그라운드 인텐트에서
+  울리지 않는 것은 iOS 동작이지 버그가 아니다.
+- **링크 열기 실제 동작** — `OpenURLIntent` 경로는 코드와 테스트로만 확인했고, 잠금화면에서
+  탭해 Safari가 뜨는 것까지는 보지 못했다.
 
 ## 알려진 제약
 
@@ -251,7 +307,9 @@ Swift Testing 24개, 약 2초, 경고 0건.
   다이나믹 아일랜드"는 불가능하다. Cue는 누름 직후 몇 초만 띄우므로 영향받지 않는다.
 - **`ControlWidgetToggle` + `LiveActivityIntent`** 조합은 토글 상태가 되돌아가는 문제가 개발자
   포럼에 보고돼 있다. 그래서 두 컨트롤 모두 `ControlWidgetButton`으로 만들었다.
-- 앱 열기는 인텐트를 둘로 나눠야 한다. 위 "앱 열기를 왜 분리했나" 참조.
+- 앱·링크를 여는 일은 인텐트를 둘로 나눠야 한다. 위 "여는 일을 왜 분리했나" 참조.
+- **`OpenURLIntent`는 https 주소만** 연다. 커스텀 스킴은 열리지 않는다.
+- **촉각 피드백은 앱이 전면일 때만** 울린다. 위 "촉각 피드백" 참조.
 
 ## 다음에 할 만한 것
 
@@ -263,5 +321,7 @@ Swift Testing 24개, 약 2초, 경고 0건.
 
 **2. 다듬기**
 
-- 순환 창을 사용자가 조절 (1.5s ~ 3s)
+- 순환 창을 사용자가 조절 (1.5s ~ 3s). 지금은 2초 고정이라 VoiceOver 사용자에게 특히 불리하다
 - 세트 자동 전환 — 시간대 · 위치 기반 (Action Button Pro가 하는 것 + 피드백)
+- 세트 항목 수 상한. 다이나믹 아일랜드 확장 폭이 좁아 5개를 넘으면 스트립이 뭉개지는데 지금은
+  무제한으로 추가된다

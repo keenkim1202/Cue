@@ -41,7 +41,7 @@ struct CueLiveActivityController: CuePresenting {
     func finish(
         phase: CueAttributes.ContentState.Phase,
         resultText: String,
-        showsOpenButton: Bool,
+        openTarget: CueOpenTarget?,
         dismissAfter seconds: TimeInterval
     ) async {
         guard let activity = current else { return }
@@ -50,7 +50,7 @@ struct CueLiveActivityController: CuePresenting {
         state.phase = phase
         state.resultText = resultText
         state.commitAt = nil
-        state.showsOpenButton = showsOpenButton
+        state.openTarget = openTarget
 
         // 여기서 기다리지 않는다. `end(_:dismissalPolicy:)`가 내용을 함께 갱신하고,
         // 화면에서 치우는 시점은 시스템에 맡긴다. 백그라운드 인텐트를 붙잡아 둘 이유가 없다.

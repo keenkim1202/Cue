@@ -50,6 +50,19 @@ private struct ActionListView: View {
         model.config.sets.first { $0.id == setID }
     }
 
+    /// `.openURL` 액션의 주소를 세트에 되쓰는 바인딩.
+    private func urlBinding(for action: CueAction, in set: CueSet) -> Binding<String> {
+        Binding(
+            get: { action.urlString },
+            set: { newValue in
+                var updated = set
+                guard let index = updated.actions.firstIndex(where: { $0.id == action.id }) else { return }
+                updated.actions[index].urlString = newValue
+                model.update(updated)
+            }
+        )
+    }
+
     var body: some View {
         List {
             if let set {
@@ -66,14 +79,24 @@ private struct ActionListView: View {
 
                 Section {
                     ForEach(set.actions) { action in
-                        HStack(spacing: 12) {
-                            Image(systemName: action.symbol)
-                                .frame(width: 24)
-                                .foregroundStyle(.tint)
-                            VStack(alignment: .leading, spacing: 1) {
-                                Text(action.title)
-                                Text(action.kind.label)
-                                    .font(.caption)
+                        VStack(alignment: .leading, spacing: 6) {
+                            HStack(spacing: 12) {
+                                Image(systemName: action.symbol)
+                                    .frame(width: 24)
+                                    .foregroundStyle(.tint)
+                                VStack(alignment: .leading, spacing: 1) {
+                                    Text(action.title)
+                                    Text(action.kind.label)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                }
+                            }
+                            if action.kind == .openURL {
+                                TextField("https://example.com", text: urlBinding(for: action, in: set))
+                                    .textInputAutocapitalization(.never)
+                                    .autocorrectionDisabled()
+                                    .keyboardType(.URL)
+                                    .font(.callout)
                                     .foregroundStyle(.secondary)
                             }
                         }
@@ -94,7 +117,7 @@ private struct ActionListView: View {
                     Text("액션 버튼을 누를 때 이 순서대로 넘어갑니다. 끌어서 순서를 바꿀 수 있습니다.")
                 }
 
-                Section("액션 추가") {
+                Section {
                     ForEach(CueAction.Kind.allCases, id: \.self) { kind in
                         Button {
                             var updated = set
@@ -108,6 +131,10 @@ private struct ActionListView: View {
                             Label(kind.label, systemImage: kind.defaultSymbol)
                         }
                     }
+                } header: {
+                    Text("액션 추가")
+                } footer: {
+                    Text("링크 열기는 https 주소만 됩니다. 커스텀 스킴은 iOS가 거부합니다.")
                 }
             }
         }

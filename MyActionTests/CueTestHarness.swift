@@ -3,7 +3,9 @@ import Foundation
 
 /// `CuePresenting`의 테스트 대역. Live Activity 권한·시스템 UI 없이
 /// 엔진이 무엇을 보여주려 했는지만 기록한다.
-final class SpyPresenter: CuePresenting {
+/// `CuePresenting`은 `Sendable`이고 `isEnabled`는 동기 요구사항이라, MainActor 격리로는
+/// 준수할 수 없다. 테스트 대역이므로 자물쇠 하나로 직접 보호한다.
+final class SpyPresenter: CuePresenting, @unchecked Sendable {
     struct Shown: Equatable {
         var setName: String
         var selectedIndex: Int
@@ -12,35 +14,47 @@ final class SpyPresenter: CuePresenting {
     struct Finished: Equatable {
         var phase: CueAttributes.ContentState.Phase
         var resultText: String
-        var showsOpenButton: Bool
+        var openTarget: CueOpenTarget?
         var dismissAfter: TimeInterval
     }
 
-    var isEnabled = true
-    private(set) var shown: [Shown] = []
-    private(set) var finished: [Finished] = []
-    private(set) var endAllCount = 0
+    private let lock = NSLock()
+    private var _isEnabled = true
+    private var _shown: [Shown] = []
+    private var _finished: [Finished] = []
+    private var _endAllCount = 0
+
+    var isEnabled: Bool {
+        get { lock.withLock { _isEnabled } }
+        set { lock.withLock { _isEnabled = newValue } }
+    }
+
+    var shown: [Shown] { lock.withLock { _shown } }
+    var finished: [Finished] { lock.withLock { _finished } }
+    var endAllCount: Int { lock.withLock { _endAllCount } }
 
     func showCycling(set: CueSet, selectedIndex: Int, commitAt: Date) async {
-        shown.append(Shown(setName: set.name, selectedIndex: selectedIndex))
+        lock.withLock { _shown.append(Shown(setName: set.name, selectedIndex: selectedIndex)) }
     }
 
     func finish(
         phase: CueAttributes.ContentState.Phase,
         resultText: String,
-        showsOpenButton: Bool,
+        openTarget: CueOpenTarget?,
         dismissAfter seconds: TimeInterval
     ) async {
-        finished.append(Finished(
-            phase: phase,
-            resultText: resultText,
-            showsOpenButton: showsOpenButton,
-            dismissAfter: seconds
-        ))
+        lock.withLock {
+            _finished.append(Finished(
+                phase: phase,
+                resultText: resultText,
+                openTarget: openTarget,
+                dismissAfter: seconds
+            ))
+        }
     }
 
     func endAll() async {
-        endAllCount += 1
+        lock.withLock { _endAllCount += 1 }
     }
 }
 
@@ -76,7 +90,8 @@ final class CueHarness {
 
         // 항목마다 제목이 달라야 무엇이 실행됐는지 로그로 구분할 수 있다.
         let actions = actionKinds.enumerated().map { index, kind in
-            CueAction(title: "A\(index)", symbol: kind.defaultSymbol, kind: kind)
+            CueAction(title: "A\(index)", symbol: kind.defaultSymbol, kind: kind,
+                      urlString: "https://example.com/\(index)")
         }
         let set = CueSet(name: "테스트", actions: actions)
         CueStore.config = CueConfig(sets: [set], activeSetID: set.id)

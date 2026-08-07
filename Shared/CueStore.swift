@@ -4,6 +4,7 @@ import Foundation
 ///
 /// `ControlWidget`의 값 제공자는 위젯 확장 프로세스에서 돌고,
 /// 인텐트는 앱 프로세스에서 돈다. 둘이 같은 상태를 봐야 하므로 App Group을 쓴다.
+@MainActor
 enum CueStore {
     static let appGroupID = "group.com.keen.cue"
 
@@ -23,15 +24,16 @@ enum CueStore {
 
     // MARK: Config
 
+    /// 저장된 구성이 없으면 시드를 돌려준다. **쓰지는 않는다** —
+    /// 게터가 공유 저장소를 건드리면 앱과 위젯 확장이 동시에 첫 실행될 때 서로 다른 값을 쓸 수 있다.
+    /// 영속화는 `bootstrapIfNeeded()`가 앱에서 한 번만 한다.
     static var config: CueConfig {
         get {
             guard let data = defaults.data(forKey: Key.config),
                   let decoded = try? decoder.decode(CueConfig.self, from: data),
                   !decoded.sets.isEmpty
             else {
-                let seed = CueConfig.seed
-                defaults.set(try? encoder.encode(seed), forKey: Key.config)
-                return seed
+                return .seed
             }
             return decoded
         }
@@ -42,6 +44,12 @@ enum CueStore {
     }
 
     static var activeSet: CueSet { config.activeSet }
+
+    /// 첫 실행에 기본 구성을 심는다. 앱 시작 시 한 번만 호출한다.
+    static func bootstrapIfNeeded() {
+        guard defaults.data(forKey: Key.config) == nil else { return }
+        config = .seed
+    }
 
     /// 다음 세트로 순환. 컨트롤 센터 버튼에서 호출한다.
     @discardableResult

@@ -19,6 +19,9 @@
 		BF0000000000000000000015 /* CueEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000015 /* CueEngine.swift */; };
 		BF0000000000000000000016 /* CueIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000016 /* CueIntents.swift */; };
 		BF0000000000000000000017 /* CuePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000017 /* CuePresenting.swift */; };
+		BF0000000000000000000018 /* CueHaptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000018 /* CueHaptics.swift */; };
+		BF0000000000000000000019 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000019 /* Localizable.xcstrings */; };
+		BF0000000000000000000039 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000019 /* Localizable.xcstrings */; };
 		BF0000000000000000000020 /* MyActionWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000020 /* MyActionWidgetsBundle.swift */; };
 		BF0000000000000000000021 /* CueLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000021 /* CueLiveActivity.swift */; };
 		BF0000000000000000000022 /* CueControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000022 /* CueControls.swift */; };
@@ -30,6 +33,7 @@
 		BF0000000000000000000035 /* CueEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000015 /* CueEngine.swift */; };
 		BF0000000000000000000036 /* CueIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000016 /* CueIntents.swift */; };
 		BF0000000000000000000037 /* CuePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000017 /* CuePresenting.swift */; };
+		BF0000000000000000000038 /* CueHaptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000018 /* CueHaptics.swift */; };
 		BF0000000000000000000099 /* MyActionWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000091 /* MyActionWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF0000000000000000000040 /* CueTestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000040 /* CueTestHarness.swift */; };
 		BF0000000000000000000041 /* CueEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000041 /* CueEngineTests.swift */; };
@@ -80,6 +84,8 @@
 		FR0000000000000000000015 /* CueEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueEngine.swift; sourceTree = "<group>"; };
 		FR0000000000000000000016 /* CueIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueIntents.swift; sourceTree = "<group>"; };
 		FR0000000000000000000017 /* CuePresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuePresenting.swift; sourceTree = "<group>"; };
+		FR0000000000000000000018 /* CueHaptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueHaptics.swift; sourceTree = "<group>"; };
+		FR0000000000000000000019 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		FR0000000000000000000020 /* MyActionWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActionWidgetsBundle.swift; sourceTree = "<group>"; };
 		FR0000000000000000000021 /* CueLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueLiveActivity.swift; sourceTree = "<group>"; };
 		FR0000000000000000000022 /* CueControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueControls.swift; sourceTree = "<group>"; };
@@ -156,6 +162,8 @@
 				FR0000000000000000000011 /* CueStore.swift */,
 				FR0000000000000000000012 /* CueAttributes.swift */,
 				FR0000000000000000000017 /* CuePresenting.swift */,
+				FR0000000000000000000018 /* CueHaptics.swift */,
+				FR0000000000000000000019 /* Localizable.xcstrings */,
 				FR0000000000000000000015 /* CueEngine.swift */,
 				FR0000000000000000000013 /* CueActionRunner.swift */,
 				FR0000000000000000000014 /* CueLiveActivityController.swift */,
@@ -267,10 +275,11 @@
 			};
 			buildConfigurationList = L00000000000000000000000 /* Build configuration list for PBXProject "MyAction" */;
 			compatibilityVersion = "Xcode 15.0";
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				ko,
 				Base,
 			);
 			mainGroup = G00000000000000000000000;
@@ -290,6 +299,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF0000000000000000000019 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,6 +307,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF0000000000000000000039 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,6 +333,7 @@
 				BF0000000000000000000011 /* CueStore.swift in Sources */,
 				BF0000000000000000000012 /* CueAttributes.swift in Sources */,
 				BF0000000000000000000017 /* CuePresenting.swift in Sources */,
+				BF0000000000000000000018 /* CueHaptics.swift in Sources */,
 				BF0000000000000000000015 /* CueEngine.swift in Sources */,
 				BF0000000000000000000013 /* CueActionRunner.swift in Sources */,
 				BF0000000000000000000014 /* CueLiveActivityController.swift in Sources */,
@@ -340,6 +352,7 @@
 				BF0000000000000000000031 /* CueStore.swift in Sources */,
 				BF0000000000000000000032 /* CueAttributes.swift in Sources */,
 				BF0000000000000000000037 /* CuePresenting.swift in Sources */,
+				BF0000000000000000000038 /* CueHaptics.swift in Sources */,
 				BF0000000000000000000035 /* CueEngine.swift in Sources */,
 				BF0000000000000000000033 /* CueActionRunner.swift in Sources */,
 				BF0000000000000000000034 /* CueLiveActivityController.swift in Sources */,
@@ -401,7 +414,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -426,7 +439,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -442,7 +455,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Cue;
 				INFOPLIST_KEY_NSCameraUsageDescription = "손전등 액션을 위해 카메라 장치의 토치를 제어합니다. 사진이나 영상은 촬영하지 않습니다.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
-				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -471,7 +483,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Cue;
 				INFOPLIST_KEY_NSCameraUsageDescription = "손전등 액션을 위해 카메라 장치의 토치를 제어합니다. 사진이나 영상은 촬영하지 않습니다.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
-				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

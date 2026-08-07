@@ -4,7 +4,11 @@ import Foundation
 ///
 /// 실제 구현은 `CueLiveActivityController`(ActivityKit) 하나뿐이다. 프로토콜로 뽑아 둔 이유는
 /// 상태 기계 테스트가 Live Activity 권한·시스템 UI에 매달리지 않게 하려는 것뿐이다.
-protocol CuePresenting {
+///
+/// `@MainActor`가 아니라 `Sendable`이다. `Activity`는 Sendable이 아니라서, MainActor에서
+/// 붙잡아 두고 `await activity.update(...)`를 호출하면 액터 밖으로 내보내는 셈이 되어
+/// Swift 6가 막는다. 구현이 스스로 액티비티를 찾아 같은 컨텍스트에서 쓰게 둔다.
+protocol CuePresenting: Sendable {
     /// Live Activity가 켜져 있는지.
     var isEnabled: Bool { get }
 
@@ -15,7 +19,7 @@ protocol CuePresenting {
     func finish(
         phase: CueAttributes.ContentState.Phase,
         resultText: String,
-        showsOpenButton: Bool,
+        openTarget: CueOpenTarget?,
         dismissAfter seconds: TimeInterval
     ) async
 

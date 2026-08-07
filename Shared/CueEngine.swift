@@ -15,6 +15,7 @@ import Foundation
 ///
 /// 커밋 대기는 `perform()` 안에서 `Task.sleep`으로 기다린다. 인텐트가 반환되면
 /// 프로세스가 곧 정지될 수 있으므로, 반환을 늦춰 실행 시점까지 살려 두는 것이다.
+@MainActor
 enum CueEngine {
     /// 다음 입력을 기다리는 시간. 이 시간이 지나면 선택된 항목이 실행된다.
     /// 같은 항목의 두 번째 탭을 더블 탭으로 인정하는 창도 같다 —
@@ -88,6 +89,8 @@ enum CueEngine {
         state.generation += 1
         CueStore.state = state
 
+        CueHaptics.cycled()
+
         let generation = state.generation
         let commitAt = now.addingTimeInterval(cycleWindow)
         await presenter.showCycling(
@@ -128,14 +131,15 @@ enum CueEngine {
             succeeded: outcome.succeeded
         ))
         CueStore.disarm()
+        CueHaptics.committed(succeeded: outcome.succeeded)
 
         await presenter.finish(
             phase: .executed,
             resultText: "\(action.title) · \(outcome.detail)",
-            showsOpenButton: outcome.offersAppLaunch,
-            dismissAfter: outcome.offersAppLaunch ? openPromptLinger : resultLinger
+            openTarget: outcome.openTarget,
+            dismissAfter: outcome.openTarget == nil ? resultLinger : openPromptLinger
         )
-        return outcome.offersAppLaunch
+        return outcome.openTarget != nil
     }
 
     /// 아무것도 실행하지 않고 물러난다. Live Activity의 "취소" 버튼용.
@@ -147,7 +151,7 @@ enum CueEngine {
         state.generation += 1
         CueStore.state = state
 
-        await presenter.finish(phase: .cancelled, resultText: "취소됨", showsOpenButton: false, dismissAfter: 1.0)
+        await presenter.finish(phase: .cancelled, resultText: String(localized: "취소됨"), openTarget: nil, dismissAfter: 1.0)
     }
 
     /// 다음 세트로 전환한다. 순환 중이었다면 되돌린다.
@@ -163,8 +167,8 @@ enum CueEngine {
         if presenter.isEnabled {
             await presenter.finish(
                 phase: .executed,
-                resultText: "세트: \(next.name)",
-                showsOpenButton: false,
+                resultText: String(localized: "세트: \(next.name)"),
+                openTarget: nil,
                 dismissAfter: 1.2
             )
         }

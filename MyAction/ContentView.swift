@@ -201,7 +201,9 @@ struct ContentView: View {
         }
     }
 
-    private func row(_ number: String, _ title: String, _ detail: String) -> some View {
+    /// `Text(String)`은 문자열을 그대로 그린다. 현지화 키로 취급되게 하려면
+    /// `LocalizedStringKey`로 받아야 한다.
+    private func row(_ number: String, _ title: LocalizedStringKey, _ detail: LocalizedStringKey) -> some View {
         HStack(alignment: .top, spacing: 12) {
             Text(number)
                 .font(.caption.bold())

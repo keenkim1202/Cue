@@ -273,11 +273,13 @@ struct CueEngineTests {
 
         await CueEngine.press()
         #expect(CueStore.stopwatch.isRunning)
-        #expect(h.log.first?.detail == "시작")
+        // 로케일에 따라 문구가 달라지므로 현지화된 값과 비교한다.
+        #expect(h.log.first?.detail == String(localized: "시작"))
 
         await CueEngine.press()
         #expect(CueStore.stopwatch.isRunning == false)
-        #expect(h.log.first?.detail.hasPrefix("정지") == true)
+        #expect(h.log.first?.detail.contains(CueActionRunner.format(0).prefix(2)) == true,
+                "정지 기록에는 경과 시간이 들어간다")
     }
 
     @Test("앱 열기 액션은 결과 화면에 '열기' 버튼을 붙인다")
@@ -289,7 +291,7 @@ struct CueEngineTests {
 
         #expect(offersLaunch)
         #expect(h.committedTitles == ["A0"])
-        #expect(h.presenter.finished.last?.showsOpenButton == true)
+        #expect(h.presenter.finished.last?.openTarget == .app)
         // 사용자가 탭할 틈이 있어야 하므로 보통 결과보다 오래 남는다.
         #expect(h.presenter.finished.last?.dismissAfter == CueEngine.openPromptLinger)
     }
@@ -302,7 +304,7 @@ struct CueEngineTests {
         let offersLaunch = await CueEngine.press()
 
         #expect(offersLaunch == false)
-        #expect(h.presenter.finished.last?.showsOpenButton == false)
+        #expect(h.presenter.finished.last?.openTarget == nil)
         #expect(h.presenter.finished.last?.dismissAfter == CueEngine.resultLinger)
     }
 
@@ -314,10 +316,40 @@ struct CueEngineTests {
         h.pressWithoutWaiting()
         await h.settleArm()
         await CueEngine.cancel()
-        #expect(h.presenter.finished.last?.showsOpenButton == false)
+        #expect(h.presenter.finished.last?.openTarget == nil)
 
         await CueEngine.nextSet()
-        #expect(h.presenter.finished.allSatisfy { $0.showsOpenButton == false })
+        #expect(h.presenter.finished.allSatisfy { $0.openTarget == nil })
+    }
+
+    @Test("링크 열기는 주소를 실은 '열기' 버튼을 붙인다")
+    func openURLCarriesAddress() async {
+        let h = CueHarness(actionKinds: [.openURL])
+        defer { h.tearDown() }
+
+        let offersOpen = await CueEngine.press()
+
+        #expect(offersOpen)
+        #expect(h.presenter.finished.last?.openTarget == .url("https://example.com/0"))
+        #expect(h.presenter.finished.last?.dismissAfter == CueEngine.openPromptLinger)
+        #expect(h.log.first?.succeeded == true)
+    }
+
+    @Test("https가 아닌 주소는 실패로 기록되고 버튼도 안 붙는다")
+    func nonHTTPURLFails() async {
+        let h = CueHarness(actionKinds: [.openURL])
+        defer { h.tearDown() }
+
+        // 커스텀 스킴은 OpenURLIntent가 열지 못한다.
+        var config = CueStore.config
+        config.sets[0].actions[0].urlString = "myapp://something"
+        CueStore.config = config
+
+        let offersOpen = await CueEngine.press()
+
+        #expect(offersOpen == false)
+        #expect(h.log.first?.succeeded == false)
+        #expect(h.presenter.finished.last?.openTarget == nil)
     }
 
     @Test("실패한 액션도 기록되지만 실패로 표시된다")
