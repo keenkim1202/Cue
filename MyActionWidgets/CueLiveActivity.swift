@@ -65,8 +65,8 @@ private struct CompactTrailing: View {
     var body: some View {
         switch state.phase {
         case .cycling:
-            if let commitAt = state.commitAt {
-                Text(timerInterval: Date()...commitAt, countsDown: true, showsHours: false)
+            if let countdown = state.remainingCountdown() {
+                Text(timerInterval: countdown, countsDown: true, showsHours: false)
                     .font(.caption2.monospacedDigit())
                     .frame(width: 34)
                     .foregroundStyle(.yellow)
@@ -149,10 +149,12 @@ private struct ActionStrip: View {
     var body: some View {
         HStack(spacing: 6) {
             ForEach(Array(state.items.enumerated()), id: \.offset) { index, item in
-                Button(intent: CueSelectIntent(index: index)) {
+                Button(intent: CueSelectIntent(actionID: item.id)) {
                     ActionTile(item: item, isSelected: index == state.selectedIndex)
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(item.title)
+                .accessibilityHint("두 번 탭하면 바로 실행합니다")
             }
         }
     }
@@ -199,8 +201,8 @@ private struct LockScreenView: View {
                 Spacer()
                 switch state.phase {
                 case .cycling:
-                    if let commitAt = state.commitAt {
-                        Text(timerInterval: Date()...commitAt, countsDown: true, showsHours: false)
+                    if let countdown = state.remainingCountdown() {
+                        Text(timerInterval: countdown, countsDown: true, showsHours: false)
                             .font(.caption.monospacedDigit())
                             .foregroundStyle(.yellow)
                     }

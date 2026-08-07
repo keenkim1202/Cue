@@ -21,6 +21,11 @@ struct CueAttributes: ActivityAttributes {
         var showsOpenButton: Bool = false
 
         struct Item: Codable, Hashable {
+            /// `CueAction.id`의 문자열 표현.
+            ///
+            /// 카드는 만들어진 시점의 스냅샷이다. 세트가 바뀌면 인덱스는 다른 액션을 가리키게
+            /// 되므로, 탭은 인덱스가 아니라 이 식별자로 실어 나른다.
+            var id: String
             var title: String
             var symbol: String
         }
@@ -39,6 +44,16 @@ struct CueAttributes: ActivityAttributes {
         }
 
         var positionText: String { "\(selectedIndex + 1)/\(items.count)" }
+
+        /// 카운트다운으로 그릴 남은 구간. 이미 지났으면 `nil`.
+        ///
+        /// `Date()...commitAt`을 그대로 쓰면 `commitAt`이 과거일 때 범위 생성이 트랩된다
+        /// (`Range requires lowerBound <= upperBound`). 커밋이 돌지 못해 카드가 `.cycling`인
+        /// 채로 굳으면 반드시 그 상황이 되므로, 시각을 한 번만 읽어 비교하고 넘긴다.
+        func remainingCountdown(now: Date = Date()) -> ClosedRange<Date>? {
+            guard let commitAt, commitAt > now else { return nil }
+            return now...commitAt
+        }
     }
 
     /// 액티비티를 다시 찾기 위한 식별자. 세트가 바뀌어도 액티비티는 하나만 유지한다.

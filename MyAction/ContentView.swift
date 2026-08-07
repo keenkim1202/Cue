@@ -76,7 +76,7 @@ struct ContentView: View {
                 ForEach(Array(model.activeSet.actions.enumerated()), id: \.element.id) { index, action in
                     let isSelected = index == model.state.selectedIndex
                     Button {
-                        model.tapItem(at: index)
+                        model.tapItem(action)
                     } label: {
                         VStack(spacing: 4) {
                             Image(systemName: action.symbol)
@@ -98,6 +98,8 @@ struct ContentView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(action.title)
+                    .accessibilityHint("두 번 탭하면 바로 실행합니다")
                 }
             }
             Text("\(model.state.selectedIndex + 1)/\(model.activeSet.actions.count) · 손을 떼면 실행 · 항목을 두 번 탭하면 바로 실행")
@@ -219,13 +221,16 @@ struct ContentView: View {
 
     private var resetSection: some View {
         Section {
-            if model.stopwatch.isRunning, let startedAt = model.stopwatch.startedAt {
+            if let startedAt = model.stopwatch.startedAt {
                 HStack {
                     Label("스톱워치 진행 중", systemImage: "stopwatch")
                     Spacer()
-                    Text(CueActionRunner.format(Date().timeIntervalSince(startedAt)))
+                    // 스스로 갱신되므로 폴링에 기대지 않는다. 24시간까지만 센다.
+                    Text(timerInterval: startedAt...startedAt.addingTimeInterval(24 * 60 * 60),
+                         countsDown: false)
                         .monospacedDigit()
                         .foregroundStyle(.secondary)
+                        .frame(maxWidth: 70, alignment: .trailing)
                 }
             }
             Button("기본값으로 되돌리기", role: .destructive, action: model.resetToSeed)

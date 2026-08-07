@@ -108,7 +108,15 @@ final class CueHarness {
 
     @discardableResult
     func tapWithoutWaiting(at index: Int) -> Task<Bool, Never> {
-        Task { await CueEngine.tapItem(at: index) }
+        let id = actionID(at: index)
+        return Task { await CueEngine.tapItem(actionID: id) }
+    }
+
+    /// 세트의 index번째 액션 식별자. 탭은 인덱스가 아니라 이 값으로 전달된다.
+    func actionID(at index: Int) -> String {
+        let actions = CueStore.activeSet.actions
+        guard actions.indices.contains(index) else { return UUID().uuidString }
+        return actions[index].id.uuidString
     }
 
     /// 무장이 끝날 만큼만 기다린다. 창보다 짧아야 한다.

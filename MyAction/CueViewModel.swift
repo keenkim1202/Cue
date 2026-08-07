@@ -26,14 +26,26 @@ final class CueViewModel: ObservableObject {
         state.isArmed && Date().timeIntervalSince(state.lastPressAt) < CueEngine.cycleWindow
     }
 
+    /// 저장소를 다시 읽되 **값이 실제로 달라졌을 때만 발행**한다.
+    ///
+    /// 폴링은 다른 프로세스(액션 버튼·컨트롤의 인텐트)가 바꾼 상태를 알아채려고 도는 것이다.
+    /// 그냥 대입하면 값이 그대로여도 `objectWillChange`가 나가 List 전체가 초당 4회 다시
+    /// 그려진다. 조건부 대입이라 유휴 상태에서는 리렌더가 0이 된다.
     func reload() {
-        config = CueStore.config
-        state = CueStore.state
-        log = CueStore.log
-        stopwatch = CueStore.stopwatch
+        let newConfig = CueStore.config
+        if newConfig != config { config = newConfig }
+
+        let newState = CueStore.state
+        if newState != state { state = newState }
+
+        let newLog = CueStore.log
+        if newLog != log { log = newLog }
+
+        let newStopwatch = CueStore.stopwatch
+        if newStopwatch != stopwatch { stopwatch = newStopwatch }
     }
 
-    /// 순환 중에는 화면도 같이 움직여야 하므로 잠깐 동안만 자주 갱신한다.
+    /// 다른 프로세스가 바꾼 상태를 알아채기 위한 폴링. App Group에는 변경 알림이 없다.
     func startTicking() {
         guard ticker == nil else { return }
         ticker = Timer.publish(every: 0.25, on: .main, in: .common)
@@ -57,9 +69,9 @@ final class CueViewModel: ObservableObject {
 
     /// 액션 스트립 항목 탭. 같은 항목을 두 번 탭하면 즉시 확정된다.
     /// Live Activity의 버튼과 같은 경로를 타므로 동작이 어디서든 동일하다.
-    func tapItem(at index: Int) {
+    func tapItem(_ action: CueAction) {
         Task { @MainActor in
-            await CueEngine.tapItem(at: index)
+            await CueEngine.tapItem(actionID: action.id.uuidString)
             reload()
         }
     }

@@ -14,7 +14,7 @@ struct CueLiveActivityController: CuePresenting {
     func showCycling(set: CueSet, selectedIndex: Int, commitAt: Date) async {
         let state = CueAttributes.ContentState(
             setName: set.name,
-            items: set.actions.map { .init(title: $0.title, symbol: $0.symbol) },
+            items: set.actions.map { .init(id: $0.id.uuidString, title: $0.title, symbol: $0.symbol) },
             selectedIndex: selectedIndex,
             phase: .cycling,
             resultText: nil,

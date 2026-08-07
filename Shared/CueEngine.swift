@@ -49,11 +49,17 @@ enum CueEngine {
 
     /// 액션 스트립에서 항목을 직접 탭했을 때.
     /// 같은 항목의 두 번째 탭이면 기다리지 않고 확정한다.
+    ///
+    /// 카드에 찍힌 인덱스가 아니라 액션 식별자로 찾는다. 카드가 만들어진 뒤 세트가 바뀌었다면
+    /// 그 액션은 더 이상 없을 수 있고, 그때는 아무것도 하지 않는다 — 화면에 보이던 것과
+    /// 다른 액션을 실행하는 편보다 낫다.
     /// - Returns: 결과 화면에 "열기" 버튼이 붙었으면 `true`.
     @discardableResult
-    static func tapItem(at index: Int) async -> Bool {
+    static func tapItem(actionID: String) async -> Bool {
         let set = CueStore.activeSet
-        guard set.actions.indices.contains(index) else { return false }
+        guard let index = set.actions.firstIndex(where: { $0.id.uuidString == actionID }) else {
+            return false
+        }
 
         var state = CueStore.state
         let isDoubleTap = state.isArmed

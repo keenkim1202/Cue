@@ -23,22 +23,26 @@ struct CuePressIntent: LiveActivityIntent {
 /// 첫 탭은 선택을 그 항목으로 옮기고 2초 창을 다시 연다. 같은 항목을 한 번 더 탭하면
 /// 기다리지 않고 바로 확정된다 — Live Activity의 버튼은 단일 탭만 전달되므로,
 /// 더블 탭은 `CueEngine`에서 두 번의 단일 탭으로 판별한다.
+///
+/// 인덱스가 아니라 **액션 식별자**를 실어 나른다. 카드는 만들어진 시점의 스냅샷이라,
+/// 그 사이 세트가 바뀌면 같은 인덱스가 다른 액션을 가리킨다 — 보이는 것과 다른 것이
+/// 실행되는 일을 막는다.
 struct CueSelectIntent: LiveActivityIntent {
     static var title: LocalizedStringResource = "Cue 항목 선택"
     static var isDiscoverable = false
     static var openAppWhenRun = false
 
-    @Parameter(title: "항목 번호")
-    var index: Int
+    @Parameter(title: "액션 식별자")
+    var actionID: String
 
     init() {}
 
-    init(index: Int) {
-        self.index = index
+    init(actionID: String) {
+        self.actionID = actionID
     }
 
     func perform() async throws -> some IntentResult {
-        await CueEngine.tapItem(at: index)
+        await CueEngine.tapItem(actionID: actionID)
         return .result()
     }
 }

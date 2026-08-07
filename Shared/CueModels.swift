@@ -65,7 +65,7 @@ struct CueSet: Identifiable, Codable, Hashable {
 
 // MARK: - Config
 
-struct CueConfig: Codable {
+struct CueConfig: Codable, Equatable {
     var sets: [CueSet]
     var activeSetID: UUID
 
@@ -92,7 +92,7 @@ struct CueConfig: Codable {
 
 /// 순환 중인 누름 상태. 액션 버튼 누름은 매번 별개의 인텐트 실행이므로
 /// "직전에 눌렸는지"를 판단할 근거를 App Group에 남겨야 한다.
-struct CueState: Codable {
+struct CueState: Codable, Equatable {
     var selectedIndex: Int = 0
     var lastPressAt: Date = .distantPast
     /// 누름마다 증가. 커밋 시점에 값이 그대로인지 확인해 "더 눌렸는지"를 판별한다.
@@ -117,7 +117,7 @@ struct CueLogEntry: Identifiable, Codable, Hashable {
 
 // MARK: - Stopwatch
 
-struct CueStopwatch: Codable {
+struct CueStopwatch: Codable, Equatable {
     var startedAt: Date?
 
     var isRunning: Bool { startedAt != nil }

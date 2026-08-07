@@ -119,7 +119,7 @@ struct CueEngineTests {
         await h.settleArm()
         #expect(h.log.isEmpty)
 
-        await CueEngine.tapItem(at: 2)
+        await CueEngine.tapItem(actionID: h.actionID(at: 2))
 
         // 창은 5초인데 이미 실행됐다 — 자동 커밋이 아니라 더블 탭이 만든 실행이다.
         #expect(h.committedTitles == ["A2"])
@@ -160,25 +160,48 @@ struct CueEngineTests {
         let h = CueHarness()
         defer { h.tearDown() }
 
-        await CueEngine.tapItem(at: 1)   // 첫 탭 → 창이 닫히며 자동 실행
+        await CueEngine.tapItem(actionID: h.actionID(at: 1))   // 첫 탭 → 창이 닫히며 자동 실행
         #expect(h.committedTitles == ["A1"])
 
-        await CueEngine.tapItem(at: 1)   // 다시 첫 탭 → 또 자동 실행
+        await CueEngine.tapItem(actionID: h.actionID(at: 1))   // 다시 첫 탭 → 또 자동 실행
         #expect(h.committedTitles == ["A1", "A1"])
         #expect(h.presenter.finished.count == 2)
     }
 
-    @Test("범위를 벗어난 항목 탭은 아무 일도 하지 않는다")
-    func tapOutOfRangeIsIgnored() async {
+    @Test("세트에 없는 액션 식별자 탭은 아무 일도 하지 않는다")
+    func tapUnknownActionIsIgnored() async {
         let h = CueHarness(window: 5)
         defer { h.tearDown() }
 
-        let result = await CueEngine.tapItem(at: 99)
+        let result = await CueEngine.tapItem(actionID: UUID().uuidString)
 
         #expect(result == false)
         #expect(h.state.isArmed == false)
         #expect(h.log.isEmpty)
         #expect(h.presenter.shown.isEmpty)
+    }
+
+    @Test("카드가 만들어진 뒤 세트가 바뀌면 그 카드의 탭은 무시된다")
+    func staleCardTapIsIgnored() async {
+        let h = CueHarness(window: 5)
+        defer { h.tearDown() }
+
+        // 카드가 떠 있는 동안 사용자가 본 액션의 식별자.
+        let shownActionID = h.actionID(at: 2)
+
+        // 그 사이 세트가 통째로 교체된다 — 인덱스 2는 이제 다른 액션이다.
+        let replaced = CueSet(name: "교체됨", actions: [
+            CueAction(title: "X0", symbol: "star", kind: .mark),
+            CueAction(title: "X1", symbol: "star", kind: .mark),
+            CueAction(title: "X2", symbol: "star", kind: .mark)
+        ])
+        CueStore.config = CueConfig(sets: [replaced], activeSetID: replaced.id)
+
+        let result = await CueEngine.tapItem(actionID: shownActionID)
+
+        #expect(result == false)
+        #expect(h.log.isEmpty, "보이던 것과 다른 액션(X2)이 실행되면 안 된다")
+        #expect(h.state.isArmed == false)
     }
 
     // MARK: 취소
@@ -307,6 +330,60 @@ struct CueEngineTests {
 
         #expect(h.log.count == 1)
         #expect(h.log.first?.succeeded == false)
+    }
+
+    // MARK: 로그
+
+    // MARK: 카운트다운 (위젯 확장 크래시 방지)
+
+    @Test("지나간 commitAt으로는 카운트다운 구간을 만들지 않는다")
+    func expiredCountdownReturnsNil() {
+        // Date()...commitAt을 그대로 쓰면 여기서 트랩된다:
+        // "Fatal error: Range requires lowerBound <= upperBound".
+        // 커밋이 돌지 못해 카드가 .cycling인 채로 굳으면 반드시 이 상태가 된다.
+        let now = Date()
+        let state = CueAttributes.ContentState(
+            setName: "테스트",
+            items: [.init(id: UUID().uuidString, title: "A0", symbol: "star")],
+            selectedIndex: 0,
+            phase: .cycling,
+            resultText: nil,
+            commitAt: now.addingTimeInterval(-5)
+        )
+
+        #expect(state.remainingCountdown(now: now) == nil)
+    }
+
+    @Test("아직 남은 commitAt은 유효한 구간을 돌려준다")
+    func liveCountdownReturnsRange() {
+        let now = Date()
+        let commitAt = now.addingTimeInterval(2)
+        let state = CueAttributes.ContentState(
+            setName: "테스트",
+            items: [.init(id: UUID().uuidString, title: "A0", symbol: "star")],
+            selectedIndex: 0,
+            phase: .cycling,
+            resultText: nil,
+            commitAt: commitAt
+        )
+
+        let range = state.remainingCountdown(now: now)
+        #expect(range?.lowerBound == now)
+        #expect(range?.upperBound == commitAt)
+    }
+
+    @Test("commitAt이 없으면 카운트다운도 없다")
+    func missingCommitAtHasNoCountdown() {
+        let state = CueAttributes.ContentState(
+            setName: "테스트",
+            items: [],
+            selectedIndex: 0,
+            phase: .executed,
+            resultText: "끝",
+            commitAt: nil
+        )
+
+        #expect(state.remainingCountdown() == nil)
     }
 
     // MARK: 로그
