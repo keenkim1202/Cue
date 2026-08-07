@@ -1,0 +1,622 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF0000000000000000000001 /* MyActionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000001 /* MyActionApp.swift */; };
+		BF0000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000002 /* ContentView.swift */; };
+		BF0000000000000000000003 /* CueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000003 /* CueViewModel.swift */; };
+		BF0000000000000000000004 /* SetEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000004 /* SetEditorView.swift */; };
+		BF0000000000000000000010 /* CueModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000010 /* CueModels.swift */; };
+		BF0000000000000000000011 /* CueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000011 /* CueStore.swift */; };
+		BF0000000000000000000012 /* CueAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000012 /* CueAttributes.swift */; };
+		BF0000000000000000000013 /* CueActionRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000013 /* CueActionRunner.swift */; };
+		BF0000000000000000000014 /* CueLiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000014 /* CueLiveActivityController.swift */; };
+		BF0000000000000000000015 /* CueEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000015 /* CueEngine.swift */; };
+		BF0000000000000000000016 /* CueIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000016 /* CueIntents.swift */; };
+		BF0000000000000000000017 /* CuePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000017 /* CuePresenting.swift */; };
+		BF0000000000000000000020 /* MyActionWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000020 /* MyActionWidgetsBundle.swift */; };
+		BF0000000000000000000021 /* CueLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000021 /* CueLiveActivity.swift */; };
+		BF0000000000000000000022 /* CueControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000022 /* CueControls.swift */; };
+		BF0000000000000000000030 /* CueModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000010 /* CueModels.swift */; };
+		BF0000000000000000000031 /* CueStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000011 /* CueStore.swift */; };
+		BF0000000000000000000032 /* CueAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000012 /* CueAttributes.swift */; };
+		BF0000000000000000000033 /* CueActionRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000013 /* CueActionRunner.swift */; };
+		BF0000000000000000000034 /* CueLiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000014 /* CueLiveActivityController.swift */; };
+		BF0000000000000000000035 /* CueEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000015 /* CueEngine.swift */; };
+		BF0000000000000000000036 /* CueIntents.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000016 /* CueIntents.swift */; };
+		BF0000000000000000000037 /* CuePresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000017 /* CuePresenting.swift */; };
+		BF0000000000000000000099 /* MyActionWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000091 /* MyActionWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF0000000000000000000040 /* CueTestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000040 /* CueTestHarness.swift */; };
+		BF0000000000000000000041 /* CueEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000041 /* CueEngineTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CP0000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = PR0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T00000000000000000000002;
+			remoteInfo = MyActionWidgets;
+		};
+		CP0000000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = PR0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T00000000000000000000001;
+			remoteInfo = MyAction;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		P00000000000000000000004 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BF0000000000000000000099 /* MyActionWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FR0000000000000000000001 /* MyActionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActionApp.swift; sourceTree = "<group>"; };
+		FR0000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FR0000000000000000000003 /* CueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueViewModel.swift; sourceTree = "<group>"; };
+		FR0000000000000000000004 /* SetEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEditorView.swift; sourceTree = "<group>"; };
+		FR0000000000000000000005 /* MyAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyAction.entitlements; sourceTree = "<group>"; };
+		FR0000000000000000000010 /* CueModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueModels.swift; sourceTree = "<group>"; };
+		FR0000000000000000000011 /* CueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueStore.swift; sourceTree = "<group>"; };
+		FR0000000000000000000012 /* CueAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueAttributes.swift; sourceTree = "<group>"; };
+		FR0000000000000000000013 /* CueActionRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueActionRunner.swift; sourceTree = "<group>"; };
+		FR0000000000000000000014 /* CueLiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueLiveActivityController.swift; sourceTree = "<group>"; };
+		FR0000000000000000000015 /* CueEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueEngine.swift; sourceTree = "<group>"; };
+		FR0000000000000000000016 /* CueIntents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueIntents.swift; sourceTree = "<group>"; };
+		FR0000000000000000000017 /* CuePresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuePresenting.swift; sourceTree = "<group>"; };
+		FR0000000000000000000020 /* MyActionWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActionWidgetsBundle.swift; sourceTree = "<group>"; };
+		FR0000000000000000000021 /* CueLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueLiveActivity.swift; sourceTree = "<group>"; };
+		FR0000000000000000000022 /* CueControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueControls.swift; sourceTree = "<group>"; };
+		FR0000000000000000000023 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR0000000000000000000024 /* MyActionWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyActionWidgets.entitlements; sourceTree = "<group>"; };
+		FR0000000000000000000040 /* CueTestHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueTestHarness.swift; sourceTree = "<group>"; };
+		FR0000000000000000000041 /* CueEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueEngineTests.swift; sourceTree = "<group>"; };
+		FR0000000000000000000090 /* MyAction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyAction.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR0000000000000000000092 /* MyActionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyActionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR0000000000000000000091 /* MyActionWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyActionWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		P00000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		P00000000000000000000012 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		P00000000000000000000022 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		G00000000000000000000000 = {
+			isa = PBXGroup;
+			children = (
+				G00000000000000000000001 /* MyAction */,
+				G00000000000000000000002 /* Shared */,
+				G00000000000000000000003 /* MyActionWidgets */,
+				G00000000000000000000005 /* MyActionTests */,
+				G00000000000000000000004 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		G00000000000000000000005 /* MyActionTests */ = {
+			isa = PBXGroup;
+			children = (
+				FR0000000000000000000041 /* CueEngineTests.swift */,
+				FR0000000000000000000040 /* CueTestHarness.swift */,
+			);
+			path = MyActionTests;
+			sourceTree = "<group>";
+		};
+		G00000000000000000000001 /* MyAction */ = {
+			isa = PBXGroup;
+			children = (
+				FR0000000000000000000001 /* MyActionApp.swift */,
+				FR0000000000000000000002 /* ContentView.swift */,
+				FR0000000000000000000004 /* SetEditorView.swift */,
+				FR0000000000000000000003 /* CueViewModel.swift */,
+				FR0000000000000000000005 /* MyAction.entitlements */,
+			);
+			path = MyAction;
+			sourceTree = "<group>";
+		};
+		G00000000000000000000002 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				FR0000000000000000000010 /* CueModels.swift */,
+				FR0000000000000000000011 /* CueStore.swift */,
+				FR0000000000000000000012 /* CueAttributes.swift */,
+				FR0000000000000000000017 /* CuePresenting.swift */,
+				FR0000000000000000000015 /* CueEngine.swift */,
+				FR0000000000000000000013 /* CueActionRunner.swift */,
+				FR0000000000000000000014 /* CueLiveActivityController.swift */,
+				FR0000000000000000000016 /* CueIntents.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		G00000000000000000000003 /* MyActionWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				FR0000000000000000000020 /* MyActionWidgetsBundle.swift */,
+				FR0000000000000000000021 /* CueLiveActivity.swift */,
+				FR0000000000000000000022 /* CueControls.swift */,
+				FR0000000000000000000023 /* Info.plist */,
+				FR0000000000000000000024 /* MyActionWidgets.entitlements */,
+			);
+			path = MyActionWidgets;
+			sourceTree = "<group>";
+		};
+		G00000000000000000000004 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FR0000000000000000000090 /* MyAction.app */,
+				FR0000000000000000000091 /* MyActionWidgets.appex */,
+				FR0000000000000000000092 /* MyActionTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		T00000000000000000000001 /* MyAction */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = L00000000000000000000001 /* Build configuration list for PBXNativeTarget "MyAction" */;
+			buildPhases = (
+				P00000000000000000000001 /* Sources */,
+				P00000000000000000000002 /* Frameworks */,
+				P00000000000000000000003 /* Resources */,
+				P00000000000000000000004 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D00000000000000000000001 /* PBXTargetDependency */,
+			);
+			name = MyAction;
+			productName = MyAction;
+			productReference = FR0000000000000000000090 /* MyAction.app */;
+			productType = "com.apple.product-type.application";
+		};
+		T00000000000000000000002 /* MyActionWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = L00000000000000000000002 /* Build configuration list for PBXNativeTarget "MyActionWidgets" */;
+			buildPhases = (
+				P00000000000000000000011 /* Sources */,
+				P00000000000000000000012 /* Frameworks */,
+				P00000000000000000000013 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MyActionWidgets;
+			productName = MyActionWidgets;
+			productReference = FR0000000000000000000091 /* MyActionWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		T00000000000000000000003 /* MyActionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = L00000000000000000000003 /* Build configuration list for PBXNativeTarget "MyActionTests" */;
+			buildPhases = (
+				P00000000000000000000021 /* Sources */,
+				P00000000000000000000022 /* Frameworks */,
+				P00000000000000000000023 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D00000000000000000000002 /* PBXTargetDependency */,
+			);
+			name = MyActionTests;
+			productName = MyActionTests;
+			productReference = FR0000000000000000000092 /* MyActionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		PR0000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					T00000000000000000000001 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					T00000000000000000000002 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					T00000000000000000000003 = {
+						CreatedOnToolsVersion = 26.6;
+						TestTargetID = T00000000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = L00000000000000000000000 /* Build configuration list for PBXProject "MyAction" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = G00000000000000000000000;
+			productRefGroup = G00000000000000000000004 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				T00000000000000000000001 /* MyAction */,
+				T00000000000000000000002 /* MyActionWidgets */,
+				T00000000000000000000003 /* MyActionTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		P00000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		P00000000000000000000013 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		P00000000000000000000023 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		P00000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF0000000000000000000001 /* MyActionApp.swift in Sources */,
+				BF0000000000000000000002 /* ContentView.swift in Sources */,
+				BF0000000000000000000004 /* SetEditorView.swift in Sources */,
+				BF0000000000000000000003 /* CueViewModel.swift in Sources */,
+				BF0000000000000000000010 /* CueModels.swift in Sources */,
+				BF0000000000000000000011 /* CueStore.swift in Sources */,
+				BF0000000000000000000012 /* CueAttributes.swift in Sources */,
+				BF0000000000000000000017 /* CuePresenting.swift in Sources */,
+				BF0000000000000000000015 /* CueEngine.swift in Sources */,
+				BF0000000000000000000013 /* CueActionRunner.swift in Sources */,
+				BF0000000000000000000014 /* CueLiveActivityController.swift in Sources */,
+				BF0000000000000000000016 /* CueIntents.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		P00000000000000000000011 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF0000000000000000000020 /* MyActionWidgetsBundle.swift in Sources */,
+				BF0000000000000000000021 /* CueLiveActivity.swift in Sources */,
+				BF0000000000000000000022 /* CueControls.swift in Sources */,
+				BF0000000000000000000030 /* CueModels.swift in Sources */,
+				BF0000000000000000000031 /* CueStore.swift in Sources */,
+				BF0000000000000000000032 /* CueAttributes.swift in Sources */,
+				BF0000000000000000000037 /* CuePresenting.swift in Sources */,
+				BF0000000000000000000035 /* CueEngine.swift in Sources */,
+				BF0000000000000000000033 /* CueActionRunner.swift in Sources */,
+				BF0000000000000000000034 /* CueLiveActivityController.swift in Sources */,
+				BF0000000000000000000036 /* CueIntents.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		P00000000000000000000021 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF0000000000000000000041 /* CueEngineTests.swift in Sources */,
+				BF0000000000000000000040 /* CueTestHarness.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D00000000000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T00000000000000000000002 /* MyActionWidgets */;
+			targetProxy = CP0000000000000000000001 /* PBXContainerItemProxy */;
+		};
+		D00000000000000000000002 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T00000000000000000000001 /* MyAction */;
+			targetProxy = CP0000000000000000000002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C00000000000000000000000 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C00000000000000000000001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C00000000000000000000010 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MyAction/MyAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Cue;
+				INFOPLIST_KEY_NSCameraUsageDescription = "손전등 액션을 위해 카메라 장치의 토치를 제어합니다. 사진이나 영상은 촬영하지 않습니다.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keen.cue;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C00000000000000000000011 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MyAction/MyAction.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Cue;
+				INFOPLIST_KEY_NSCameraUsageDescription = "손전등 액션을 위해 카메라 장치의 토치를 제어합니다. 사진이나 영상은 촬영하지 않습니다.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivitiesFrequentUpdates = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keen.cue;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C00000000000000000000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MyActionWidgets/MyActionWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyActionWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Cue;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keen.cue.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		C00000000000000000000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MyActionWidgets/MyActionWidgets.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MyActionWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Cue;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keen.cue.widgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		C00000000000000000000030 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keen.cue.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyAction.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyAction";
+			};
+			name = Debug;
+		};
+		C00000000000000000000031 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.keen.cue.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyAction.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyAction";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		L00000000000000000000000 /* Build configuration list for PBXProject "MyAction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C00000000000000000000000 /* Debug */,
+				C00000000000000000000001 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		L00000000000000000000001 /* Build configuration list for PBXNativeTarget "MyAction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C00000000000000000000010 /* Debug */,
+				C00000000000000000000011 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		L00000000000000000000002 /* Build configuration list for PBXNativeTarget "MyActionWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C00000000000000000000020 /* Debug */,
+				C00000000000000000000021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		L00000000000000000000003 /* Build configuration list for PBXNativeTarget "MyActionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C00000000000000000000030 /* Debug */,
+				C00000000000000000000031 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = PR0000000000000000000001 /* Project object */;
+}

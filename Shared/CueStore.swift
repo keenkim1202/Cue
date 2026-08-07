@@ -1,0 +1,113 @@
+import Foundation
+
+/// 앱 · 위젯 확장 · 컨트롤이 함께 읽는 상태 저장소.
+///
+/// `ControlWidget`의 값 제공자는 위젯 확장 프로세스에서 돌고,
+/// 인텐트는 앱 프로세스에서 돈다. 둘이 같은 상태를 봐야 하므로 App Group을 쓴다.
+enum CueStore {
+    static let appGroupID = "group.com.keen.cue"
+
+    /// `var`인 것은 테스트가 앱의 실제 App Group을 건드리지 않도록 별도 suite로
+    /// 갈아끼우게 하려는 것뿐이다. 앱에서 바꾸지 않는다.
+    static var defaults: UserDefaults = UserDefaults(suiteName: appGroupID) ?? .standard
+
+    private enum Key {
+        static let config = "cue.config"
+        static let state = "cue.state"
+        static let log = "cue.log"
+        static let stopwatch = "cue.stopwatch"
+    }
+
+    private static let encoder = JSONEncoder()
+    private static let decoder = JSONDecoder()
+
+    // MARK: Config
+
+    static var config: CueConfig {
+        get {
+            guard let data = defaults.data(forKey: Key.config),
+                  let decoded = try? decoder.decode(CueConfig.self, from: data),
+                  !decoded.sets.isEmpty
+            else {
+                let seed = CueConfig.seed
+                defaults.set(try? encoder.encode(seed), forKey: Key.config)
+                return seed
+            }
+            return decoded
+        }
+        set {
+            guard !newValue.sets.isEmpty else { return }
+            defaults.set(try? encoder.encode(newValue), forKey: Key.config)
+        }
+    }
+
+    static var activeSet: CueSet { config.activeSet }
+
+    /// 다음 세트로 순환. 컨트롤 센터 버튼에서 호출한다.
+    @discardableResult
+    static func advanceSet() -> CueSet {
+        var current = config
+        guard current.sets.count > 1 else { return current.activeSet }
+        let index = current.sets.firstIndex { $0.id == current.activeSetID } ?? 0
+        let next = current.sets[(index + 1) % current.sets.count]
+        current.activeSetID = next.id
+        config = current
+        return next
+    }
+
+    // MARK: Runtime state
+
+    static var state: CueState {
+        get {
+            guard let data = defaults.data(forKey: Key.state),
+                  let decoded = try? decoder.decode(CueState.self, from: data)
+            else { return .empty }
+            return decoded
+        }
+        set { defaults.set(try? encoder.encode(newValue), forKey: Key.state) }
+    }
+
+    static func disarm() {
+        var current = state
+        current.isArmed = false
+        current.lastInputWasItemTap = false
+        state = current
+    }
+
+    // MARK: Stopwatch
+
+    static var stopwatch: CueStopwatch {
+        get {
+            guard let data = defaults.data(forKey: Key.stopwatch),
+                  let decoded = try? decoder.decode(CueStopwatch.self, from: data)
+            else { return .idle }
+            return decoded
+        }
+        set { defaults.set(try? encoder.encode(newValue), forKey: Key.stopwatch) }
+    }
+
+    // MARK: Log
+
+    static let logLimit = 30
+
+    static var log: [CueLogEntry] {
+        get {
+            guard let data = defaults.data(forKey: Key.log),
+                  let decoded = try? decoder.decode([CueLogEntry].self, from: data)
+            else { return [] }
+            return decoded
+        }
+        set {
+            let trimmed = Array(newValue.prefix(logLimit))
+            defaults.set(try? encoder.encode(trimmed), forKey: Key.log)
+        }
+    }
+
+    static func appendLog(_ entry: CueLogEntry) {
+        log = [entry] + log
+    }
+
+    static func clearLog() {
+        log = []
+    }
+}
