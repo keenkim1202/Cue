@@ -122,13 +122,13 @@
         }
       }
     },
-    "설정 > MyAction 에서 '실시간 현황'을 켜야 Live Activity가 뜹니다.": {
+    "설정 > Cue 에서 '실시간 현황'을 켜야 Live Activity가 뜹니다.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Turn on Live Activities in Settings › MyAction for the card to appear."
+            "value": "Turn on Live Activities in Settings › Cue for the card to appear."
           }
         }
       }

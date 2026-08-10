@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF0000000000000000000001 /* MyActionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000001 /* MyActionApp.swift */; };
+		BF0000000000000000000001 /* CueApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000001 /* CueApp.swift */; };
 		BF0000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000002 /* ContentView.swift */; };
 		BF0000000000000000000003 /* CueViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000003 /* CueViewModel.swift */; };
 		BF0000000000000000000004 /* SetEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000004 /* SetEditorView.swift */; };
@@ -24,7 +24,7 @@
 		BF000000000000000000001AA /* CueIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR000000000000000000001A /* CueIdentifiers.swift */; };
 		BF0000000000000000000019 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000019 /* Localizable.xcstrings */; };
 		BF0000000000000000000039 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000019 /* Localizable.xcstrings */; };
-		BF0000000000000000000020 /* MyActionWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000020 /* MyActionWidgetsBundle.swift */; };
+		BF0000000000000000000020 /* CueWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000020 /* CueWidgetsBundle.swift */; };
 		BF0000000000000000000021 /* CueLiveActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000021 /* CueLiveActivity.swift */; };
 		BF0000000000000000000022 /* CueControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000022 /* CueControls.swift */; };
 		BF0000000000000000000030 /* CueModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000010 /* CueModels.swift */; };
@@ -38,7 +38,7 @@
 		BF0000000000000000000038 /* CueHaptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000018 /* CueHaptics.swift */; };
 		BF000000000000000000001BB /* CueActivityViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR000000000000000000001B /* CueActivityViews.swift */; };
 		BF000000000000000000001AB /* CueIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR000000000000000000001A /* CueIdentifiers.swift */; };
-		BF0000000000000000000099 /* MyActionWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000091 /* MyActionWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF0000000000000000000099 /* CueWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000091 /* CueWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF0000000000000000000040 /* CueTestHarness.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000040 /* CueTestHarness.swift */; };
 		BF0000000000000000000041 /* CueEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000041 /* CueEngineTests.swift */; };
 		BF0000000000000000000042 /* CueActivityViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR0000000000000000000042 /* CueActivityViewTests.swift */; };
@@ -52,21 +52,21 @@
 			containerPortal = PR0000000000000000000001 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = T00000000000000000000002;
-			remoteInfo = MyActionWidgets;
+			remoteInfo = CueWidgets;
 		};
 		CP0000000000000000000003 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = PR0000000000000000000001 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = T00000000000000000000001;
-			remoteInfo = MyAction;
+			remoteInfo = Cue;
 		};
 		CP0000000000000000000002 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = PR0000000000000000000001 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = T00000000000000000000001;
-			remoteInfo = MyAction;
+			remoteInfo = Cue;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -77,7 +77,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				BF0000000000000000000099 /* MyActionWidgets.appex in Embed Foundation Extensions */,
+				BF0000000000000000000099 /* CueWidgets.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,11 +85,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FR0000000000000000000001 /* MyActionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActionApp.swift; sourceTree = "<group>"; };
+		FR0000000000000000000001 /* CueApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueApp.swift; sourceTree = "<group>"; };
 		FR0000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FR0000000000000000000003 /* CueViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueViewModel.swift; sourceTree = "<group>"; };
 		FR0000000000000000000004 /* SetEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetEditorView.swift; sourceTree = "<group>"; };
-		FR0000000000000000000005 /* MyAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyAction.entitlements; sourceTree = "<group>"; };
+		FR0000000000000000000005 /* Cue.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Cue.entitlements; sourceTree = "<group>"; };
 		FR0000000000000000000010 /* CueModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueModels.swift; sourceTree = "<group>"; };
 		FR0000000000000000000011 /* CueStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueStore.swift; sourceTree = "<group>"; };
 		FR0000000000000000000012 /* CueAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueAttributes.swift; sourceTree = "<group>"; };
@@ -102,19 +102,19 @@
 		FR000000000000000000001B /* CueActivityViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueActivityViews.swift; sourceTree = "<group>"; };
 		FR000000000000000000001A /* CueIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueIdentifiers.swift; sourceTree = "<group>"; };
 		FR0000000000000000000019 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		FR0000000000000000000020 /* MyActionWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyActionWidgetsBundle.swift; sourceTree = "<group>"; };
+		FR0000000000000000000020 /* CueWidgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueWidgetsBundle.swift; sourceTree = "<group>"; };
 		FR0000000000000000000021 /* CueLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueLiveActivity.swift; sourceTree = "<group>"; };
 		FR0000000000000000000022 /* CueControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueControls.swift; sourceTree = "<group>"; };
 		FR0000000000000000000023 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FR0000000000000000000024 /* MyActionWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MyActionWidgets.entitlements; sourceTree = "<group>"; };
+		FR0000000000000000000024 /* CueWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CueWidgets.entitlements; sourceTree = "<group>"; };
 		FR0000000000000000000040 /* CueTestHarness.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueTestHarness.swift; sourceTree = "<group>"; };
 		FR0000000000000000000041 /* CueEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueEngineTests.swift; sourceTree = "<group>"; };
 		FR0000000000000000000042 /* CueActivityViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueActivityViewTests.swift; sourceTree = "<group>"; };
 		FR0000000000000000000050 /* CueSmokeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CueSmokeUITests.swift; sourceTree = "<group>"; };
-		FR0000000000000000000090 /* MyAction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyAction.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR0000000000000000000092 /* MyActionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyActionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR0000000000000000000093 /* MyActionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MyActionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR0000000000000000000091 /* MyActionWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MyActionWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR0000000000000000000090 /* Cue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Cue.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR0000000000000000000092 /* CueTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CueTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR0000000000000000000093 /* CueUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CueUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR0000000000000000000091 /* CueWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CueWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,35 +152,35 @@
 		G00000000000000000000000 = {
 			isa = PBXGroup;
 			children = (
-				G00000000000000000000001 /* MyAction */,
+				G00000000000000000000001 /* Cue */,
 				G00000000000000000000002 /* Shared */,
-				G00000000000000000000003 /* MyActionWidgets */,
-				G00000000000000000000005 /* MyActionTests */,
-				G00000000000000000000006 /* MyActionUITests */,
+				G00000000000000000000003 /* CueWidgets */,
+				G00000000000000000000005 /* CueTests */,
+				G00000000000000000000006 /* CueUITests */,
 				G00000000000000000000004 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		G00000000000000000000005 /* MyActionTests */ = {
+		G00000000000000000000005 /* CueTests */ = {
 			isa = PBXGroup;
 			children = (
 				FR0000000000000000000041 /* CueEngineTests.swift */,
 				FR0000000000000000000042 /* CueActivityViewTests.swift */,
 				FR0000000000000000000040 /* CueTestHarness.swift */,
 			);
-			path = MyActionTests;
+			path = CueTests;
 			sourceTree = "<group>";
 		};
-		G00000000000000000000001 /* MyAction */ = {
+		G00000000000000000000001 /* Cue */ = {
 			isa = PBXGroup;
 			children = (
-				FR0000000000000000000001 /* MyActionApp.swift */,
+				FR0000000000000000000001 /* CueApp.swift */,
 				FR0000000000000000000002 /* ContentView.swift */,
 				FR0000000000000000000004 /* SetEditorView.swift */,
 				FR0000000000000000000003 /* CueViewModel.swift */,
-				FR0000000000000000000005 /* MyAction.entitlements */,
+				FR0000000000000000000005 /* Cue.entitlements */,
 			);
-			path = MyAction;
+			path = Cue;
 			sourceTree = "<group>";
 		};
 		G00000000000000000000002 /* Shared */ = {
@@ -202,33 +202,33 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		G00000000000000000000003 /* MyActionWidgets */ = {
+		G00000000000000000000003 /* CueWidgets */ = {
 			isa = PBXGroup;
 			children = (
-				FR0000000000000000000020 /* MyActionWidgetsBundle.swift */,
+				FR0000000000000000000020 /* CueWidgetsBundle.swift */,
 				FR0000000000000000000021 /* CueLiveActivity.swift */,
 				FR0000000000000000000022 /* CueControls.swift */,
 				FR0000000000000000000023 /* Info.plist */,
-				FR0000000000000000000024 /* MyActionWidgets.entitlements */,
+				FR0000000000000000000024 /* CueWidgets.entitlements */,
 			);
-			path = MyActionWidgets;
+			path = CueWidgets;
 			sourceTree = "<group>";
 		};
-		G00000000000000000000006 /* MyActionUITests */ = {
+		G00000000000000000000006 /* CueUITests */ = {
 			isa = PBXGroup;
 			children = (
 				FR0000000000000000000050 /* CueSmokeUITests.swift */,
 			);
-			path = MyActionUITests;
+			path = CueUITests;
 			sourceTree = "<group>";
 		};
 		G00000000000000000000004 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FR0000000000000000000090 /* MyAction.app */,
-				FR0000000000000000000091 /* MyActionWidgets.appex */,
-				FR0000000000000000000092 /* MyActionTests.xctest */,
-				FR0000000000000000000093 /* MyActionUITests.xctest */,
+				FR0000000000000000000090 /* Cue.app */,
+				FR0000000000000000000091 /* CueWidgets.appex */,
+				FR0000000000000000000092 /* CueTests.xctest */,
+				FR0000000000000000000093 /* CueUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -236,9 +236,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		T00000000000000000000001 /* MyAction */ = {
+		T00000000000000000000001 /* Cue */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = L00000000000000000000001 /* Build configuration list for PBXNativeTarget "MyAction" */;
+			buildConfigurationList = L00000000000000000000001 /* Build configuration list for PBXNativeTarget "Cue" */;
 			buildPhases = (
 				P00000000000000000000001 /* Sources */,
 				P00000000000000000000002 /* Frameworks */,
@@ -250,14 +250,14 @@
 			dependencies = (
 				D00000000000000000000001 /* PBXTargetDependency */,
 			);
-			name = MyAction;
-			productName = MyAction;
-			productReference = FR0000000000000000000090 /* MyAction.app */;
+			name = Cue;
+			productName = Cue;
+			productReference = FR0000000000000000000090 /* Cue.app */;
 			productType = "com.apple.product-type.application";
 		};
-		T00000000000000000000002 /* MyActionWidgets */ = {
+		T00000000000000000000002 /* CueWidgets */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = L00000000000000000000002 /* Build configuration list for PBXNativeTarget "MyActionWidgets" */;
+			buildConfigurationList = L00000000000000000000002 /* Build configuration list for PBXNativeTarget "CueWidgets" */;
 			buildPhases = (
 				P00000000000000000000011 /* Sources */,
 				P00000000000000000000012 /* Frameworks */,
@@ -267,14 +267,14 @@
 			);
 			dependencies = (
 			);
-			name = MyActionWidgets;
-			productName = MyActionWidgets;
-			productReference = FR0000000000000000000091 /* MyActionWidgets.appex */;
+			name = CueWidgets;
+			productName = CueWidgets;
+			productReference = FR0000000000000000000091 /* CueWidgets.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		T00000000000000000000003 /* MyActionTests */ = {
+		T00000000000000000000003 /* CueTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = L00000000000000000000003 /* Build configuration list for PBXNativeTarget "MyActionTests" */;
+			buildConfigurationList = L00000000000000000000003 /* Build configuration list for PBXNativeTarget "CueTests" */;
 			buildPhases = (
 				P00000000000000000000021 /* Sources */,
 				P00000000000000000000022 /* Frameworks */,
@@ -285,14 +285,14 @@
 			dependencies = (
 				D00000000000000000000002 /* PBXTargetDependency */,
 			);
-			name = MyActionTests;
-			productName = MyActionTests;
-			productReference = FR0000000000000000000092 /* MyActionTests.xctest */;
+			name = CueTests;
+			productName = CueTests;
+			productReference = FR0000000000000000000092 /* CueTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		T00000000000000000000004 /* MyActionUITests */ = {
+		T00000000000000000000004 /* CueUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = L00000000000000000000004 /* Build configuration list for PBXNativeTarget "MyActionUITests" */;
+			buildConfigurationList = L00000000000000000000004 /* Build configuration list for PBXNativeTarget "CueUITests" */;
 			buildPhases = (
 				P00000000000000000000031 /* Sources */,
 				P00000000000000000000032 /* Frameworks */,
@@ -303,9 +303,9 @@
 			dependencies = (
 				D00000000000000000000003 /* PBXTargetDependency */,
 			);
-			name = MyActionUITests;
-			productName = MyActionUITests;
-			productReference = FR0000000000000000000093 /* MyActionUITests.xctest */;
+			name = CueUITests;
+			productName = CueUITests;
+			productReference = FR0000000000000000000093 /* CueUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -334,7 +334,7 @@
 					};
 				};
 			};
-			buildConfigurationList = L00000000000000000000000 /* Build configuration list for PBXProject "MyAction" */;
+			buildConfigurationList = L00000000000000000000000 /* Build configuration list for PBXProject "Cue" */;
 			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = ko;
 			hasScannedForEncodings = 0;
@@ -348,10 +348,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				T00000000000000000000001 /* MyAction */,
-				T00000000000000000000002 /* MyActionWidgets */,
-				T00000000000000000000003 /* MyActionTests */,
-				T00000000000000000000004 /* MyActionUITests */,
+				T00000000000000000000001 /* Cue */,
+				T00000000000000000000002 /* CueWidgets */,
+				T00000000000000000000003 /* CueTests */,
+				T00000000000000000000004 /* CueUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -394,7 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF0000000000000000000001 /* MyActionApp.swift in Sources */,
+				BF0000000000000000000001 /* CueApp.swift in Sources */,
 				BF0000000000000000000002 /* ContentView.swift in Sources */,
 				BF0000000000000000000004 /* SetEditorView.swift in Sources */,
 				BF0000000000000000000003 /* CueViewModel.swift in Sources */,
@@ -416,7 +416,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF0000000000000000000020 /* MyActionWidgetsBundle.swift in Sources */,
+				BF0000000000000000000020 /* CueWidgetsBundle.swift in Sources */,
 				BF0000000000000000000021 /* CueLiveActivity.swift in Sources */,
 				BF0000000000000000000022 /* CueControls.swift in Sources */,
 				BF0000000000000000000030 /* CueModels.swift in Sources */,
@@ -457,17 +457,17 @@
 /* Begin PBXTargetDependency section */
 		D00000000000000000000001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = T00000000000000000000002 /* MyActionWidgets */;
+			target = T00000000000000000000002 /* CueWidgets */;
 			targetProxy = CP0000000000000000000001 /* PBXContainerItemProxy */;
 		};
 		D00000000000000000000003 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = T00000000000000000000001 /* MyAction */;
+			target = T00000000000000000000001 /* Cue */;
 			targetProxy = CP0000000000000000000003 /* PBXContainerItemProxy */;
 		};
 		D00000000000000000000002 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = T00000000000000000000001 /* MyAction */;
+			target = T00000000000000000000001 /* Cue */;
 			targetProxy = CP0000000000000000000002 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -535,7 +535,7 @@
 		C00000000000000000000010 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyAction/MyAction.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Cue/Cue.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -563,7 +563,7 @@
 		C00000000000000000000011 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyAction/MyAction.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Cue/Cue.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
@@ -591,11 +591,11 @@
 		C00000000000000000000020 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyActionWidgets/MyActionWidgets.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CueWidgets/CueWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyActionWidgets/Info.plist;
+				INFOPLIST_FILE = CueWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Cue;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -617,11 +617,11 @@
 		C00000000000000000000021 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = MyActionWidgets/MyActionWidgets.entitlements;
+				CODE_SIGN_ENTITLEMENTS = CueWidgets/CueWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MyActionWidgets/Info.plist;
+				INFOPLIST_FILE = CueWidgets/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Cue;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -654,7 +654,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyAction.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyAction";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cue.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Cue";
 			};
 			name = Debug;
 		};
@@ -672,7 +672,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MyAction.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MyAction";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Cue.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Cue";
 			};
 			name = Release;
 		};
@@ -689,7 +689,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_TARGET_NAME = MyAction;
+				TEST_TARGET_NAME = Cue;
 			};
 			name = Debug;
 		};
@@ -706,14 +706,14 @@
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_TARGET_NAME = MyAction;
+				TEST_TARGET_NAME = Cue;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		L00000000000000000000000 /* Build configuration list for PBXProject "MyAction" */ = {
+		L00000000000000000000000 /* Build configuration list for PBXProject "Cue" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C00000000000000000000000 /* Debug */,
@@ -722,7 +722,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		L00000000000000000000001 /* Build configuration list for PBXNativeTarget "MyAction" */ = {
+		L00000000000000000000001 /* Build configuration list for PBXNativeTarget "Cue" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C00000000000000000000010 /* Debug */,
@@ -731,7 +731,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		L00000000000000000000002 /* Build configuration list for PBXNativeTarget "MyActionWidgets" */ = {
+		L00000000000000000000002 /* Build configuration list for PBXNativeTarget "CueWidgets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C00000000000000000000020 /* Debug */,
@@ -740,7 +740,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		L00000000000000000000003 /* Build configuration list for PBXNativeTarget "MyActionTests" */ = {
+		L00000000000000000000003 /* Build configuration list for PBXNativeTarget "CueTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C00000000000000000000030 /* Debug */,
@@ -749,7 +749,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		L00000000000000000000004 /* Build configuration list for PBXNativeTarget "MyActionUITests" */ = {
+		L00000000000000000000004 /* Build configuration list for PBXNativeTarget "CueUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C00000000000000000000040 /* Debug */,

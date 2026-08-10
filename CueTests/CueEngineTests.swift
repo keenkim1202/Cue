@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import MyAction
+@testable import Cue
 
 /// `CueStore`·`CueEngine`이 정적 상태를 공유하므로 직렬로 돌린다.
 @MainActor

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "T00000000000000000000001"
-               BuildableName = "MyAction.app"
-               BlueprintName = "MyAction"
-               ReferencedContainer = "container:MyAction.xcodeproj">
+               BuildableName = "Cue.app"
+               BlueprintName = "Cue"
+               ReferencedContainer = "container:Cue.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "T00000000000000000000003"
-               BuildableName = "MyActionTests.xctest"
-               BlueprintName = "MyActionTests"
-               ReferencedContainer = "container:MyAction.xcodeproj">
+               BuildableName = "CueTests.xctest"
+               BlueprintName = "CueTests"
+               ReferencedContainer = "container:Cue.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "T00000000000000000000004"
-               BuildableName = "MyActionUITests.xctest"
-               BlueprintName = "MyActionUITests"
-               ReferencedContainer = "container:MyAction.xcodeproj">
+               BuildableName = "CueUITests.xctest"
+               BlueprintName = "CueUITests"
+               ReferencedContainer = "container:Cue.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -62,9 +62,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "T00000000000000000000003"
-               BuildableName = "MyActionTests.xctest"
-               BlueprintName = "MyActionTests"
-               ReferencedContainer = "container:MyAction.xcodeproj">
+               BuildableName = "CueTests.xctest"
+               BlueprintName = "CueTests"
+               ReferencedContainer = "container:Cue.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -73,9 +73,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "T00000000000000000000004"
-               BuildableName = "MyActionUITests.xctest"
-               BlueprintName = "MyActionUITests"
-               ReferencedContainer = "container:MyAction.xcodeproj">
+               BuildableName = "CueUITests.xctest"
+               BlueprintName = "CueUITests"
+               ReferencedContainer = "container:Cue.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -95,9 +95,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "T00000000000000000000001"
-            BuildableName = "MyAction.app"
-            BlueprintName = "MyAction"
-            ReferencedContainer = "container:MyAction.xcodeproj">
+            BuildableName = "Cue.app"
+            BlueprintName = "Cue"
+            ReferencedContainer = "container:Cue.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -112,9 +112,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "T00000000000000000000001"
-            BuildableName = "MyAction.app"
-            BlueprintName = "MyAction"
-            ReferencedContainer = "container:MyAction.xcodeproj">
+            BuildableName = "Cue.app"
+            BlueprintName = "Cue"
+            ReferencedContainer = "container:Cue.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

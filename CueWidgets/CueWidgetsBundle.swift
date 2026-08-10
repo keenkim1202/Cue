@@ -2,7 +2,7 @@ import SwiftUI
 import WidgetKit
 
 @main
-struct MyActionWidgetsBundle: WidgetBundle {
+struct CueWidgetsBundle: WidgetBundle {
     var body: some Widget {
         CueLiveActivity()
         CuePressControl()

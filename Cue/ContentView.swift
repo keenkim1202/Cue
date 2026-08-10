@@ -193,7 +193,7 @@ struct ContentView: View {
     private var setupSection: some View {
         Section {
             if !ActivityAuthorizationInfo().areActivitiesEnabled {
-                Label("설정 > MyAction 에서 '실시간 현황'을 켜야 Live Activity가 뜹니다.", systemImage: "exclamationmark.triangle")
+                Label("설정 > Cue 에서 '실시간 현황'을 켜야 Live Activity가 뜹니다.", systemImage: "exclamationmark.triangle")
                     .font(.callout)
                     .foregroundStyle(.orange)
             }

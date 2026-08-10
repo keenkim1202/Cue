@@ -1,5 +1,5 @@
 import Foundation
-@testable import MyAction
+@testable import Cue
 
 /// `CuePresenting`의 테스트 대역. Live Activity 권한·시스템 UI 없이
 /// 엔진이 무엇을 보여주려 했는지만 기록한다.

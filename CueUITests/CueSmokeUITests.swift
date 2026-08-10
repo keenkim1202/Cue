@@ -31,6 +31,10 @@ final class CueSmokeUITests: XCTestCase {
         }
     }
 
+    /// - Important: 시뮬레이터 앱 컨테이너에 `AppleLanguages`가 **영속화돼 있으면**
+    ///   여기서 넘기는 실행 인자와 경합해 엉뚱한 로케일로 뜬다. `xcrun simctl launch`에
+    ///   `-AppleLanguages`를 직접 넘겨 실행해 본 시뮬레이터에서 실제로 겪었다.
+    ///   현지화 테스트가 이유 없이 깨지면 먼저 앱을 삭제해 컨테이너를 비울 것.
     private func launch(_ locale: Locale) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["-AppleLanguages", "(\(locale.rawValue))", "-AppleLocale", locale.rawValue]

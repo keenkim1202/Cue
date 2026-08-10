@@ -2,7 +2,15 @@
 
 액션 버튼 한 번으로 여러 액션을 순환하고, **무엇이 실행될지를 다이나믹 아일랜드로 보여주는** iOS 앱.
 
-> 저장소 이름은 `MyAction`, 앱 이름은 **Cue**다.
+<p align="center">
+  <img src="docs/live-activity-cycling.png" width="440" alt="잠금화면 Live Activity — 손전등이 선택된 순환 상태">
+</p>
+
+<p align="center">
+  <img src="docs/dynamic-island-compact.png" width="300" alt="다이나믹 아일랜드 컴팩트 — 선택된 액션 아이콘과 남은 시간">
+  &nbsp;
+  <img src="docs/live-activity-open-real.png" width="380" alt="실행 결과와 열기 버튼">
+</p>
 
 | | |
 |---|---|
@@ -30,6 +38,12 @@ Cue는 그 피드백 레이어가 본체다.
 2번째 누름   ( 📍 순간기록 0:02 )   2초 안에 누르면 다음 항목으로 순환
 2초 경과     ( ✓ 실행됨 )
 ```
+
+다이나믹 아일랜드를 길게 누르면 세트 전체가 펼쳐진다. 같은 항목을 두 번 탭하면 기다리지 않고 확정된다.
+
+<p align="center">
+  <img src="docs/dynamic-island-expanded.png" width="420" alt="다이나믹 아일랜드 확장 — 액션 스트립과 취소·실행 버튼">
+</p>
 
 확정되는 경로는 두 가지다.
 
@@ -79,36 +93,36 @@ Watch Ultra 액션 버튼에도 올라간다.
 ## 구조
 
 ```
-MyAction/
-├── MyAction.xcodeproj                    손으로 작성 (외부 생성 도구 없음)
-├── Shared/                               앱 · 위젯 확장 양쪽에 컴파일된다
-│   ├── CueModels.swift                     액션 · 세트 · 런타임 상태 · 로그
-│   ├── CueStore.swift                      App Group UserDefaults
-│   ├── CueAttributes.swift                 ActivityAttributes
-│   ├── CueEngine.swift                   ★ 순환 / 커밋 상태 기계
-│   ├── CueActionRunner.swift               액션 실행
-│   ├── CuePresenting.swift                 표시 계층 프로토콜 (테스트 seam)
-│   ├── CueLiveActivityController.swift     CuePresenting의 유일한 실제 구현
-│   ├── CueHaptics.swift                    순환 · 확정 촉각 피드백
-│   ├── CueActivityViews.swift               Live Activity · DI 뷰 (테스트에서 렌더 가능)
-│   ├── CueIdentifiers.swift                 UI 자동화용 accessibilityIdentifier
-│   ├── CueIntents.swift                    인텐트 7개 + AppShortcutsProvider
-│   └── Localizable.xcstrings               ko(원본) · en
-├── MyAction/                             앱 타깃
-│   ├── MyActionApp.swift
-│   ├── ContentView.swift                   누름 테스트 · 세트 선택 · 실행 기록 · 설정 안내
+Cue/
+├── Cue.xcodeproj                        손으로 작성 (외부 생성 도구 없음)
+├── Shared/                              앱 · 위젯 확장 양쪽에 컴파일된다
+│   ├── CueModels.swift                    액션 · 세트 · 런타임 상태 · 로그 · CueURL
+│   ├── CueStore.swift                     App Group UserDefaults · 무효화 토큰
+│   ├── CueAttributes.swift                ActivityAttributes
+│   ├── CueEngine.swift                  ★ 순환 / 커밋 상태 기계
+│   ├── CueActionRunner.swift              액션 실행
+│   ├── CuePresenting.swift                표시 계층 프로토콜 (테스트 seam)
+│   ├── CueLiveActivityController.swift    CuePresenting의 유일한 실제 구현
+│   ├── CueActivityViews.swift             Live Activity · DI 뷰 (테스트에서 렌더 가능)
+│   ├── CueHaptics.swift                   순환 · 확정 촉각 피드백
+│   ├── CueIdentifiers.swift               UI 자동화용 accessibilityIdentifier
+│   ├── CueIntents.swift                   인텐트 7개 + AppShortcutsProvider
+│   └── Localizable.xcstrings              ko(원본) · en
+├── Cue/                                 앱 타깃
+│   ├── CueApp.swift
+│   ├── ContentView.swift                  누름 테스트 · 세트 선택 · 실행 기록 · 설정 안내
 │   ├── SetEditorView.swift
 │   └── CueViewModel.swift
-├── MyActionWidgets/                      위젯 확장 타깃
-│   ├── MyActionWidgetsBundle.swift
-│   ├── CueLiveActivity.swift               ActivityConfiguration 배선만
-│   └── CueControls.swift                   컨트롤 2개
-├── MyActionTests/                        단위 테스트 타깃
-    ├── CueTestHarness.swift                SpyPresenter + 격리된 저장소
-│   ├── CueEngineTests.swift                상태 기계 26개
-│   └── CueActivityViewTests.swift           뷰 렌더 · 표현 규칙 14개
-└── MyActionUITests/                      통합 스모크 (XCUITest)
-    └── CueSmokeUITests.swift                배선 · 현지화 5개 (ko · en)
+├── CueWidgets/                          위젯 확장 타깃
+│   ├── CueWidgetsBundle.swift
+│   ├── CueLiveActivity.swift              ActivityConfiguration 배선만
+│   └── CueControls.swift                  컨트롤 2개
+├── CueTests/                            단위 테스트 타깃
+│   ├── CueTestHarness.swift               SpyPresenter + 격리된 저장소
+│   ├── CueEngineTests.swift               상태 기계 32개
+│   └── CueActivityViewTests.swift         뷰 렌더 · 표현 규칙 14개
+└── CueUITests/                          통합 스모크 (XCUITest)
+    └── CueSmokeUITests.swift              배선 · 현지화 5개 (ko · en)
 ```
 
 | | |
@@ -229,6 +243,12 @@ App Group에는 변경 알림이 없다. 액션 버튼이나 컨트롤이 다른
 
 ### 로컬라이제이션
 
+<p align="center">
+  <img src="docs/app.png" width="260" alt="앱 화면 — 한국어">
+  &nbsp;&nbsp;
+  <img src="docs/live-activity-cycling-en.png" width="420" alt="같은 카드 — 영어">
+</p>
+
 `Shared/Localizable.xcstrings` 하나를 앱과 위젯 확장 **양쪽**에 넣는다. Live Activity 문자열은
 확장 번들에서 해석되므로 한쪽만으로는 부족하다. 원본 언어는 한국어, 영어 번역이 들어 있다.
 
@@ -242,7 +262,7 @@ App Group에는 변경 알림이 없다. 액션 버튼이나 컨트롤이 다른
 ## 빌드
 
 ```bash
-xcodebuild -project MyAction.xcodeproj -scheme MyAction -configuration Debug \
+xcodebuild -project Cue.xcodeproj -scheme Cue -configuration Debug \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro' build
 ```
 
@@ -255,7 +275,7 @@ xcodebuild -project MyAction.xcodeproj -scheme MyAction -configuration Debug \
 ## 테스트
 
 ```bash
-xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
+xcodebuild test -project Cue.xcodeproj -scheme Cue \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
@@ -358,8 +378,8 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
 
 | 항목 | 근거 |
 |---|---|
-| 빌드 · 확장 임베드 | 클린 빌드 경고 0건, `MyAction.app/PlugIns/MyActionWidgets.appex` |
-| App Group entitlement | `MyAction.app-Simulated.xcent`에 `group.com.keen.cue` |
+| 빌드 · 확장 임베드 | 클린 빌드 경고 0건, `Cue.app/PlugIns/CueWidgets.appex` |
+| App Group entitlement | `Cue.app-Simulated.xcent`에 `group.com.keen.cue` |
 | 순환과 창 만료 리셋 | 앱 내 `1/4` → 연타 후 `2/4`, 느린 연타는 0번으로 되돌아감 |
 | 자동 커밋 + 로그 | 실행 기록에 `스톱워치 · 시작` 등이 남음 |
 | **항목 더블 탭 즉시 확정** | 타일 좌표를 0.668초 간격으로 2회 탭 → 두 번째 탭 후 0.546초 시점에 이미 실행 완료. 자동 커밋 시점(첫 탭 + 2.0초)보다 앞서므로 더블 탭이 만든 실행임이 확정 |
@@ -393,6 +413,13 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
   울리지 않는 것은 iOS 동작이지 버그가 아니다.
 - **링크 열기 실제 동작** — `OpenURLIntent` 경로는 코드와 테스트로만 확인했고, 잠금화면에서
   탭해 Safari가 뜨는 것까지는 보지 못했다.
+
+## 이미지에 대해
+
+- `dynamic-island-compact.png`, `live-activity-open-real.png` — 시뮬레이터 **실제 스크린샷**.
+- 나머지 카드 이미지 — 프로덕션 뷰(`CueActivityViews.swift`)를 `ImageRenderer`로 **직접 렌더**한
+  것이다. 잠금화면 스크린샷에는 iOS의 Live Activity 승인 프롬프트가 겹쳐 지저분하고, 카드 수명이
+  몇 초라 원하는 순간을 잡기 어렵다. 렌더는 같은 뷰·같은 상태를 쓰므로 화면과 일치한다.
 
 ## 알려진 제약
 

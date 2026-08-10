@@ -1,7 +1,7 @@
 import SwiftUI
 import Testing
 import UIKit
-@testable import MyAction
+@testable import Cue
 
 /// Live Activity · 다이나믹 아일랜드 뷰 검증 (L3).
 ///
