@@ -90,6 +90,8 @@ MyAction/
 │   ├── CuePresenting.swift                 표시 계층 프로토콜 (테스트 seam)
 │   ├── CueLiveActivityController.swift     CuePresenting의 유일한 실제 구현
 │   ├── CueHaptics.swift                    순환 · 확정 촉각 피드백
+│   ├── CueActivityViews.swift               Live Activity · DI 뷰 (테스트에서 렌더 가능)
+│   ├── CueIdentifiers.swift                 UI 자동화용 accessibilityIdentifier
 │   ├── CueIntents.swift                    인텐트 7개 + AppShortcutsProvider
 │   └── Localizable.xcstrings               ko(원본) · en
 ├── MyAction/                             앱 타깃
@@ -99,11 +101,12 @@ MyAction/
 │   └── CueViewModel.swift
 ├── MyActionWidgets/                      위젯 확장 타깃
 │   ├── MyActionWidgetsBundle.swift
-│   ├── CueLiveActivity.swift               잠금화면 + 다이나믹 아일랜드 3형태
+│   ├── CueLiveActivity.swift               ActivityConfiguration 배선만
 │   └── CueControls.swift                   컨트롤 2개
 └── MyActionTests/                        단위 테스트 타깃
     ├── CueTestHarness.swift                SpyPresenter + 격리된 저장소
-    └── CueEngineTests.swift                26개
+    ├── CueEngineTests.swift                상태 기계 26개
+    └── CueActivityViewTests.swift           뷰 렌더 · 표현 규칙 14개
 ```
 
 | | |
@@ -234,7 +237,7 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-Swift Testing 26개, 약 2초, 경고 0건.
+Swift Testing **40개**(2 스위트), 약 3초, 경고 0건.
 
 상태 기계가 Live Activity 권한이나 시스템 UI에 매달리지 않도록 seam 세 개를 뒀다.
 
@@ -259,6 +262,37 @@ Swift Testing 26개, 약 2초, 경고 0건.
 | 링크 열기 | 주소를 실은 "열기" 버튼을 붙이고 해제 시각을 늘림 / https가 아니면 실패로 기록하고 버튼도 안 붙음 |
 | 로그 | 최신 우선 · 상한(30) 유지 |
 
+### 뷰 렌더 테스트
+
+시뮬레이터를 띄우지 않고 `ImageRenderer`로 Live Activity · 다이나믹 아일랜드 뷰를 직접 그린다.
+겨냥하는 것 세 가지.
+
+| 무엇 | 왜 |
+|---|---|
+| **렌더 중 트랩** | `body` 평가 중 죽으면 테스트가 실패한다 |
+| **상태가 반영되는지** | 선택·단계가 다르면 그림도 달라야 한다. 같으면 뭔가 끊긴 것이다 |
+| **빈 화면** | 레이아웃이 무너져 아무것도 안 그려지는 경우 |
+
+**이 층이 실제로 잡는지 확인했다.** `remainingCountdown`의 가드를 일시적으로 제거해
+`Date()...commitAt` 크래시를 되살렸더니 테스트가
+`Fatal error: Range requires lowerBound <= upperBound`로 죽었다. 즉 **코드를 읽어서 찾았던 그
+크래시를 이 테스트가 자동으로 잡는다.**
+
+기준 이미지와의 픽셀 비교는 하지 않는다. OS·폰트 버전에 따라 깨지는 대신 얻는 것이 적고,
+정작 이 프로젝트에서 깨졌던 것은 위 세 가지였다. 표현 규칙(심볼·색조)은 값으로 직접 단언한다.
+
+### UI 자동화 손잡이
+
+`CueIdentifiers.swift`가 언어와 무관한 `accessibilityIdentifier`를 정의한다.
+
+라벨로 요소를 찾으면 **번역되는 순간 조용히 깨진다.** 이 프로젝트에 로컬라이제이션을 넣자
+한국어 라벨 셀렉터가 전부 빗나갔고, 아무 일도 일어나지 않은 것을 "회귀 없음"으로 잘못 읽을
+뻔했다. 부분 일치도 위험하다 — `스톱워치`는 액션 타일뿐 아니라
+`기본, 손전등 · 순간 기록 · 스톱워치 · 앱 열기`라는 세트 행에도 걸린다.
+
+앱과 Live Activity가 **같은 식별자**를 쓴다(`cue.tile.0` 등). 세트 행은 순서가 아니라
+세트 UUID로 잡아, 순서가 바뀌어도 같은 손잡이를 가리킨다.
+
 ## 검증 현황
 
 2026-08-07 기준, iPhone 17 Pro 시뮬레이터 / Xcode 26.6.
@@ -280,6 +314,7 @@ Swift Testing 26개, 약 2초, 경고 0건.
 | 유휴 시 오작동 없음 | 재설치 후 30초 · 40초 유휴 두 번, 로그 비어 있음 |
 | 컨트롤 · 인텐트 등록 | appex에 컨트롤 kind 2개, 두 타깃의 `Metadata.appintents`에 인텐트 6개 |
 | 상태 기계 로직 | 단위 테스트 26개 |
+| Live Activity · DI 뷰 | 렌더 테스트 14개 — 아래 참조 |
 | Swift 6 언어 모드 | 앱 · 확장 · 테스트 전부 경고 0건으로 빌드, 26개 통과 |
 | 영어 로컬라이제이션 | `-AppleLanguages "(en)"`으로 실행해 화면 전체가 영어로 뜨는 것 확인 (스크린샷). 번들에 `en.lproj` · `ko.lproj`가 앱과 확장 양쪽에 들어감 |
 | Swift 6 전환 후 더블 탭 회귀 없음 | 0.651초 간격 2회 탭 → 두 번째 탭 후 0.475초에 이미 `Stopwatch · Started`, 자동 커밋 시점보다 앞섬 |

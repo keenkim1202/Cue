@@ -28,12 +28,14 @@ struct SetEditorView: View {
                 }
                 Section {
                     Button("세트 추가", systemImage: "plus", action: model.addSet)
+                        .accessibilityIdentifier(CueID.addSet)
                 }
             }
             .navigationTitle("세트 편집")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("완료") { dismiss() }
+                        .accessibilityIdentifier(CueID.doneEditing)
                 }
             }
         }

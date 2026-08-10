@@ -19,6 +19,7 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("세트 편집") { showingEditor = true }
+                        .accessibilityIdentifier(CueID.editSets)
                 }
             }
             .sheet(isPresented: $showingEditor) {
@@ -58,9 +59,11 @@ struct ContentView: View {
                 .padding(.vertical, 6)
             }
             .buttonStyle(.plain)
+            .accessibilityIdentifier(CueID.press)
 
             if model.isCycling {
                 cyclingPreview
+                    .accessibilityIdentifier(CueID.cyclingPreview)
             }
         } header: {
             Text("누름")
@@ -98,6 +101,7 @@ struct ContentView: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .accessibilityIdentifier(CueID.tile(index))
                     .accessibilityLabel(action.title)
                     .accessibilityHint("두 번 탭하면 바로 실행합니다")
                 }
@@ -133,6 +137,7 @@ struct ContentView: View {
                     }
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier(CueID.setRow(set.id))
             }
         } header: {
             Text("액션 세트")
@@ -176,6 +181,7 @@ struct ContentView: View {
                     Button("지우기", action: model.clearLog)
                         .font(.caption)
                         .textCase(nil)
+                        .accessibilityIdentifier(CueID.clearLog)
                 }
             }
         }
@@ -236,6 +242,7 @@ struct ContentView: View {
                 }
             }
             Button("기본값으로 되돌리기", role: .destructive, action: model.resetToSeed)
+                .accessibilityIdentifier(CueID.reset)
         }
     }
 }
