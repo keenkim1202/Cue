@@ -75,11 +75,27 @@ enum CueStore {
         set { defaults.set(try? encoder.encode(newValue), forKey: Key.state) }
     }
 
+    /// 무장을 풀고 **대기 중인 자동 커밋을 무효화한다.**
+    ///
+    /// `generation`을 올리는 것이 핵심이다. 예전에는 올리지 않아서, Live Activity의 실행
+    /// 버튼으로 먼저 확정해도 대기 중이던 `arm()`이 generation 검사를 통과해 같은 액션을
+    /// 두 번 실행했다. `commit()`은 `isArmed`를 보지 않으므로 이 토큰이 유일한 방어선이다.
     static func disarm() {
         var current = state
         current.isArmed = false
         current.lastInputWasItemTap = false
+        current.generation += 1
         state = current
+    }
+
+    /// 런타임 상태를 비운다.
+    ///
+    /// `CueState.empty`를 그대로 대입하면 `generation`이 0으로 **되돌아가** 나중 누름의
+    /// generation과 충돌한다. 무효화 토큰은 단조 증가여야 하므로 값을 이어 붙인다.
+    static func clearRuntimeState() {
+        var fresh = CueState.empty
+        fresh.generation = state.generation + 1
+        state = fresh
     }
 
     // MARK: Stopwatch

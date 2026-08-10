@@ -105,6 +105,8 @@ struct CueOpenAppIntent: AppIntent {
 ///
 /// `OpenURLIntent`는 **https 링크만** 연다. 커스텀 스킴은 열리지 않는다
 /// (Apple 개발자 포럼 762586). 유니버설 링크라면 해당 앱이, 아니면 Safari가 뜬다.
+///
+/// 검증은 `CueURL.openable`로 통일한다 — 실행 쪽과 여는 쪽이 따로 판단하면 어긋난다.
 struct CueOpenURLIntent: AppIntent {
     static let title: LocalizedStringResource = "Cue에서 링크 열기"
     static let isDiscoverable = false
@@ -120,7 +122,7 @@ struct CueOpenURLIntent: AppIntent {
     }
 
     func perform() async throws -> some IntentResult & OpensIntent {
-        guard let url = URL(string: urlString), url.scheme?.hasPrefix("http") == true else {
+        guard let url = CueURL.openable(urlString) else {
             throw CueIntentError.unopenableURL(urlString)
         }
         await CueEngine.presenter.endAll()

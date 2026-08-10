@@ -825,6 +825,39 @@
           }
         }
       }
+    },
+    "새 세트 %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New set %lld"
+          }
+        }
+      }
+    },
+    "실행 취소됨": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not run"
+          }
+        }
+      }
+    },
+    "선택한 액션이 사라졌습니다": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected action no longer exists"
+          }
+        }
+      }
     }
   },
   "version": "1.0"

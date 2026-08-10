@@ -63,6 +63,21 @@ enum CueOpenTarget: Codable, Hashable {
     case url(String)
 }
 
+/// 열 수 있는 주소인지 판정하는 **단일 출처**.
+///
+/// `OpenURLIntent`는 https만 연다. 실행 쪽과 여는 쪽이 각자 검사하면 서로 어긋나
+/// "성공으로 기록됐는데 열기를 눌러도 아무 일 없음"이 된다. 예전에는 둘 다
+/// `hasPrefix("http")`를 써서 `http://`·`httpx://`까지 통과시켰다.
+enum CueURL {
+    static func openable(_ raw: String) -> URL? {
+        guard let url = URL(string: raw),
+              url.scheme?.lowercased() == "https",
+              let host = url.host(), !host.isEmpty
+        else { return nil }
+        return url
+    }
+}
+
 // MARK: - Set
 
 /// 액션 버튼 한 번에 순환될 액션들의 묶음.
@@ -84,8 +99,10 @@ struct CueConfig: Codable, Equatable {
     var sets: [CueSet]
     var activeSetID: UUID
 
+    /// 활성 세트. `sets`가 비었으면 빈 세트를 돌려준다 —
+    /// `sets[0]` 강제 인덱싱은 빈 배열에서 트랩된다.
     var activeSet: CueSet {
-        sets.first { $0.id == activeSetID } ?? sets[0]
+        sets.first { $0.id == activeSetID } ?? sets.first ?? CueSet(name: "", actions: [])
     }
 
     /// 첫 실행용 기본 구성.

@@ -87,6 +87,8 @@ final class CueViewModel: ObservableObject {
         var updated = CueStore.config
         updated.activeSetID = set.id
         CueStore.config = updated
+        // 대기 중인 커밋은 옛 세트의 인덱스를 들고 있다.
+        CueEngine.invalidateCycleIfArmed()
         reload()
     }
 
@@ -95,13 +97,15 @@ final class CueViewModel: ObservableObject {
         guard let index = updated.sets.firstIndex(where: { $0.id == set.id }) else { return }
         updated.sets[index] = set
         CueStore.config = updated
+        // 액션을 지우거나 순서를 바꾸면 인덱스가 밀린다.
+        CueEngine.invalidateCycleIfArmed()
         reload()
     }
 
     func addSet() {
         var updated = CueStore.config
-        let new = CueSet(name: "새 세트 \(updated.sets.count + 1)", actions: [
-            CueAction(title: "순간 기록", symbol: "mappin.and.ellipse", kind: .mark)
+        let new = CueSet(name: String(localized: "새 세트 \(updated.sets.count + 1)"), actions: [
+            CueAction(title: String(localized: "순간 기록"), symbol: "mappin.and.ellipse", kind: .mark)
         ])
         updated.sets.append(new)
         updated.activeSetID = new.id
@@ -129,7 +133,8 @@ final class CueViewModel: ObservableObject {
         CueStore.config = CueConfig.seed
         CueStore.clearLog()
         CueStore.stopwatch = .idle
-        CueStore.state = .empty
+        // `.empty`를 그대로 대입하면 generation이 0으로 되돌아간다.
+        CueStore.clearRuntimeState()
         Task { await CueEngine.presenter.endAll() }
         reload()
     }

@@ -141,6 +141,24 @@ Live Activity의 버튼은 **단일 탭만 전달된다** — 더블 탭 제스�
 `press()`와 `tapItem()`은 모두 `arm(index:isItemTap:set:)`으로 수렴한다. 선택을 옮기고 Live Activity를
 띄운 뒤 창이 닫히기를 기다려 커밋하는 부분이 한 곳에만 있다.
 
+#### `generation`은 단조 증가하는 무효화 토큰이다
+
+`arm()`은 잠들기 전에 `generation`을 캡처하고, 깨어나서 값이 그대로일 때만 커밋한다. 따라서
+**대기를 무효화하려는 모든 경로가 이 값을 올려야 한다.** 이 계약이 깨지면 두 가지가 난다.
+
+| 깨지는 방식 | 결과 |
+|---|---|
+| 확정하면서 올리지 않음 | 대기 태스크가 검사를 통과해 **같은 액션을 두 번** 실행 |
+| 되돌림(`CueState.empty` 대입) | 나중 누름의 값과 충돌해 역시 이중 실행 |
+| 구성 변경 시 올리지 않음 | 옛 인덱스가 **바뀐 세트의 다른 액션**을 가리켜 보이지 않던 것이 실행 |
+
+그래서 올리는 지점을 `CueStore.disarm()` 하나로 모았다. `commit()`·`cancel()`·`nextSet()`이
+모두 이를 통과하고, 구성을 바꾸는 화면 경로(`selectSet`·`update`)는
+`CueEngine.invalidateCycleIfArmed()`를 부른다. 런타임 초기화는 `CueState.empty`를 대입하지 않고
+`CueStore.clearRuntimeState()`로 값을 이어 붙인다.
+
+세 가지 모두 회귀 테스트가 있고, **수정을 되돌려 테스트가 실패하는 것까지 확인했다.**
+
 ### 커밋 대기 — 이 설계의 가장 약한 고리
 
 커밋 대기는 `perform()` 안에서 `Task.sleep(2s)`으로 기다린다. 인텐트가 반환되면 프로세스가 곧 정지될 수
@@ -175,9 +193,11 @@ App Group에는 변경 알림이 없다. 액션 버튼이나 컨트롤이 다른
 `CueOpenAppIntent`(앱)와 `CueOpenURLIntent`(링크). 결과 카드에 "열기" 버튼이 붙고, 실제로 열리는
 것은 사용자의 탭 한 번 뒤다. 버튼이 붙은 카드는 탭할 틈이 있도록 20초간 남는다(보통 결과는 2.5초).
 
-`OpenURLIntent`는 **https 주소만** 연다. 커스텀 스킴은 열리지 않으므로
-([포럼 762586](https://developer.apple.com/forums/thread/762586)) `CueActionRunner`가 미리 걸러
-실패로 기록한다. 유니버설 링크라면 해당 앱이, 아니면 Safari가 뜬다.
+`OpenURLIntent`는 **https 주소만** 연다
+([포럼 762586](https://developer.apple.com/forums/thread/762586)). 실행 쪽과 여는 쪽이 각자
+판단하면 어긋나므로 판정은 `CueURL.openable` 하나로 통일했다 — `hasPrefix("http")`는
+`http://`와 `httpx://`까지 통과시켜, 열리지 않을 주소가 성공으로 기록됐다.
+유니버설 링크라면 해당 앱이, 아니면 Safari가 뜬다.
 
 ### 저장소 부트스트랩
 
@@ -243,7 +263,7 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
 
 | 층 | 개수 | 소요 | 무엇 |
 |---|---|---|---|
-| 단위 · 뷰 렌더 (Swift Testing) | 40 | 약 3초 | 상태 기계 26 + 뷰 14 |
+| 단위 · 뷰 렌더 (Swift Testing) | 46 | 약 3초 | 상태 기계 32 + 뷰 14 |
 | 통합 스모크 (XCUITest) | 5 | 약 70초 | 배선 · 현지화, ko·en 각각 |
 
 경고 0건. 두 층 모두 2회 연속 통과 확인.
@@ -268,6 +288,8 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
 | 액션 결과 | 스톱워치 시작↔정지 / `openApp`이 "열기" 버튼을 붙이고 해제 시각을 늘림 / 다른 경로에는 안 붙음 / 실패한 액션도 실패로 기록 |
 | 카운트다운 | 지나간 `commitAt` → `nil`(위젯 확장 트랩 방지) / 남은 `commitAt` → 유효 구간 / `commitAt` 없음 → `nil` |
 | 스냅샷 어긋남 | 카드가 만들어진 뒤 세트가 바뀌면 그 카드의 탭은 무시된다 |
+| **대기 중 외부 변경** | 실행 버튼 선확정 시 이중 실행 없음 / 세트 전환 시 옛 인덱스로 실행 안 됨(ViewModel 배선까지) / 런타임 초기화가 `generation`을 되돌리지 않음 / 범위 밖 확정이 실패로 기록됨 |
+| 링크 판정 | https만 통과 — `http://`·`httpx://`·커스텀 스킴·호스트 없음 모두 거부 |
 | 링크 열기 | 주소를 실은 "열기" 버튼을 붙이고 해제 시각을 늘림 / https가 아니면 실패로 기록하고 버튼도 안 붙음 |
 | 로그 | 최신 우선 · 상한(30) 유지 |
 
@@ -348,7 +370,7 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
 | **"열기" 버튼 탭 → 앱이 전면에 뜸** | 잠금 상태에서 탭 → Cue 화면 전환, 동시에 다이나믹 아일랜드가 비워짐(`endAll()`) |
 | 유휴 시 오작동 없음 | 재설치 후 30초 · 40초 유휴 두 번, 로그 비어 있음 |
 | 컨트롤 · 인텐트 등록 | appex에 컨트롤 kind 2개, 두 타깃의 `Metadata.appintents`에 인텐트 6개 |
-| 상태 기계 로직 | 단위 테스트 26개 |
+| 상태 기계 로직 | 단위 테스트 32개 |
 | Live Activity · DI 뷰 | 렌더 테스트 14개 — 위 참조 |
 | 실제 탭 → 인텐트 배선 | 통합 스모크 5개, ko·en 각각 |
 | Swift 6 언어 모드 | 앱 · 확장 · 테스트 전부 경고 0건으로 빌드, 26개 통과 |
@@ -390,7 +412,17 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
 - 설정 > 액션 버튼 > 제어에 `Cue 누르기`가 뜨는지
 - 2초가 적절한 창인지 — 엄지로 연타해 봐야 안다
 
-**2. 다듬기**
+**2. 확인이 필요해 미룬 것**
+
+- **App Shortcut 음성 구문 현지화** — `phrases`는 `Localizable.xcstrings`가 아니라 전용
+  `AppShortcuts.strings`/`.xcstrings`에서만 해석된다. 지금은 한국어로 고정이라 영어 사용자는
+  Siri로 실행할 방법이 없다. 다만 **Siri 동작을 시뮬레이터에서 확인하지 못했으므로**
+  검증 없이 파일을 얹지 않았다. 실기기에서 Siri로 확인하며 붙이는 것이 맞다.
+- **0.25초 폴링 비용** — 화면이 떠 있는 동안 초당 4회 디코딩한다. 비싼 쪽(리렌더)은 이미
+  제거했고 남은 것은 4KB 남짓의 JSON 파싱이라 실측 없이 더 손대지 않는다. App Group에 변경
+  알림이 없어 폴링 자체는 대안이 없다.
+
+**3. 다듬기**
 
 - 순환 창을 사용자가 조절 (1.5s ~ 3s). 지금은 2초 고정이라 VoiceOver 사용자에게 특히 불리하다
 - 세트 자동 전환 — 시간대 · 위치 기반 (Action Button Pro가 하는 것 + 피드백)

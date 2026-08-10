@@ -62,16 +62,14 @@ enum CueEngine {
             return false
         }
 
-        var state = CueStore.state
+        let state = CueStore.state
         let isDoubleTap = state.isArmed
             && state.lastInputWasItemTap
             && state.selectedIndex == index
             && Date().timeIntervalSince(state.lastPressAt) < cycleWindow
 
         guard !isDoubleTap else {
-            // 대기 중인 자동 커밋을 무효화하고 지금 실행한다.
-            state.generation += 1
-            CueStore.state = state
+            // 대기 중인 자동 커밋 무효화는 `commit()` 안의 `disarm()`이 한다.
             return await commit()
         }
 
@@ -116,6 +114,13 @@ enum CueEngine {
         let set = CueStore.activeSet
         let state = CueStore.state
         guard set.actions.indices.contains(state.selectedIndex) else {
+            // 조용히 삼키면 사용자도 테스트도 알 수 없다. 실패로 남긴다.
+            CueStore.appendLog(CueLogEntry(
+                at: Date(),
+                actionTitle: String(localized: "실행 취소됨"),
+                detail: String(localized: "선택한 액션이 사라졌습니다"),
+                succeeded: false
+            ))
             CueStore.disarm()
             await presenter.endAll()
             return false
@@ -144,24 +149,29 @@ enum CueEngine {
 
     /// 아무것도 실행하지 않고 물러난다. Live Activity의 "취소" 버튼용.
     static func cancel() async {
-        var state = CueStore.state
-        state.isArmed = false
-        state.lastInputWasItemTap = false
-        // generation을 올려 대기 중인 press()의 커밋을 무효화한다.
-        state.generation += 1
-        CueStore.state = state
-
+        CueStore.disarm()
         await presenter.finish(phase: .cancelled, resultText: String(localized: "취소됨"), openTarget: nil, dismissAfter: 1.0)
+    }
+
+    /// 구성이 바뀌었을 때 대기 중인 순환을 버린다.
+    ///
+    /// 선택 인덱스는 **바뀐 세트에서 다른 액션을 가리킨다.** 무효화하지 않으면 대기 중이던
+    /// `arm()`이 깨어나 화면에 보이던 것과 다른 액션을 실행한다. 세트 전환·편집·초기화가
+    /// 모두 이 문을 통과해야 한다.
+    static func invalidateCycleIfArmed() {
+        guard CueStore.state.isArmed else { return }
+        var state = CueStore.state
+        state.selectedIndex = 0
+        CueStore.state = state
+        CueStore.disarm()
     }
 
     /// 다음 세트로 전환한다. 순환 중이었다면 되돌린다.
     static func nextSet() async {
         let next = CueStore.advanceSet()
+        invalidateCycleIfArmed()
         var state = CueStore.state
-        state.isArmed = false
-        state.lastInputWasItemTap = false
         state.selectedIndex = 0
-        state.generation += 1
         CueStore.state = state
 
         if presenter.isEnabled {

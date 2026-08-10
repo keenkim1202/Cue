@@ -25,7 +25,7 @@ enum CueActionRunner {
     // MARK: 링크
 
     private static func openURL(_ action: CueAction) -> Outcome {
-        guard let url = URL(string: action.urlString), url.scheme?.hasPrefix("http") == true else {
+        guard let url = CueURL.openable(action.urlString) else {
             return Outcome(detail: String(localized: "열 수 없는 주소: \(action.urlString)"), succeeded: false)
         }
         return Outcome(detail: url.host() ?? url.absoluteString, succeeded: true, openTarget: .url(url.absoluteString))
@@ -50,10 +50,17 @@ enum CueActionRunner {
 
     // MARK: 순간 기록
 
-    private static func mark() -> Outcome {
+    /// 로그에 남는 값은 **표시가 아니라 데이터**다. 로케일에 따라 숫자 체계가 바뀌면
+    /// 기록이 흔들리므로 고정 로케일을 쓰고, 포맷터도 매번 만들지 않는다.
+    private static let markFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "HH:mm:ss"
-        return Outcome(detail: formatter.string(from: Date()), succeeded: true)
+        return formatter
+    }()
+
+    private static func mark() -> Outcome {
+        Outcome(detail: markFormatter.string(from: Date()), succeeded: true)
     }
 
     // MARK: 스톱워치

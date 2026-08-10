@@ -204,6 +204,111 @@ struct CueEngineTests {
         #expect(h.state.isArmed == false)
     }
 
+    // MARK: 대기 중 외부 변경 — 리뷰에서 드러난 공백
+
+    @Test("실행 버튼으로 먼저 확정하면 대기 중인 자동 커밋은 다시 실행되지 않는다")
+    func externalCommitDuringWindowRunsOnce() async {
+        let h = CueHarness()
+        defer { h.tearDown() }
+
+        // 누름이 창을 열고 대기에 들어간다.
+        h.pressWithoutWaiting()
+        await h.settleArm()
+
+        // Live Activity의 "실행" 버튼 = CueEngine.commit() 직접 호출.
+        await CueEngine.commit()
+        #expect(h.committedTitles == ["A0"])
+
+        // 대기 태스크가 깨어날 시간을 준다. generation이 올라갔으므로 다시 커밋하면 안 된다.
+        await h.settleCommit()
+        #expect(h.log.count == 1, "같은 누름이 두 번 실행됐다")
+    }
+
+    @Test("대기 중 세트를 바꾸면 옛 인덱스로 실행되지 않는다")
+    func selectingAnotherSetDuringWindowCancelsCommit() async {
+        let h = CueHarness()
+        defer { h.tearDown() }
+
+        // 액션이 하나뿐인 두 번째 세트를 준비한다 — 옛 인덱스(1)는 여기서 범위 밖이다.
+        var config = CueStore.config
+        let short = CueSet(name: "짧은 세트", actions: [CueAction(title: "B0", symbol: "star", kind: .mark)])
+        config.sets.append(short)
+        CueStore.config = config
+
+        h.pressWithoutWaiting()
+        await h.settleArm()
+        h.pressWithoutWaiting()
+        await h.settleArm()
+        #expect(h.state.selectedIndex == 1)
+
+        // 구성이 바뀌었다 → 대기 중인 순환을 버려야 한다.
+        var switched = CueStore.config
+        switched.activeSetID = short.id
+        CueStore.config = switched
+        CueEngine.invalidateCycleIfArmed()
+
+        await h.settleCommit()
+        #expect(h.log.isEmpty, "옛 세트의 인덱스로 무언가 실행됐다")
+        #expect(h.state.isArmed == false)
+    }
+
+    @Test("ViewModel의 세트 선택이 대기 중인 순환을 버린다")
+    func viewModelSelectSetInvalidatesCycle() async {
+        let h = CueHarness()
+        defer { h.tearDown() }
+
+        var config = CueStore.config
+        let short = CueSet(name: "짧은 세트", actions: [CueAction(title: "B0", symbol: "star", kind: .mark)])
+        config.sets.append(short)
+        CueStore.config = config
+
+        let model = CueViewModel()
+        h.pressWithoutWaiting()
+        await h.settleArm()
+        h.pressWithoutWaiting()
+        await h.settleArm()
+        #expect(h.state.selectedIndex == 1)
+
+        // 엔진 헬퍼를 직접 부르지 않는다 — 화면이 쓰는 경로를 그대로 탄다.
+        model.selectSet(short)
+
+        await h.settleCommit()
+        #expect(h.log.isEmpty, "세트를 바꿨는데 옛 인덱스로 무언가 실행됐다")
+    }
+
+    @Test("런타임 초기화는 generation을 되돌리지 않는다")
+    func clearingRuntimeStateKeepsGenerationMonotonic() async {
+        let h = CueHarness(window: 5)
+        defer { h.tearDown() }
+
+        h.pressWithoutWaiting()
+        await h.settleArm()
+        let armed = h.state.generation
+
+        CueStore.clearRuntimeState()
+
+        #expect(h.state.generation > armed, "generation이 되돌아가면 나중 누름과 충돌한다")
+        #expect(h.state.isArmed == false)
+    }
+
+    @Test("선택이 범위를 벗어나면 조용히 삼키지 않고 실패로 남긴다")
+    func outOfRangeCommitIsLogged() async {
+        let h = CueHarness()
+        defer { h.tearDown() }
+
+        // 선택을 범위 밖으로 만든 뒤 확정을 시도한다.
+        var state = CueStore.state
+        state.selectedIndex = 99
+        state.isArmed = true
+        CueStore.state = state
+
+        let result = await CueEngine.commit()
+
+        #expect(result == false)
+        #expect(h.log.count == 1, "실행되지 않았다는 사실이 기록에 남아야 한다")
+        #expect(h.log.first?.succeeded == false)
+    }
+
     // MARK: 취소
 
     @Test("취소는 실행하지 않고 무장을 푼다")
@@ -333,6 +438,16 @@ struct CueEngineTests {
         #expect(h.presenter.finished.last?.openTarget == .url("https://example.com/0"))
         #expect(h.presenter.finished.last?.dismissAfter == CueEngine.openPromptLinger)
         #expect(h.log.first?.succeeded == true)
+    }
+
+    @Test("https만 열 수 있다고 판정한다")
+    func onlyHTTPSIsOpenable() {
+        #expect(CueURL.openable("https://example.com") != nil)
+        #expect(CueURL.openable("http://example.com") == nil, "OpenURLIntent는 http를 열지 못한다")
+        #expect(CueURL.openable("httpx://example.com") == nil, "hasPrefix(\"http\")가 통과시켰던 형태")
+        #expect(CueURL.openable("myapp://x") == nil)
+        #expect(CueURL.openable("https://") == nil, "호스트가 없으면 열 수 없다")
+        #expect(CueURL.openable("") == nil)
     }
 
     @Test("https가 아닌 주소는 실패로 기록되고 버튼도 안 붙는다")
