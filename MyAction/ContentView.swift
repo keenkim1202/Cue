@@ -62,8 +62,9 @@ struct ContentView: View {
             .accessibilityIdentifier(CueID.press)
 
             if model.isCycling {
+                // 컨테이너에 식별자를 붙이면 자식 타일의 식별자를 전부 덮어쓴다.
+                // 순환 여부는 타일(`cue.tile.N`) 존재로 판단한다.
                 cyclingPreview
-                    .accessibilityIdentifier(CueID.cyclingPreview)
             }
         } header: {
             Text("누름")

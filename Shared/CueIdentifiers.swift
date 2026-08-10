@@ -8,10 +8,12 @@ import Foundation
 /// `기본, 손전등 · 순간 기록 · 스톱워치 · 앱 열기`라는 세트 행에도 걸린다.
 ///
 /// 그래서 언어와 무관한 식별자를 따로 붙인다.
+/// SwiftUI 주의: 컨테이너에 `accessibilityIdentifier`를 붙이면 **자식들의 식별자를 전부
+/// 덮어쓴다**. 실제로 순환 프리뷰 컨테이너에 붙였다가 타일 4개가 모두 컨테이너 식별자로
+/// 나와 UI 테스트가 타일을 못 찾았다. 손잡이는 잡을 요소에 직접 붙인다.
 enum CueID {
     // 앱
     static let press = "cue.press"
-    static let cyclingPreview = "cue.cyclingPreview"
     static let clearLog = "cue.clearLog"
     static let reset = "cue.reset"
     static let editSets = "cue.editSets"

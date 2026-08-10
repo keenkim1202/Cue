@@ -103,10 +103,12 @@ MyAction/
 │   ├── MyActionWidgetsBundle.swift
 │   ├── CueLiveActivity.swift               ActivityConfiguration 배선만
 │   └── CueControls.swift                   컨트롤 2개
-└── MyActionTests/                        단위 테스트 타깃
+├── MyActionTests/                        단위 테스트 타깃
     ├── CueTestHarness.swift                SpyPresenter + 격리된 저장소
-    ├── CueEngineTests.swift                상태 기계 26개
-    └── CueActivityViewTests.swift           뷰 렌더 · 표현 규칙 14개
+│   ├── CueEngineTests.swift                상태 기계 26개
+│   └── CueActivityViewTests.swift           뷰 렌더 · 표현 규칙 14개
+└── MyActionUITests/                      통합 스모크 (XCUITest)
+    └── CueSmokeUITests.swift                배선 · 현지화 5개 (ko · en)
 ```
 
 | | |
@@ -237,7 +239,14 @@ xcodebuild test -project MyAction.xcodeproj -scheme MyAction \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 ```
 
-Swift Testing **40개**(2 스위트), 약 3초, 경고 0건.
+두 층이다.
+
+| 층 | 개수 | 소요 | 무엇 |
+|---|---|---|---|
+| 단위 · 뷰 렌더 (Swift Testing) | 40 | 약 3초 | 상태 기계 26 + 뷰 14 |
+| 통합 스모크 (XCUITest) | 5 | 약 70초 | 배선 · 현지화, ko·en 각각 |
+
+경고 0건. 두 층 모두 2회 연속 통과 확인.
 
 상태 기계가 Live Activity 권한이나 시스템 UI에 매달리지 않도록 seam 세 개를 뒀다.
 
@@ -293,6 +302,32 @@ Swift Testing **40개**(2 스위트), 약 3초, 경고 0건.
 앱과 Live Activity가 **같은 식별자**를 쓴다(`cue.tile.0` 등). 세트 행은 순서가 아니라
 세트 UUID로 잡아, 순서가 바뀌어도 같은 손잡이를 가리킨다.
 
+### 통합 스모크
+
+앱을 실제로 띄워, 앞의 두 층이 **원리적으로** 볼 수 없는 것만 확인한다.
+
+| 테스트 | 확인하는 것 |
+|---|---|
+| 누름 배선 | 실제 탭 → 인텐트 → 액션 스트립 표시 (ko · en) |
+| 창 만료 자동 실행 | 2초 뒤 스트립 사라지고 기록이 남음 (ko · en) |
+| 같은 타일 두 번 탭 | 마지막 탭 후 1.5초 안에 확정 — 자동 커밋 시점(2.0초)보다 앞선다 |
+| 로케일별 문구 | 같은 식별자의 라벨이 로케일에 따라 바뀜 |
+| 안내 문구 현지화 | `Text(String)` 함정이 있던 자리에 영어가 실제로 나옴 |
+
+셀렉터는 전부 `CueID` 식별자다. 라벨로 잡으면 로케일을 바꾸는 순간 조용히 빗나가고,
+아무 일도 일어나지 않은 것을 통과로 오독하게 된다. 실제로 겪은 일이다.
+
+**만들면서 걸린 함정 두 가지** — 둘 다 이 테스트가 잡아냈다.
+
+- **컨테이너 식별자가 자식을 덮어쓴다.** 순환 프리뷰 컨테이너에 `accessibilityIdentifier`를
+  붙였더니 타일 4개가 모두 컨테이너 식별자로 나와 타일을 못 찾았다. 손잡이는 잡을 요소에
+  직접 붙여야 한다.
+- **SwiftUI List는 지연 로딩이다.** 맨 아래 초기화 버튼까지 스크롤한 뒤에는 위쪽 행이
+  접근성 트리에서 사라진다. 다시 위로 올라가야 찾을 수 있다.
+
+시드 식별자를 고정해 둔 덕에 세트 행을 `cue.set.00000000-0000-4000-8000-000000000001`로
+직접 잡을 수 있다.
+
 ## 검증 현황
 
 2026-08-07 기준, iPhone 17 Pro 시뮬레이터 / Xcode 26.6.
@@ -314,7 +349,8 @@ Swift Testing **40개**(2 스위트), 약 3초, 경고 0건.
 | 유휴 시 오작동 없음 | 재설치 후 30초 · 40초 유휴 두 번, 로그 비어 있음 |
 | 컨트롤 · 인텐트 등록 | appex에 컨트롤 kind 2개, 두 타깃의 `Metadata.appintents`에 인텐트 6개 |
 | 상태 기계 로직 | 단위 테스트 26개 |
-| Live Activity · DI 뷰 | 렌더 테스트 14개 — 아래 참조 |
+| Live Activity · DI 뷰 | 렌더 테스트 14개 — 위 참조 |
+| 실제 탭 → 인텐트 배선 | 통합 스모크 5개, ko·en 각각 |
 | Swift 6 언어 모드 | 앱 · 확장 · 테스트 전부 경고 0건으로 빌드, 26개 통과 |
 | 영어 로컬라이제이션 | `-AppleLanguages "(en)"`으로 실행해 화면 전체가 영어로 뜨는 것 확인 (스크린샷). 번들에 `en.lproj` · `ko.lproj`가 앱과 확장 양쪽에 들어감 |
 | Swift 6 전환 후 더블 탭 회귀 없음 | 0.651초 간격 2회 탭 → 두 번째 탭 후 0.475초에 이미 `Stopwatch · Started`, 자동 커밋 시점보다 앞섬 |

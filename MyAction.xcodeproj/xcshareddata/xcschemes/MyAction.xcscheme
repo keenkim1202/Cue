@@ -34,6 +34,20 @@
                ReferencedContainer = "container:MyAction.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "T00000000000000000000004"
+               BuildableName = "MyActionUITests.xctest"
+               BlueprintName = "MyActionUITests"
+               ReferencedContainer = "container:MyAction.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -50,6 +64,17 @@
                BlueprintIdentifier = "T00000000000000000000003"
                BuildableName = "MyActionTests.xctest"
                BlueprintName = "MyActionTests"
+               ReferencedContainer = "container:MyAction.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "T00000000000000000000004"
+               BuildableName = "MyActionUITests.xctest"
+               BlueprintName = "MyActionUITests"
                ReferencedContainer = "container:MyAction.xcodeproj">
             </BuildableReference>
          </TestableReference>
