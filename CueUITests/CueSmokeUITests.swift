@@ -22,6 +22,9 @@ final class CueSmokeUITests: XCTestCase {
     private enum Locale: String, CaseIterable {
         case ko, en
 
+        /// `-AppleLocale` 은 정식 식별자를 받는다. `ko` 처럼 지역이 없으면 무시될 수 있다.
+        var identifier: String { self == .ko ? "ko_KR" : "en_US" }
+
         /// 이 로케일에서 누름 행에 보여야 하는 문구의 일부.
         var pressLabelFragment: String {
             switch self {
@@ -31,13 +34,16 @@ final class CueSmokeUITests: XCTestCase {
         }
     }
 
-    /// - Important: 시뮬레이터 앱 컨테이너에 `AppleLanguages`가 **영속화돼 있으면**
-    ///   여기서 넘기는 실행 인자와 경합해 엉뚱한 로케일로 뜬다. `xcrun simctl launch`에
-    ///   `-AppleLanguages`를 직접 넘겨 실행해 본 시뮬레이터에서 실제로 겪었다.
-    ///   현지화 테스트가 이유 없이 깨지면 먼저 앱을 삭제해 컨테이너를 비울 것.
+    /// - Important: 앞선 테스트의 인스턴스가 살아 있으면 실행 인자가 적용되지 않은 채로
+    ///   활성화될 수 있다. 실제로 이 스위트에서 현지화 테스트가 단독 실행에서는 통과하고
+    ///   전체 실행에서는 영어로 떠 실패했다. 그래서 매번 명시적으로 종료한 뒤 띄운다.
     private func launch(_ locale: Locale) -> XCUIApplication {
         let app = XCUIApplication()
-        app.launchArguments = ["-AppleLanguages", "(\(locale.rawValue))", "-AppleLocale", locale.rawValue]
+        app.terminate()
+        app.launchArguments = [
+            "-AppleLanguages", "(\(locale.rawValue))",
+            "-AppleLocale", locale.identifier
+        ]
         app.launch()
         return app
     }
