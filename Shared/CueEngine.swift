@@ -99,10 +99,21 @@ enum CueEngine {
 
         // 창이 닫히기를 기다린다. 그 사이 다시 입력이 오면 generation이 올라가고,
         // 이 호출은 조용히 물러난다 — 커밋은 마지막 입력이 책임진다.
+        //
+        // **취소는 "창이 지났다"가 아니다.** 다음 누름이 들어오면 iOS가 앞선 인텐트 실행을
+        // 정리하면서 이 sleep을 취소한다. 예전에는 `try?`로 삼키고 그대로 commit()까지
+        // 내려가, 두 번째 누름이 순환 대신 **첫 항목을 즉시 실행**시켰다. 화면에서는 카드가
+        // 열렸다가 닫히는 것처럼 보였다. generation 검사도 이걸 못 잡는다 — 다음 누름이
+        // 아직 자기 generation을 쓰기 전이라 값이 그대로일 수 있다.
         let remaining = commitAt.timeIntervalSince(Date())
         if remaining > 0 {
-            try? await Task.sleep(nanoseconds: UInt64(remaining * 1_000_000_000))
+            do {
+                try await Task.sleep(nanoseconds: UInt64(remaining * 1_000_000_000))
+            } catch {
+                return false
+            }
         }
+        guard !Task.isCancelled else { return false }
         guard CueStore.state.generation == generation else { return false }
 
         return await commit()
@@ -153,34 +164,49 @@ enum CueEngine {
         await presenter.finish(phase: .cancelled, resultText: String(localized: "취소됨"), openTarget: nil, dismissAfter: 1.0)
     }
 
-    /// 구성이 바뀌었을 때 대기 중인 순환을 버린다.
-    ///
-    /// 선택 인덱스는 **바뀐 세트에서 다른 액션을 가리킨다.** 무효화하지 않으면 대기 중이던
-    /// `arm()`이 깨어나 화면에 보이던 것과 다른 액션을 실행한다. 세트 전환·편집·초기화가
-    /// 모두 이 문을 통과해야 한다.
-    static func invalidateCycleIfArmed() {
-        guard CueStore.state.isArmed else { return }
+    /// 무장을 풀고 선택을 처음으로 되돌린다. **카드는 건드리지 않는다** —
+    /// 무엇을 대신 보여줄지는 부르는 쪽이 안다.
+    private static func resetCycle() {
         var state = CueStore.state
         state.selectedIndex = 0
         CueStore.state = state
         CueStore.disarm()
     }
 
+    /// 구성이 바뀌었을 때 대기 중인 순환을 버린다.
+    ///
+    /// 선택 인덱스는 **바뀐 세트에서 다른 액션을 가리킨다.** 무효화하지 않으면 대기 중이던
+    /// `arm()`이 깨어나 화면에 보이던 것과 다른 액션을 실행한다. 세트 전환·편집·초기화가
+    /// 모두 이 문을 통과해야 한다.
+    ///
+    /// 카드까지 여기서 마무리한다. generation만 올리면 대기 중이던 `arm()`은 조용히 물러나고
+    /// **아무도 카드를 끝내지 않는다** — 실행되지 않을 액션을 가리킨 채 `.cycling` 상태로
+    /// 화면에 남는다. staleDate가 지나도 저절로 사라지지 않는다.
+    static func invalidateCycleIfArmed() async {
+        guard CueStore.state.isArmed else { return }
+        resetCycle()
+        await presenter.finish(
+            phase: .cancelled,
+            resultText: String(localized: "구성이 바뀌어 중단됨"),
+            openTarget: nil,
+            dismissAfter: 1.0
+        )
+    }
+
     /// 다음 세트로 전환한다. 순환 중이었다면 되돌린다.
     static func nextSet() async {
         let next = CueStore.advanceSet()
-        invalidateCycleIfArmed()
-        var state = CueStore.state
-        state.selectedIndex = 0
-        CueStore.state = state
+        // 여기서는 `invalidateCycleIfArmed()`를 쓰지 않는다. 카드를 "중단됨"으로 끝낸 직후
+        // 아래에서 세트 이름 카드를 다시 띄우면 두 번 깜빡인다. 상태만 되돌리고 표시는 한 번만.
+        resetCycle()
 
-        if presenter.isEnabled {
-            await presenter.finish(
-                phase: .executed,
-                resultText: String(localized: "세트: \(next.name)"),
-                openTarget: nil,
-                dismissAfter: 1.2
-            )
-        }
+        // `finish()`는 떠 있는 카드를 마무리하는 것이라, 순환 중이 아니면 아무것도 보여주지
+        // 못한다. 제어 센터에서 세트를 바꾸는 시점에는 보통 카드가 없어서 전환이 조용히
+        // 일어났다 — 사용자는 세트가 바뀌었는지 알 수 없었다.
+        await presenter.showNotice(
+            setName: next.name,
+            text: String(localized: "세트: \(next.name)"),
+            dismissAfter: 1.2
+        )
     }
 }

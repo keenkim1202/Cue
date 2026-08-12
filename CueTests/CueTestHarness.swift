@@ -18,10 +18,17 @@ final class SpyPresenter: CuePresenting, @unchecked Sendable {
         var dismissAfter: TimeInterval
     }
 
+    struct Notice: Equatable {
+        var setName: String
+        var text: String
+        var dismissAfter: TimeInterval
+    }
+
     private let lock = NSLock()
     private var _isEnabled = true
     private var _shown: [Shown] = []
     private var _finished: [Finished] = []
+    private var _notices: [Notice] = []
     private var _endAllCount = 0
 
     var isEnabled: Bool {
@@ -31,6 +38,7 @@ final class SpyPresenter: CuePresenting, @unchecked Sendable {
 
     var shown: [Shown] { lock.withLock { _shown } }
     var finished: [Finished] { lock.withLock { _finished } }
+    var notices: [Notice] { lock.withLock { _notices } }
     var endAllCount: Int { lock.withLock { _endAllCount } }
 
     func showCycling(set: CueSet, selectedIndex: Int, commitAt: Date) async {
@@ -50,6 +58,12 @@ final class SpyPresenter: CuePresenting, @unchecked Sendable {
                 openTarget: openTarget,
                 dismissAfter: seconds
             ))
+        }
+    }
+
+    func showNotice(setName: String, text: String, dismissAfter seconds: TimeInterval) async {
+        lock.withLock {
+            _notices.append(Notice(setName: setName, text: text, dismissAfter: seconds))
         }
     }
 

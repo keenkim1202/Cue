@@ -245,7 +245,9 @@ struct CueEngineTests {
         var switched = CueStore.config
         switched.activeSetID = short.id
         CueStore.config = switched
-        CueEngine.invalidateCycleIfArmed()
+        await CueEngine.invalidateCycleIfArmed()
+
+        #expect(h.presenter.finished.last?.phase == .cancelled, "실행되지 않을 카드를 화면에 남기면 안 된다")
 
         await h.settleCommit()
         #expect(h.log.isEmpty, "옛 세트의 인덱스로 무언가 실행됐다")
@@ -531,6 +533,116 @@ struct CueEngineTests {
         )
 
         #expect(state.remainingCountdown() == nil)
+    }
+
+    // MARK: 취소
+
+    /// 다음 누름이 들어오면 iOS가 앞선 인텐트 실행을 정리한다. 그때 sleep이 취소되는데,
+    /// 예전에는 `try?`로 삼키고 커밋까지 내려가 두 번째 누름이 순환 대신 즉시 실행이 됐다.
+    @Test("취소된 대기는 커밋하지 않는다")
+    func cancelledArmDoesNotCommit() async {
+        let h = CueHarness(window: 5)
+        defer { h.tearDown() }
+
+        let pending = h.pressWithoutWaiting()
+        await h.settleArm()
+        #expect(h.state.isArmed)
+
+        pending.cancel()
+        let committed = await pending.value
+
+        #expect(committed == false)
+        #expect(h.log.isEmpty, "취소는 창이 지난 것이 아니다")
+        #expect(h.state.isArmed, "다음 누름이 순환을 이어받을 수 있어야 한다")
+    }
+
+    // MARK: 구성 변경이 대기 중인 순환에 미치는 영향
+
+    /// `CueEngine.invalidateCycleIfArmed()`의 계약 — 세트 전환·편집·초기화가 모두
+    /// 이 문을 통과해야 한다. 예전에는 `addSet`·`deleteSet`이 빠져 있었다.
+    @Test("세트 추가는 활성 세트를 바꾸므로 대기 중인 순환을 무효화한다")
+    func addSetInvalidatesPendingCycle() async {
+        let h = CueHarness(window: 0.5)
+        defer { h.tearDown() }
+
+        let pending = h.pressWithoutWaiting()
+        await h.settleArm()
+        #expect(h.state.isArmed)
+
+        CueViewModel().addSet()
+        await h.settleArm()
+
+        #expect(h.state.isArmed == false, "활성 세트가 새 세트로 옮겨갔다")
+        #expect(h.presenter.finished.last?.phase == .cancelled, "실행되지 않을 카드를 남기면 안 된다")
+        _ = await pending.value
+        #expect(h.log.isEmpty, "옛 세트의 인덱스로 새 세트의 액션을 실행하면 안 된다")
+    }
+
+    @Test("활성 세트 삭제는 대기 중인 순환을 무효화한다")
+    func deleteActiveSetInvalidatesPendingCycle() async {
+        let h = CueHarness(window: 0.5)
+        defer { h.tearDown() }
+
+        var config = CueStore.config
+        let active = config.activeSet
+        config.sets.append(CueSet(name: "둘째", actions: [
+            CueAction(title: "B0", symbol: "star", kind: .mark)
+        ]))
+        CueStore.config = config
+
+        let pending = h.pressWithoutWaiting()
+        await h.settleArm()
+        #expect(h.state.isArmed)
+
+        CueViewModel().deleteSet(active)
+        await h.settleArm()
+
+        #expect(h.state.isArmed == false, "선택이 남은 세트로 옮겨갔다")
+        _ = await pending.value
+        #expect(h.log.isEmpty)
+    }
+
+    /// 무효화는 필요한 만큼만 해야 한다. 과하면 사용자가 골라 둔 액션이 이유 없이 사라진다.
+    @Test("상관없는 세트를 지우는 것은 순환을 건드리지 않는다")
+    func deletingInactiveSetKeepsCycle() async {
+        let h = CueHarness(window: 0.5)
+        defer { h.tearDown() }
+
+        var config = CueStore.config
+        let other = CueSet(name: "안 쓰는 세트", actions: [
+            CueAction(title: "B0", symbol: "star", kind: .mark)
+        ])
+        config.sets.append(other)
+        CueStore.config = config
+
+        let pending = h.pressWithoutWaiting()
+        await h.settleArm()
+        #expect(h.state.isArmed)
+
+        CueViewModel().deleteSet(other)
+        await h.settleArm()
+
+        #expect(h.state.isArmed, "활성 세트도 인덱스도 그대로다 — 취소할 이유가 없다")
+        _ = await pending.value
+        #expect(h.committedTitles == ["A0"], "고른 액션이 예정대로 실행돼야 한다")
+    }
+
+    @Test("세트 전환은 떠 있는 카드가 없어도 알림을 띄운다")
+    func nextSetShowsNoticeWithoutActiveCard() async {
+        let h = CueHarness(window: 5)
+        defer { h.tearDown() }
+
+        var config = CueStore.config
+        config.sets.append(CueSet(name: "둘째", actions: [
+            CueAction(title: "B0", symbol: "star", kind: .mark)
+        ]))
+        CueStore.config = config
+
+        await CueEngine.nextSet()
+
+        #expect(h.presenter.notices.count == 1)
+        #expect(h.presenter.notices.last?.setName == "둘째")
+        #expect(h.presenter.finished.isEmpty, "카드가 없으면 finish로는 아무것도 보여줄 수 없다")
     }
 
     // MARK: 로그

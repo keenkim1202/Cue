@@ -83,22 +83,34 @@ final class CueViewModel: ObservableObject {
         }
     }
 
+    /// 구성을 바꾼 뒤 대기 중인 순환을 정리한다.
+    ///
+    /// **활성 세트가 걸린 변경일 때만 부른다.** 상관없는 세트를 건드렸는데 무효화하면
+    /// 사용자가 골라 둔 액션이 이유 없이 취소된다.
+    private func invalidateCycle() {
+        Task { @MainActor [weak self] in
+            await CueEngine.invalidateCycleIfArmed()
+            self?.reload()
+        }
+    }
+
     func selectSet(_ set: CueSet) {
         var updated = CueStore.config
         updated.activeSetID = set.id
         CueStore.config = updated
         // 대기 중인 커밋은 옛 세트의 인덱스를 들고 있다.
-        CueEngine.invalidateCycleIfArmed()
+        invalidateCycle()
         reload()
     }
 
     func update(_ set: CueSet) {
         var updated = CueStore.config
         guard let index = updated.sets.firstIndex(where: { $0.id == set.id }) else { return }
+        let wasActive = updated.activeSetID == set.id
         updated.sets[index] = set
         CueStore.config = updated
-        // 액션을 지우거나 순서를 바꾸면 인덱스가 밀린다.
-        CueEngine.invalidateCycleIfArmed()
+        // 액션을 지우거나 순서를 바꾸면 인덱스가 밀린다 — 활성 세트일 때만 해당한다.
+        if wasActive { invalidateCycle() }
         reload()
     }
 
@@ -110,17 +122,23 @@ final class CueViewModel: ObservableObject {
         updated.sets.append(new)
         updated.activeSetID = new.id
         CueStore.config = updated
+        // 활성 세트가 바뀌었다 — 대기 중인 커밋은 옛 세트의 인덱스를 들고 있다.
+        invalidateCycle()
         reload()
     }
 
     func deleteSet(_ set: CueSet) {
         var updated = CueStore.config
         guard updated.sets.count > 1 else { return }
+        let wasActive = updated.activeSetID == set.id
         updated.sets.removeAll { $0.id == set.id }
-        if updated.activeSetID == set.id {
+        if wasActive {
             updated.activeSetID = updated.sets[0].id
         }
         CueStore.config = updated
+        // 활성 세트를 지웠을 때만 선택이 다른 세트로 옮겨간다. 상관없는 세트를 지웠다면
+        // 활성 세트도 인덱스도 그대로라, 무효화하면 고른 액션만 이유 없이 사라진다.
+        if wasActive { invalidateCycle() }
         reload()
     }
 

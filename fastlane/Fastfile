@@ -1,0 +1,58 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+default_platform(:ios)
+
+XCODEPROJ = "Cue.xcodeproj"
+SCHEME = "Cue"
+
+platform :ios do
+  before_all do
+    # App Store Connect API 키가 있으면 2FA 없이 인증한다.
+    # 없으면 Apple ID 대화형 로그인이 걸려 사람이 직접 실행해야 한다.
+    key_path = ENV["ASC_KEY_PATH"]
+    next if key_path.nil?
+
+    app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_filepath: File.expand_path(key_path))
+  end
+
+  desc "TestFlight에 새 빌드 올리기"
+  lane :beta do
+    build_release
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+  end
+
+  desc "앱스토어에 새 빌드 올리기 (심사 제출은 App Store Connect에서)"
+  lane :release do
+    build_release
+    upload_to_app_store(
+      skip_metadata: true,
+      skip_screenshots: true,
+      submit_for_review: false,
+      precheck_include_in_app_purchases: false)
+  end
+
+  private_lane :build_release do
+    increment_build_number(xcodeproj: XCODEPROJ)
+    # 자동 서명이라 프로비저닝 프로파일을 xcodebuild가 직접 갱신해야 한다.
+    # 인증은 Xcode에 로그인된 계정을 쓴다 — ASC API 키를 넘기면 오히려
+    # xcodebuild 쪽에서 bearer token 인증이 거부된다.
+    build_app(
+      project: XCODEPROJ,
+      scheme: SCHEME,
+      export_method: "app-store",
+      xcargs: "-allowProvisioningUpdates")
+  end
+end

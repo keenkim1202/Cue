@@ -61,5 +61,8 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 
+# App Store Connect API 자격 증명 — .env.example 만 커밋한다.
+fastlane/.env
+
 # macOS
 .DS_Store

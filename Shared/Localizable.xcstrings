@@ -1,39 +1,6 @@
 {
   "sourceLanguage": "ko",
   "strings": {
-    "Cue 누르기": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Press Cue"
-          }
-        }
-      }
-    },
-    "액션 버튼 대신 — 시뮬레이터 테스트용": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stands in for the Action button — for Simulator testing"
-          }
-        }
-      }
-    },
-    "누름": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Press"
-          }
-        }
-      }
-    },
     "%lld/%lld · 손을 떼면 실행 · 항목을 두 번 탭하면 바로 실행": {
       "extractionState": "manual",
       "localizations": {
@@ -41,413 +8,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "%1$lld/%2$lld · Release to run · Double-tap an item to run it now"
-          }
-        }
-      }
-    },
-    "연속으로 누르면 %lld초 안에 다음 액션으로 순환합니다. 확정되는 방법은 두 가지 — 손을 떼고 %lld초 기다리거나, 아래 액션 항목을 두 번 탭하면 즉시 실행됩니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Press repeatedly to cycle to the next action within %1$lld seconds. There are two ways to confirm — wait %2$lld seconds after releasing, or double-tap an action below to run it immediately."
-          }
-        }
-      }
-    },
-    "액션 세트": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Action sets"
-          }
-        }
-      }
-    },
-    "제어 센터의 'Cue 세트 전환' 컨트롤로도 바꿀 수 있습니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can also switch sets with the “Switch Cue set” control in Control Center."
-          }
-        }
-      }
-    },
-    "실행 기록": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "History"
-          }
-        }
-      }
-    },
-    "지우기": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Clear"
-          }
-        }
-      }
-    },
-    "아직 실행 기록이 없습니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nothing has run yet."
-          }
-        }
-      }
-    },
-    "어디에 붙이나": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Where to put it"
-          }
-        }
-      }
-    },
-    "설정 > Cue 에서 '실시간 현황'을 켜야 Live Activity가 뜹니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Turn on Live Activities in Settings › Cue for the card to appear."
-          }
-        }
-      }
-    },
-    "설정 > 액션 버튼 > 제어": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings › Action Button › Controls"
-          }
-        }
-      }
-    },
-    "제어 갤러리에서 'Cue 누르기'를 고릅니다. (iPhone 15 Pro 이상)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pick “Press Cue” from the controls gallery. (iPhone 15 Pro or later)"
-          }
-        }
-      }
-    },
-    "제어 센터": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Control Center"
-          }
-        }
-      }
-    },
-    "우상단에서 아래로 쓸어내려 편집 > 제어 추가 > Cue": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Swipe down from the top-right, then Edit › Add a Control › Cue"
-          }
-        }
-      }
-    },
-    "잠금화면": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Lock Screen"
-          }
-        }
-      }
-    },
-    "잠금화면 길게 누르기 > 사용자화 > 하단 컨트롤 교체": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Long-press the Lock Screen › Customize › replace a bottom control"
-          }
-        }
-      }
-    },
-    "watchOS 26부터 같은 컨트롤이 워치 제어 센터와 Ultra 액션 버튼에도 올라갑니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "From watchOS 26 the same control also appears in Watch Control Center and on the Ultra’s Action button."
-          }
-        }
-      }
-    },
-    "액션 버튼은 iPhone 15 Pro 이상 실기기 전용입니다. 시뮬레이터에서는 위의 'Cue 누르기' 버튼이나 단축어 앱으로 같은 인텐트를 실행해 확인하세요.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The Action button needs a physical iPhone 15 Pro or later. In the Simulator, use the “Press Cue” button above or the Shortcuts app to run the same intent."
-          }
-        }
-      }
-    },
-    "스톱워치 진행 중": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stopwatch running"
-          }
-        }
-      }
-    },
-    "기본값으로 되돌리기": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reset to defaults"
-          }
-        }
-      }
-    },
-    "세트 편집": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit sets"
-          }
-        }
-      }
-    },
-    "%lld개 액션": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld actions"
-          }
-        }
-      }
-    },
-    "세트 삭제": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Delete set"
-          }
-        }
-      }
-    },
-    "세트 추가": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add set"
-          }
-        }
-      }
-    },
-    "완료": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Done"
-          }
-        }
-      }
-    },
-    "이름": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Name"
-          }
-        }
-      }
-    },
-    "세트 이름": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set name"
-          }
-        }
-      }
-    },
-    "세트": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set"
-          }
-        }
-      }
-    },
-    "순환 순서": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cycle order"
-          }
-        }
-      }
-    },
-    "액션 버튼을 누를 때 이 순서대로 넘어갑니다. 끌어서 순서를 바꿀 수 있습니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pressing the Action button steps through in this order. Drag to reorder."
-          }
-        }
-      }
-    },
-    "액션 추가": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add action"
-          }
-        }
-      }
-    },
-    "링크 열기는 https 주소만 됩니다. 커스텀 스킴은 iOS가 거부합니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open Link only accepts https addresses. iOS rejects custom schemes."
-          }
-        }
-      }
-    },
-    "https://example.com": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "https://example.com"
-          }
-        }
-      }
-    },
-    "두 번 탭하면 바로 실행": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Double-tap to run"
-          }
-        }
-      }
-    },
-    "항목을 두 번 탭하면 바로 실행": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Double-tap an item to run it"
-          }
-        }
-      }
-    },
-    "두 번 탭하면 바로 실행합니다": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Double-tap to run this now"
-          }
-        }
-      }
-    },
-    "취소": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancel"
-          }
-        }
-      }
-    },
-    "실행": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Run"
-          }
-        }
-      }
-    },
-    "열기": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open"
           }
         }
       }
@@ -463,200 +23,24 @@
         }
       }
     },
-    "기본": {
+    "%lld개 액션": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Default"
+            "value": "%lld actions"
           }
         }
       }
     },
-    "야간": {
+    "Cue 누르기": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Night"
-          }
-        }
-      }
-    },
-    "손전등": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flashlight"
-          }
-        }
-      }
-    },
-    "순간 기록": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mark"
-          }
-        }
-      }
-    },
-    "스톱워치": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stopwatch"
-          }
-        }
-      }
-    },
-    "앱 열기": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open app"
-          }
-        }
-      }
-    },
-    "링크 열기": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Open link"
-          }
-        }
-      }
-    },
-    "손전등 토글": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Toggle flashlight"
-          }
-        }
-      }
-    },
-    "켜짐": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "On"
-          }
-        }
-      }
-    },
-    "꺼짐": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Off"
-          }
-        }
-      }
-    },
-    "시작": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Started"
-          }
-        }
-      }
-    },
-    "정지 · %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Stopped · %@"
-          }
-        }
-      }
-    },
-    "토치를 쓸 수 없는 기기 (시뮬레이터 포함)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No torch on this device (including Simulator)"
-          }
-        }
-      }
-    },
-    "토치 설정 실패: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Could not set torch: %@"
-          }
-        }
-      }
-    },
-    "열기 버튼 표시": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Showing Open button"
-          }
-        }
-      }
-    },
-    "열 수 없는 주소: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Can’t open this address: %@"
-          }
-        }
-      }
-    },
-    "취소됨": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancelled"
-          }
-        }
-      }
-    },
-    "세트: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Set: %@"
+            "value": "Press Cue"
           }
         }
       }
@@ -727,6 +111,83 @@
         }
       }
     },
+    "https://example.com": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "https://example.com"
+          }
+        }
+      }
+    },
+    "watchOS 26부터 같은 컨트롤이 워치 제어 센터와 Ultra 액션 버튼에도 올라갑니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From watchOS 26 the same control also appears in Watch Control Center and on the Ultra’s Action button."
+          }
+        }
+      }
+    },
+    "구성이 바뀌어 중단됨": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped — setup changed"
+          }
+        }
+      }
+    },
+    "기본": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Default"
+          }
+        }
+      }
+    },
+    "기본값으로 되돌리기": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reset to defaults"
+          }
+        }
+      }
+    },
+    "꺼짐": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Off"
+          }
+        }
+      }
+    },
+    "누름": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press"
+          }
+        }
+      }
+    },
     "다음 Cue 세트": {
       "extractionState": "manual",
       "localizations": {
@@ -749,6 +210,94 @@
         }
       }
     },
+    "두 번 탭하면 바로 실행합니다": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Double-tap to run this now"
+          }
+        }
+      }
+    },
+    "링크 열기": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open link"
+          }
+        }
+      }
+    },
+    "링크 열기는 https 주소만 됩니다. 커스텀 스킴은 iOS가 거부합니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Link only accepts https addresses. iOS rejects custom schemes."
+          }
+        }
+      }
+    },
+    "미드나이트": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Midnight"
+          }
+        }
+      }
+    },
+    "빈 곳을 탭하면 중단": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap empty space to stop"
+          }
+        }
+      }
+    },
+    "빈 곳을 탭하면 중단 · 항목을 두 번 탭하면 바로 실행": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap empty space to stop · double-tap an item to run it"
+          }
+        }
+      }
+    },
+    "새 세트 %lld": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "New set %lld"
+          }
+        }
+      }
+    },
+    "선택한 아이콘은 홈 화면과 검색 결과에 적용됩니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected icon appears on the Home Screen and in search results."
+          }
+        }
+      }
+    },
     "선택한 액션 실행": {
       "extractionState": "manual",
       "localizations": {
@@ -756,6 +305,303 @@
           "stringUnit": {
             "state": "translated",
             "value": "Run selected action"
+          }
+        }
+      }
+    },
+    "선택한 액션이 사라졌습니다": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected action no longer exists"
+          }
+        }
+      }
+    },
+    "설정 > Cue 에서 '실시간 현황'을 켜야 Live Activity가 뜹니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn on Live Activities in Settings › Cue for the card to appear."
+          }
+        }
+      }
+    },
+    "설정 > 액션 버튼 > 제어": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings › Action Button › Controls"
+          }
+        }
+      }
+    },
+    "세트": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set"
+          }
+        }
+      }
+    },
+    "세트 삭제": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete set"
+          }
+        }
+      }
+    },
+    "세트 이름": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set name"
+          }
+        }
+      }
+    },
+    "세트 추가": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add set"
+          }
+        }
+      }
+    },
+    "세트 편집": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit sets"
+          }
+        }
+      }
+    },
+    "세트: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Set: %@"
+          }
+        }
+      }
+    },
+    "손전등": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Flashlight"
+          }
+        }
+      }
+    },
+    "손전등 토글": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toggle flashlight"
+          }
+        }
+      }
+    },
+    "순간 기록": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mark"
+          }
+        }
+      }
+    },
+    "순환 순서": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cycle order"
+          }
+        }
+      }
+    },
+    "스톱워치": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopwatch"
+          }
+        }
+      }
+    },
+    "스톱워치 진행 중": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopwatch running"
+          }
+        }
+      }
+    },
+    "시작": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Started"
+          }
+        }
+      }
+    },
+    "실행": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Run"
+          }
+        }
+      }
+    },
+    "실행 기록": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "History"
+          }
+        }
+      }
+    },
+    "실행 취소됨": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not run"
+          }
+        }
+      }
+    },
+    "아이보리": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ivory"
+          }
+        }
+      }
+    },
+    "아이콘을 변경할 수 없습니다": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn’t Change Icon"
+          }
+        }
+      }
+    },
+    "아직 실행 기록이 없습니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing has run yet."
+          }
+        }
+      }
+    },
+    "액션 버튼 대신 — 시뮬레이터 테스트용": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stands in for the Action button — for Simulator testing"
+          }
+        }
+      }
+    },
+    "액션 버튼은 iPhone 15 Pro 이상 실기기 전용입니다. 시뮬레이터에서는 위의 'Cue 누르기' 버튼이나 단축어 앱으로 같은 인텐트를 실행해 확인하세요.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Action button needs a physical iPhone 15 Pro or later. In the Simulator, use the “Press Cue” button above or the Shortcuts app to run the same intent."
+          }
+        }
+      }
+    },
+    "액션 버튼을 누를 때 이 순서대로 넘어갑니다. 끌어서 순서를 바꿀 수 있습니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pressing the Action button steps through in this order. Drag to reorder."
+          }
+        }
+      }
+    },
+    "액션 버튼이 순환할 액션 묶음을 바꿉니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changes which set of actions the Action button cycles through."
+          }
+        }
+      }
+    },
+    "액션 세트": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Action sets"
           }
         }
       }
@@ -771,6 +617,226 @@
         }
       }
     },
+    "액션 추가": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add action"
+          }
+        }
+      }
+    },
+    "앱 아이콘": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Icon"
+          }
+        }
+      }
+    },
+    "앱 열기": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open app"
+          }
+        }
+      }
+    },
+    "야간": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Night"
+          }
+        }
+      }
+    },
+    "어디에 붙이나": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where to put it"
+          }
+        }
+      }
+    },
+    "연속으로 누르면 %lld초 안에 다음 액션으로 순환합니다. 확정되는 방법은 두 가지 — 손을 떼고 %lld초 기다리거나, 아래 액션 항목을 두 번 탭하면 즉시 실행됩니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press repeatedly to cycle to the next action within %1$lld seconds. There are two ways to confirm — wait %2$lld seconds after releasing, or double-tap an action below to run it immediately."
+          }
+        }
+      }
+    },
+    "열 수 없는 주소: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Can’t open this address: %@"
+          }
+        }
+      }
+    },
+    "열 수 없는 주소입니다: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That address can’t be opened: %@"
+          }
+        }
+      }
+    },
+    "열기": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        }
+      }
+    },
+    "열기 버튼 표시": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Showing Open button"
+          }
+        }
+      }
+    },
+    "완료": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "우상단에서 아래로 쓸어내려 편집 > 제어 추가 > Cue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Swipe down from the top-right, then Edit › Add a Control › Cue"
+          }
+        }
+      }
+    },
+    "이 기기에서는 대체 앱 아이콘을 지원하지 않습니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device doesn’t support alternate app icons."
+          }
+        }
+      }
+    },
+    "이름": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name"
+          }
+        }
+      }
+    },
+    "잠금화면": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lock Screen"
+          }
+        }
+      }
+    },
+    "잠금화면 길게 누르기 > 사용자화 > 하단 컨트롤 교체": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Long-press the Lock Screen › Customize › replace a bottom control"
+          }
+        }
+      }
+    },
+    "정지 · %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopped · %@"
+          }
+        }
+      }
+    },
+    "제어 갤러리에서 'Cue 누르기'를 고릅니다. (iPhone 15 Pro 이상)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick “Press Cue” from the controls gallery. (iPhone 15 Pro or later)"
+          }
+        }
+      }
+    },
+    "제어 센터": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Control Center"
+          }
+        }
+      }
+    },
+    "제어 센터의 'Cue 세트 전환' 컨트롤로도 바꿀 수 있습니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can also switch sets with the “Switch Cue set” control in Control Center."
+          }
+        }
+      }
+    },
     "주소": {
       "extractionState": "manual",
       "localizations": {
@@ -778,6 +844,105 @@
           "stringUnit": {
             "state": "translated",
             "value": "Address"
+          }
+        }
+      }
+    },
+    "중단": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        }
+      }
+    },
+    "지우기": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        }
+      }
+    },
+    "취소": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "취소됨": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancelled"
+          }
+        }
+      }
+    },
+    "켜짐": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On"
+          }
+        }
+      }
+    },
+    "코발트": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cobalt"
+          }
+        }
+      }
+    },
+    "토치 설정 실패: %@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not set torch: %@"
+          }
+        }
+      }
+    },
+    "토치를 쓸 수 없는 기기 (시뮬레이터 포함)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No torch on this device (including Simulator)"
+          }
+        }
+      }
+    },
+    "플럼": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plum"
           }
         }
       }
@@ -800,149 +965,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cycles to the next action in the current set."
-          }
-        }
-      }
-    },
-    "액션 버튼이 순환할 액션 묶음을 바꿉니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Changes which set of actions the Action button cycles through."
-          }
-        }
-      }
-    },
-    "열 수 없는 주소입니다: %@": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "That address can’t be opened: %@"
-          }
-        }
-      }
-    },
-    "새 세트 %lld": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New set %lld"
-          }
-        }
-      }
-    },
-    "실행 취소됨": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not run"
-          }
-        }
-      }
-    },
-    "선택한 액션이 사라졌습니다": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The selected action no longer exists"
-          }
-        }
-      }
-    },
-    "앱 아이콘": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "App Icon"
-          }
-        }
-      }
-    },
-    "코발트": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cobalt"
-          }
-        }
-      }
-    },
-    "미드나이트": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Midnight"
-          }
-        }
-      }
-    },
-    "플럼": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plum"
-          }
-        }
-      }
-    },
-    "아이보리": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ivory"
-          }
-        }
-      }
-    },
-    "이 기기에서는 대체 앱 아이콘을 지원하지 않습니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This device doesn’t support alternate app icons."
-          }
-        }
-      }
-    },
-    "선택한 아이콘은 홈 화면과 검색 결과에 적용됩니다.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The selected icon appears on the Home Screen and in search results."
-          }
-        }
-      }
-    },
-    "아이콘을 변경할 수 없습니다": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Couldn’t Change Icon"
           }
         }
       }
