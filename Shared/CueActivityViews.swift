@@ -110,26 +110,50 @@ struct CueCancelBackdrop: View {
 
 // MARK: - 여는 버튼
 
-/// 실제로 무언가를 여는 유일한 지점. `openAppWhenRun = true`라 탭해야 열린다.
-struct CueOpenButton: View {
+/// 실제로 무언가를 여는 유일한 지점.
+///
+/// **버튼이 아니라 링크다.** Apple DTS는 "Live Activity로는 앱을 열 수 없다"고 못박았다 —
+/// `Button(intent:)`는 백그라운드 실행용이라 앱을 전면에 올리지 못한다. 펼친 다이나믹
+/// 아일랜드에서는 `Link`가, 잠금화면에서는 `widgetURL`이 공식 경로다.
+struct CueOpenLink: View {
     let target: CueOpenTarget
 
     var body: some View {
         Group {
-            switch target {
-            case .app:
-                Button(intent: CueOpenAppIntent()) {
-                    Label("열기", systemImage: "arrow.up.forward.app").font(.caption)
+            if let destination = target.deepLink {
+                Link(destination: destination) {
+                    Label("열기", systemImage: target.symbol).font(.caption)
                 }
-            case .url(let urlString):
-                Button(intent: CueOpenURLIntent(urlString: urlString)) {
-                    Label("열기", systemImage: "safari").font(.caption)
-                }
+                .buttonStyle(.bordered)
+                .tint(.blue)
             }
         }
-        .buttonStyle(.bordered)
-        .tint(.blue)
         .accessibilityIdentifier(CueID.openButton)
+    }
+}
+
+/// 잠금화면 카드처럼 `Link`가 듣지 않는 곳에서 쓰는 표시. 실제 탭은 `widgetURL`이 받는다.
+struct CueOpenBadge: View {
+    let target: CueOpenTarget
+
+    var body: some View {
+        Label("열기", systemImage: target.symbol)
+            .font(.caption)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background {
+                Capsule().fill(Color.blue.opacity(0.25))
+            }
+            .accessibilityIdentifier(CueID.openButton)
+    }
+}
+
+extension CueOpenTarget {
+    var symbol: String {
+        switch self {
+        case .app: return "arrow.up.forward.app"
+        case .url: return "safari"
+        }
     }
 }
 
@@ -198,7 +222,7 @@ struct CueExpandedBody: View {
                     .lineLimit(1)
                 Spacer()
                 if let target = state.openTarget {
-                    CueOpenButton(target: target)
+                    CueOpenLink(target: target)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -214,13 +238,16 @@ struct CueLockScreenView: View {
     var body: some View {
         ZStack {
             // 순환 중일 때만 깐다. 결과 화면에는 중단할 것이 없고,
-            // "열기" 버튼을 노려 누르다 빗나가면 카드가 사라져 버린다.
+            // 여는 곳을 노려 누르다 빗나가면 카드가 사라져 버린다.
             if state.phase == .cycling {
                 CueCancelBackdrop()
             }
             card
         }
         .padding(14)
+        // 잠금화면에서는 `Link`가 듣지 않는다. 카드 전체를 딥링크로 걸어
+        // 어디를 눌러도 열리게 한다 — 결과에 열 대상이 있을 때만.
+        .widgetURL(state.phase == .cycling ? nil : state.openTarget?.deepLink)
     }
 
     private var card: some View {
@@ -286,7 +313,7 @@ struct CueLockScreenView: View {
                         .lineLimit(2)
                     Spacer()
                     if let target = state.openTarget {
-                        CueOpenButton(target: target)
+                        CueOpenBadge(target: target)
                     }
                 }
             }

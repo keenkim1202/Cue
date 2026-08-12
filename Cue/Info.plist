@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Live Activity 카드가 앱을 부르는 스킴. `CueDeepLink` 참조.
+	  URL 타입은 INFOPLIST_KEY_ 로 넣을 수 없어 이 파일이 필요하다 — 나머지 키는
+	  여전히 빌드 설정의 INFOPLIST_KEY_ 가 채운다.
+	-->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.keen.cue</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>cue</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

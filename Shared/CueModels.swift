@@ -55,12 +55,50 @@ struct CueAction: Identifiable, Codable, Hashable {
     }
 }
 
-/// 결과 카드에 붙는 "열기" 버튼이 무엇을 여는지.
+/// 결과 카드에 붙는 "열기"가 무엇을 여는지.
 ///
 /// 백그라운드 인텐트는 앱도 링크도 열 수 없다. 여는 것은 항상 사용자의 탭 한 번을 거친다.
 enum CueOpenTarget: Codable, Hashable {
     case app
     case url(String)
+
+    /// 카드가 앱에 넘길 딥링크.
+    ///
+    /// **인텐트가 아니라 링크여야 한다.** Apple은 "Live Activity로는 앱을 열 수 없다"고
+    /// 명시했다 — `LiveActivityIntent`는 백그라운드 실행용이고, `openAppWhenRun`은 iOS 26에서
+    /// deprecated다. 공식 경로는 `widgetURL`과 `Link`뿐이다.
+    ///
+    /// 링크 대상도 `cue://` 로 감싼다. `widgetURL`은 https 주소를 줘도 Safari가 아니라
+    /// **컨테이닝 앱**을 열기 때문에, 어차피 앱이 받아 다시 여는 수밖에 없다.
+    /// 그럴 바에는 앱이 무엇을 할지 스킴에 담는 편이 분명하다.
+    var deepLink: URL? {
+        switch self {
+        case .app:
+            return URL(string: "\(CueDeepLink.scheme)://\(CueDeepLink.openHost)")
+        case .url(let raw):
+            guard let encoded = raw.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
+                return nil
+            }
+            return URL(string: "\(CueDeepLink.scheme)://\(CueDeepLink.linkHost)?url=\(encoded)")
+        }
+    }
+}
+
+/// 카드가 앱을 부르는 방법. 스킴은 `Cue/Info.plist`의 `CFBundleURLTypes`에 등록돼 있다.
+enum CueDeepLink {
+    static let scheme = "cue"
+    /// 앱만 전면으로.
+    static let openHost = "open"
+    /// `?url=` 에 실린 https 주소를 열어 달라는 요청.
+    static let linkHost = "link"
+
+    /// 딥링크에서 열어야 할 https 주소를 꺼낸다. 열 수 없는 주소는 `nil`.
+    static func targetURL(from deepLink: URL) -> URL? {
+        guard deepLink.scheme == scheme, deepLink.host == linkHost else { return nil }
+        let raw = URLComponents(url: deepLink, resolvingAgainstBaseURL: false)?
+            .queryItems?.first { $0.name == "url" }?.value
+        return raw.flatMap(CueURL.openable)
+    }
 }
 
 /// 열 수 있는 주소인지 판정하는 **단일 출처**.
