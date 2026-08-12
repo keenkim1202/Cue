@@ -11,6 +11,7 @@ struct ContentView: View {
             List {
                 pressSection
                 setSection
+                AppIconPickerSection()
                 logSection
                 setupSection
                 resetSection
