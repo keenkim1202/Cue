@@ -140,21 +140,3 @@ enum CueIntentError: Error, CustomLocalizedStringResourceConvertible {
         }
     }
 }
-
-/// 단축어 앱과 액션 버튼 설정 화면에 노출시킨다.
-struct CueShortcuts: AppShortcutsProvider {
-    static var appShortcuts: [AppShortcut] {
-        AppShortcut(
-            intent: CuePressIntent(),
-            phrases: ["\(.applicationName) 누르기", "\(.applicationName) 실행"],
-            shortTitle: "Cue 누르기",
-            systemImageName: "button.horizontal.top.press"
-        )
-        AppShortcut(
-            intent: CueNextSetIntent(),
-            phrases: ["\(.applicationName) 세트 바꾸기"],
-            shortTitle: "다음 세트",
-            systemImageName: "square.stack.3d.up"
-        )
-    }
-}

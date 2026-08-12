@@ -84,6 +84,30 @@ struct CueActionTile: View {
     }
 }
 
+// MARK: - 중단 배경
+
+/// 카드의 빈 곳을 덮는 투명한 중단 버튼.
+///
+/// 기획은 "2초 안에 화면을 한 번 터치하면 중단"이었지만, 앱은 자기 UI 밖의 터치를 볼 수
+/// 없다. 누른 뒤 사용자는 홈 화면이나 다른 앱에 있으므로 그 터치는 Cue에 오지 않는다.
+/// 닿을 수 있는 가장 넓은 면이 이 카드라서, 카드의 빈 곳 전체를 중단 버튼으로 깐다.
+///
+/// 액션 타일과 실행·취소 버튼은 이 위에 놓인다 — 탭은 앞에 있는 버튼이 먼저 가져가고,
+/// 글자나 여백처럼 제스처가 없는 곳을 누르면 이 배경까지 내려온다.
+///
+/// 컴팩트 상태(알약)에는 깔 수 없다. iOS가 그 영역에 인터랙션을 허용하지 않아서,
+/// 폰을 쓰는 중에는 한 번 펼쳐야 중단할 수 있다.
+struct CueCancelBackdrop: View {
+    var body: some View {
+        Button(intent: CueCancelIntent()) {
+            Color.clear.contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(CueID.cancelBackdrop)
+        .accessibilityLabel("중단")
+    }
+}
+
 // MARK: - 여는 버튼
 
 /// 실제로 무언가를 여는 유일한 지점. `openAppWhenRun = true`라 탭해야 열린다.
@@ -141,26 +165,29 @@ struct CueExpandedBody: View {
     var body: some View {
         switch state.phase {
         case .cycling:
-            VStack(spacing: 8) {
-                CueActionStrip(state: state)
-                HStack(spacing: 8) {
-                    Text("두 번 탭하면 바로 실행")
-                        .font(.system(size: 10))
-                        .foregroundStyle(.tertiary)
-                    Spacer()
-                    Button(intent: CueCancelIntent()) {
-                        Label("취소", systemImage: "xmark").font(.caption)
-                    }
-                    .tint(.secondary)
-                    .accessibilityIdentifier(CueID.cancel)
+            ZStack {
+                CueCancelBackdrop()
+                VStack(spacing: 8) {
+                    CueActionStrip(state: state)
+                    HStack(spacing: 8) {
+                        Text("빈 곳을 탭하면 중단")
+                            .font(.system(size: 10))
+                            .foregroundStyle(.tertiary)
+                        Spacer()
+                        Button(intent: CueCancelIntent()) {
+                            Label("취소", systemImage: "xmark").font(.caption)
+                        }
+                        .tint(.secondary)
+                        .accessibilityIdentifier(CueID.cancel)
 
-                    Button(intent: CueConfirmIntent()) {
-                        Label("실행", systemImage: "play.fill").font(.caption)
+                        Button(intent: CueConfirmIntent()) {
+                            Label("실행", systemImage: "play.fill").font(.caption)
+                        }
+                        .tint(.green)
+                        .accessibilityIdentifier(CueID.confirm)
                     }
-                    .tint(.green)
-                    .accessibilityIdentifier(CueID.confirm)
+                    .buttonStyle(.bordered)
                 }
-                .buttonStyle(.bordered)
             }
         case .executed, .cancelled:
             HStack(spacing: 6) {
@@ -185,6 +212,18 @@ struct CueLockScreenView: View {
     let state: CueAttributes.ContentState
 
     var body: some View {
+        ZStack {
+            // 순환 중일 때만 깐다. 결과 화면에는 중단할 것이 없고,
+            // "열기" 버튼을 노려 누르다 빗나가면 카드가 사라져 버린다.
+            if state.phase == .cycling {
+                CueCancelBackdrop()
+            }
+            card
+        }
+        .padding(14)
+    }
+
+    private var card: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Label(state.setName, systemImage: "square.stack.3d.up")
@@ -220,7 +259,7 @@ struct CueLockScreenView: View {
                 }
                 CueActionStrip(state: state)
                 HStack(spacing: 8) {
-                    Text("항목을 두 번 탭하면 바로 실행")
+                    Text("빈 곳을 탭하면 중단 · 항목을 두 번 탭하면 바로 실행")
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                     Spacer()
@@ -252,6 +291,5 @@ struct CueLockScreenView: View {
                 }
             }
         }
-        .padding(14)
     }
 }

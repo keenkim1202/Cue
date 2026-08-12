@@ -28,6 +28,8 @@ enum CueID {
 
     // Live Activity / 다이나믹 아일랜드
     static let cancel = "cue.cancel"
+    /// 카드의 빈 곳 — 탭하면 중단된다. 명시적인 취소 버튼과 구분해야 UI 테스트가 헷갈리지 않는다.
+    static let cancelBackdrop = "cue.cancelBackdrop"
     static let confirm = "cue.confirm"
     static let openButton = "cue.open"
 }

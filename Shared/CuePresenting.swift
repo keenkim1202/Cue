@@ -15,6 +15,13 @@ protocol CuePresenting: Sendable {
     /// 순환 중 상태를 띄우거나 갱신한다.
     func showCycling(set: CueSet, selectedIndex: Int, commitAt: Date) async
 
+    /// 순환과 무관한 짧은 알림. 세트 전환처럼 "바뀌었다"만 알리면 되는 경우에 쓴다.
+    ///
+    /// `finish(...)`는 **이미 떠 있는** 카드를 마무리하는 것이라 카드가 없으면 아무것도 하지
+    /// 않는다. 제어 센터에서 세트를 바꾸는 시점에는 보통 카드가 없어서, 전환에 아무 피드백도
+    /// 없었다. 이쪽은 없으면 새로 띄운다.
+    func showNotice(setName: String, text: String, dismissAfter seconds: TimeInterval) async
+
     /// 결과를 보여주고 닫는다. 대기하지 않고 시스템에 해제 시각만 맡긴다.
     func finish(
         phase: CueAttributes.ContentState.Phase,
