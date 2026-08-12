@@ -72,6 +72,44 @@ final class SpyPresenter: CuePresenting, @unchecked Sendable {
     }
 }
 
+/// `CueCommitScheduling`의 테스트 대역.
+///
+/// 실제 예약은 잡지 않고 generation만 들고 있다가, 테스트가 `fire()`로 깨운다.
+/// 창이 닫히기를 실시간으로 기다리지 않으려는 것 — 그리고 "예약이 걸렸는가"와
+/// "예약이 실행됐는가"를 따로 단언할 수 있게 하려는 것이다.
+final class SpyScheduler: CueCommitScheduling, @unchecked Sendable {
+    private let lock = NSLock()
+    private var _pending: Int?
+    private var _scheduleCount = 0
+    private var _cancelCount = 0
+
+    /// 예약이 걸려 있으면 그 generation.
+    var pendingGeneration: Int? { lock.withLock { _pending } }
+    var scheduleCount: Int { lock.withLock { _scheduleCount } }
+    var cancelCount: Int { lock.withLock { _cancelCount } }
+
+    func schedule(after seconds: TimeInterval, generation: Int) {
+        lock.withLock {
+            _pending = generation
+            _scheduleCount += 1
+        }
+    }
+
+    func cancel() {
+        lock.withLock {
+            _pending = nil
+            _cancelCount += 1
+        }
+    }
+
+    /// 창이 닫힌 것처럼 예약된 커밋을 깨운다. 예약이 없으면 아무 일도 없다.
+    @MainActor
+    func fire() async {
+        guard let generation = lock.withLock({ _pending }) else { return }
+        await CueEngine.commitIfCurrent(generation: generation)
+    }
+}
+
 /// 테스트 한 건의 격리된 환경.
 ///
 /// `CueStore`·`CueEngine`은 정적 상태를 쓰므로 스위트를 `.serialized`로 돌리고,
@@ -79,6 +117,7 @@ final class SpyPresenter: CuePresenting, @unchecked Sendable {
 @MainActor
 final class CueHarness {
     let presenter = SpyPresenter()
+    let scheduler = SpyScheduler()
     let suiteName = "com.keen.cue.tests"
 
     /// 실시간으로 기다리지 않도록 창을 짧게 잡는다.
@@ -89,17 +128,20 @@ final class CueHarness {
 
     private let savedDefaults: UserDefaults
     private let savedPresenter: CuePresenting
+    private let savedScheduler: CueCommitScheduling
     private let savedWindow: TimeInterval
 
     init(window: TimeInterval = CueHarness.shortWindow, actionKinds: [CueAction.Kind] = [.mark, .mark, .mark, .mark]) {
         savedDefaults = CueStore.defaults
         savedPresenter = CueEngine.presenter
+        savedScheduler = CueEngine.scheduler
         savedWindow = CueEngine.cycleWindow
 
         let defaults = UserDefaults(suiteName: suiteName)!
         defaults.removePersistentDomain(forName: suiteName)
         CueStore.defaults = defaults
         CueEngine.presenter = presenter
+        CueEngine.scheduler = scheduler
         CueEngine.cycleWindow = window
 
         // 항목마다 제목이 달라야 무엇이 실행됐는지 로그로 구분할 수 있다.
@@ -118,6 +160,7 @@ final class CueHarness {
         UserDefaults(suiteName: suiteName)?.removePersistentDomain(forName: suiteName)
         CueStore.defaults = savedDefaults
         CueEngine.presenter = savedPresenter
+        CueEngine.scheduler = savedScheduler
         CueEngine.cycleWindow = savedWindow
     }
 
@@ -126,6 +169,22 @@ final class CueHarness {
     var state: CueState { CueStore.state }
     var log: [CueLogEntry] { CueStore.log }
     var committedTitles: [String] { CueStore.log.map(\.actionTitle) }
+
+    /// 누른 뒤 창이 닫힌 것처럼 예약된 커밋까지 실행한다.
+    ///
+    /// `press()`는 이제 예약만 걸고 즉시 돌아온다 — 액션 버튼이 앞선 인텐트 실행 중에는
+    /// 다음 누름을 전달하지 않기 때문이다. 그래서 "눌렀더니 실행됐다"를 보려면
+    /// 창이 닫히는 것까지 여기서 대신 해줘야 한다.
+    func pressAndCommit() async {
+        await CueEngine.press()
+        await scheduler.fire()
+    }
+
+    /// 탭한 뒤 창이 닫힌 것처럼 예약된 커밋까지 실행한다.
+    func tapAndCommit(at index: Int) async {
+        await CueEngine.tapItem(actionID: actionID(at: index))
+        await scheduler.fire()
+    }
 
     /// 커밋을 기다리지 않고 "무장만" 시킨다.
     /// 실제 액션 버튼 연타처럼, 창이 닫히기 전에 다음 입력을 넣기 위한 것이다.

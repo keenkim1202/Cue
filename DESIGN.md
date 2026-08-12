@@ -8,7 +8,8 @@ actually broke on the way there.
 - [One AppIntent, five surfaces](#one-appintent-five-surfaces)
 - [Layout](#layout)
 - [Telling cycling and double-tap apart](#telling-cycling-and-double-tap-apart)
-- [The commit wait — the weakest link](#the-commit-wait--the-weakest-link)
+- [The commit wait — moved out of the intent](#the-commit-wait--moved-out-of-the-intent)
+- [Opening the app from the card](#opening-the-app-from-the-card)
 - [Polling app state](#polling-app-state)
 - [Why opening is a separate intent](#why-opening-is-a-separate-intent)
 - [Store bootstrap](#store-bootstrap)
@@ -128,12 +129,32 @@ All three have regression tests, and **each fix was reverted to confirm the test
 With the first two broken together, even `invalidateCycleIfArmed()` was defeated and an
 action from another set ran.
 
-## The commit wait — the weakest link
+## The commit wait — moved out of the intent
 
-The commit wait is a `Task.sleep(2s)` inside `perform()`. Once an intent returns its
-process can be suspended, so returning late is what keeps it alive until execution. If
-another input arrives during the wait, `generation` goes up and the earlier call retires
-quietly — the last input owns the commit.
+**At first the wait was a `Task.sleep(2s)` inside `perform()`.** The thinking was that an
+intent's process can be suspended once it returns, so returning late keeps it alive until
+execution. It fell over on device — only the first card appeared; cycling and auto-commit
+were both dead.
+
+The cause was not the execution budget. App Intents get 30 seconds. **Re-entrancy was the
+problem.** The Action button does not deliver the next press while a previous run is still
+going (undocumented, but widely confirmed). Holding on for 2 seconds means every press
+inside those 2 seconds is swallowed by the system, which is the premise cycling rests on.
+
+Now the intent writes state, shows the card, and **returns immediately**. The commit belongs
+to `CueCommitScheduling` — the app-target implementation takes a
+`UIApplication.beginBackgroundTask` grace period and calls
+`CueEngine.commitIfCurrent(generation:)` once the window closes. `generation` still serves as
+the invalidation token: if more input arrived meanwhile the value differs and the reservation
+retires quietly.
+
+Taking the assertion **synchronously, before scheduling** matters. Grab it after spawning the
+`Task` and the process can suspend in between. On expiration the reservation is dropped
+rather than run late — better than the torch coming on after the user has forgotten about it.
+
+`UIApplication` is unavailable in app extensions, so the implementation lives in the app
+target and is injected at launch. The default implementation in `Shared/` takes no grace
+period — it is for the foreground and for tests.
 
 If a card gets stuck in `.cycling`, `commitAt` is permanently in the past. Building
 `Date()...commitAt` from that traps (`Range requires lowerBound <= upperBound`), so the
@@ -141,11 +162,24 @@ countdown goes through `ContentState.remainingCountdown(now:)`, which returns `n
 the moment has passed and falls back to the position label. The clock is read once and
 used for both the comparison and the range.
 
-**This depends on the background execution time iOS gives an intent process.** The logic is
-covered by tests, but "does it stay alive for 2 seconds and reach that code" is decided by
-the runtime and can only be confirmed on a device. That is why the Live Activity carries
-**Run / Cancel** buttons and why **double-tapping an item** exists. If the auto-commit
-falls over on device, the other paths remain.
+**This is not an absolute guarantee either.** `beginBackgroundTask` requests a grace period;
+it does not promise execution. iOS has no API that guarantees "local hardware action exactly
+2 seconds from now." That is why the Live Activity carries **Run / Cancel** buttons and why
+**double-tapping an item** exists. If the auto-commit falls over, the other paths remain.
+
+## Opening the app from the card
+
+**An intent cannot do it.** The first attempt put intents with `openAppWhenRun = true` behind
+the card's buttons. Apple DTS is unambiguous: "It is not possible to open an app using a
+LiveActivity. A LiveActivityIntent is designed for background execution… this is an
+intentional design." `openAppWhenRun` itself is deprecated as of iOS 26.
+
+The supported paths are `widgetURL` and `Link`. The Lock Screen card uses `widgetURL`; the
+expanded Dynamic Island uses `Link`. Link targets are wrapped in `cue://` too — `widgetURL`
+opens the *containing app* even when handed an https address, so the app has to do the
+opening either way. Given that, it is clearer to put the intent in the scheme. The scheme is
+registered in `Cue/Info.plist`, which exists because URL types cannot be expressed as an
+`INFOPLIST_KEY_`.
 
 ## Polling app state
 
@@ -355,8 +389,9 @@ iPhone 17 Pro Simulator / Xcode 26.6.
 ### Not verified
 
 - **Pressing the real Action button** — iPhone 15 Pro or later only.
-- **Whether the `Task.sleep(2s)` commit survives the background on device** — see "the
-  commit wait". The Simulator is far more lenient, so passing there guarantees nothing.
+- **Whether the scheduled commit survives the background on device** — see "the commit
+  wait". The Simulator is far more lenient, so passing there guarantees nothing, and
+  `beginBackgroundTask` requests a grace period rather than promising execution.
 - **Whether the control appears in the Control Center / Action button gallery** — Control
   Center would not open in the Simulator. Registration was confirmed only at the binary
   level.
@@ -386,7 +421,7 @@ iPhone 17 Pro Simulator / Xcode 26.6.
 
 **1. Device verification** — most of the unverified list clears at once.
 
-- Whether the `Task.sleep(2s)` commit survives the background (most important)
+- Whether the scheduled commit survives the background (most important)
 - Whether `Cue 누르기` shows up under Settings › Action Button › Controls
 - Whether 2 seconds is the right window — you have to hammer it with a thumb to know
 

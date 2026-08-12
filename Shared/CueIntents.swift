@@ -84,59 +84,10 @@ struct CueNextSetIntent: LiveActivityIntent {
     }
 }
 
-/// 결과 화면의 "열기" 버튼.
-///
-/// `LiveActivityIntent`는 앱을 전면으로 못 올린다. 반대로 `openAppWhenRun = true`인 인텐트는
-/// 앱을 열 수 있지만 Live Activity를 시작할 수 없다. 하나의 인텐트가 둘 다 할 수 없어서,
-/// 액션 실행은 백그라운드에서 끝내고 **여는 것만** 이 인텐트가 맡는다.
-struct CueOpenAppIntent: AppIntent {
-    static let title: LocalizedStringResource = "Cue에서 앱 열기"
-    static let isDiscoverable = false
-    static let openAppWhenRun = true
-
-    func perform() async throws -> some IntentResult {
-        // 앱이 떴으면 카드는 쓸모가 없다.
-        await CueEngine.presenter.endAll()
-        return .result()
-    }
-}
-
-/// 결과 화면의 "열기" 버튼 — 링크 판.
-///
-/// `OpenURLIntent`는 **https 링크만** 연다. 커스텀 스킴은 열리지 않는다
-/// (Apple 개발자 포럼 762586). 유니버설 링크라면 해당 앱이, 아니면 Safari가 뜬다.
-///
-/// 검증은 `CueURL.openable`로 통일한다 — 실행 쪽과 여는 쪽이 따로 판단하면 어긋난다.
-struct CueOpenURLIntent: AppIntent {
-    static let title: LocalizedStringResource = "Cue에서 링크 열기"
-    static let isDiscoverable = false
-    static let openAppWhenRun = true
-
-    @Parameter(title: "주소")
-    var urlString: String
-
-    init() {}
-
-    init(urlString: String) {
-        self.urlString = urlString
-    }
-
-    func perform() async throws -> some IntentResult & OpensIntent {
-        guard let url = CueURL.openable(urlString) else {
-            throw CueIntentError.unopenableURL(urlString)
-        }
-        await CueEngine.presenter.endAll()
-        return .result(opensIntent: OpenURLIntent(url))
-    }
-}
-
-enum CueIntentError: Error, CustomLocalizedStringResourceConvertible {
-    case unopenableURL(String)
-
-    var localizedStringResource: LocalizedStringResource {
-        switch self {
-        case .unopenableURL(let raw):
-            return "열 수 없는 주소입니다: \(raw)"
-        }
-    }
-}
+// 결과 화면의 "열기"는 인텐트가 아니라 딥링크다.
+//
+// 예전에는 `openAppWhenRun = true`인 `CueOpenAppIntent`·`CueOpenURLIntent`를 카드의 버튼에
+// 걸었다. 동작하지 않는다 — Apple DTS는 "Live Activity로는 앱을 열 수 없다. LiveActivityIntent는
+// 백그라운드 실행용으로 설계됐고 이는 의도된 설계다"라고 답했고, `openAppWhenRun` 자체도
+// iOS 26에서 deprecated다. 공식 경로인 `widgetURL`·`Link`로 옮기고 두 인텐트는 지웠다.
+// `CueOpenTarget.deepLink`와 `CueDeepLink` 참조.

@@ -53,7 +53,7 @@ struct CueEngineTests {
         h.pressWithoutWaiting()
         await h.settleArm()
         #expect(h.state.selectedIndex == 1)
-        await h.settleCommit()
+        await h.scheduler.fire()
         #expect(h.committedTitles == ["A1"])
 
         // 창이 닫힌 뒤의 누름은 순환을 잇지 않는다.
@@ -70,6 +70,10 @@ struct CueEngineTests {
         defer { h.tearDown() }
 
         await CueEngine.press()
+        #expect(h.committedTitles.isEmpty, "누름 자체는 실행하지 않는다 — 예약만 건다")
+        #expect(h.scheduler.pendingGeneration == h.state.generation)
+
+        await h.scheduler.fire()
 
         #expect(h.committedTitles == ["A0"])
         #expect(h.state.isArmed == false)
@@ -87,7 +91,8 @@ struct CueEngineTests {
         await h.settleArm()
         h.pressWithoutWaiting()
         await h.settleArm()
-        await h.settleCommit()
+        // 예약은 마지막 누름의 것 하나만 남는다 — 앞선 예약은 덮인다.
+        await h.scheduler.fire()
 
         #expect(h.log.count == 1, "두 번 눌렀지만 실행은 마지막 하나뿐이어야 한다")
         #expect(h.committedTitles == ["A1"])
@@ -160,10 +165,10 @@ struct CueEngineTests {
         let h = CueHarness()
         defer { h.tearDown() }
 
-        await CueEngine.tapItem(actionID: h.actionID(at: 1))   // 첫 탭 → 창이 닫히며 자동 실행
+        await h.tapAndCommit(at: 1)   // 첫 탭 → 창이 닫히며 자동 실행
         #expect(h.committedTitles == ["A1"])
 
-        await CueEngine.tapItem(actionID: h.actionID(at: 1))   // 다시 첫 탭 → 또 자동 실행
+        await h.tapAndCommit(at: 1)   // 다시 첫 탭 → 또 자동 실행
         #expect(h.committedTitles == ["A1", "A1"])
         #expect(h.presenter.finished.count == 2)
     }
@@ -378,12 +383,12 @@ struct CueEngineTests {
         let h = CueHarness(actionKinds: [.stopwatch])
         defer { h.tearDown() }
 
-        await CueEngine.press()
+        await h.pressAndCommit()
         #expect(CueStore.stopwatch.isRunning)
         // 로케일에 따라 문구가 달라지므로 현지화된 값과 비교한다.
         #expect(h.log.first?.detail == String(localized: "시작"))
 
-        await CueEngine.press()
+        await h.pressAndCommit()
         #expect(CueStore.stopwatch.isRunning == false)
         #expect(h.log.first?.detail.contains(CueActionRunner.format(0).prefix(2)) == true,
                 "정지 기록에는 경과 시간이 들어간다")
@@ -394,9 +399,8 @@ struct CueEngineTests {
         let h = CueHarness(actionKinds: [.openApp])
         defer { h.tearDown() }
 
-        let offersLaunch = await CueEngine.press()
+        await h.pressAndCommit()
 
-        #expect(offersLaunch)
         #expect(h.committedTitles == ["A0"])
         #expect(h.presenter.finished.last?.openTarget == .app)
         // 사용자가 탭할 틈이 있어야 하므로 보통 결과보다 오래 남는다.
@@ -408,9 +412,8 @@ struct CueEngineTests {
         let h = CueHarness(actionKinds: [.mark])
         defer { h.tearDown() }
 
-        let offersLaunch = await CueEngine.press()
+        await h.pressAndCommit()
 
-        #expect(offersLaunch == false)
         #expect(h.presenter.finished.last?.openTarget == nil)
         #expect(h.presenter.finished.last?.dismissAfter == CueEngine.resultLinger)
     }
@@ -434,9 +437,8 @@ struct CueEngineTests {
         let h = CueHarness(actionKinds: [.openURL])
         defer { h.tearDown() }
 
-        let offersOpen = await CueEngine.press()
+        await h.pressAndCommit()
 
-        #expect(offersOpen)
         #expect(h.presenter.finished.last?.openTarget == .url("https://example.com/0"))
         #expect(h.presenter.finished.last?.dismissAfter == CueEngine.openPromptLinger)
         #expect(h.log.first?.succeeded == true)
@@ -457,14 +459,13 @@ struct CueEngineTests {
         let h = CueHarness(actionKinds: [.openURL])
         defer { h.tearDown() }
 
-        // 커스텀 스킴은 OpenURLIntent가 열지 못한다.
+        // 커스텀 스킴은 열 수 없는 주소로 판정된다.
         var config = CueStore.config
         config.sets[0].actions[0].urlString = "myapp://something"
         CueStore.config = config
 
-        let offersOpen = await CueEngine.press()
+        await h.pressAndCommit()
 
-        #expect(offersOpen == false)
         #expect(h.log.first?.succeeded == false)
         #expect(h.presenter.finished.last?.openTarget == nil)
     }
@@ -475,7 +476,7 @@ struct CueEngineTests {
         let h = CueHarness(actionKinds: [.torch])
         defer { h.tearDown() }
 
-        await CueEngine.press()
+        await h.pressAndCommit()
 
         #expect(h.log.count == 1)
         #expect(h.log.first?.succeeded == false)
@@ -537,23 +538,43 @@ struct CueEngineTests {
 
     // MARK: 취소
 
-    /// 다음 누름이 들어오면 iOS가 앞선 인텐트 실행을 정리한다. 그때 sleep이 취소되는데,
-    /// 예전에는 `try?`로 삼키고 커밋까지 내려가 두 번째 누름이 순환 대신 즉시 실행이 됐다.
-    @Test("취소된 대기는 커밋하지 않는다")
-    func cancelledArmDoesNotCommit() async {
+    /// 예약이 버려지면 커밋도 없어야 한다. 예전에는 대기가 `arm()` 안에 있었고 `try?`가
+    /// 취소를 삼켜, 취소를 "창이 지났다"로 오해하고 그대로 실행해 버렸다.
+    @Test("버려진 예약은 커밋하지 않는다")
+    func cancelledScheduleDoesNotCommit() async {
         let h = CueHarness(window: 5)
         defer { h.tearDown() }
 
-        let pending = h.pressWithoutWaiting()
-        await h.settleArm()
+        // 실제 구현으로 바꿔 취소 처리까지 확인한다.
+        let real = CueDetachedCommitScheduler()
+        CueEngine.scheduler = real
+        defer { CueEngine.scheduler = h.scheduler }
+
+        await CueEngine.press()
         #expect(h.state.isArmed)
 
-        pending.cancel()
-        let committed = await pending.value
+        real.cancel()
+        await h.settleCommit()
 
-        #expect(committed == false)
-        #expect(h.log.isEmpty, "취소는 창이 지난 것이 아니다")
+        #expect(h.log.isEmpty, "예약을 버렸으면 실행도 없다")
         #expect(h.state.isArmed, "다음 누름이 순환을 이어받을 수 있어야 한다")
+    }
+
+    @Test("예약은 누를 때마다 마지막 것 하나만 남는다")
+    func schedulingReplacesPrevious() async {
+        let h = CueHarness(window: 5)
+        defer { h.tearDown() }
+
+        await CueEngine.press()
+        let first = h.scheduler.pendingGeneration
+        await CueEngine.press()
+        let second = h.scheduler.pendingGeneration
+
+        #expect(h.scheduler.scheduleCount == 2)
+        #expect(first != second, "새 누름은 새 generation으로 다시 예약한다")
+
+        await h.scheduler.fire()
+        #expect(h.committedTitles == ["A1"], "마지막 예약만 실행된다")
     }
 
     // MARK: 구성 변경이 대기 중인 순환에 미치는 영향
@@ -615,15 +636,15 @@ struct CueEngineTests {
         config.sets.append(other)
         CueStore.config = config
 
-        let pending = h.pressWithoutWaiting()
-        await h.settleArm()
+        await CueEngine.press()
         #expect(h.state.isArmed)
 
         CueViewModel().deleteSet(other)
         await h.settleArm()
 
         #expect(h.state.isArmed, "활성 세트도 인덱스도 그대로다 — 취소할 이유가 없다")
-        _ = await pending.value
+        #expect(h.scheduler.pendingGeneration != nil, "예약이 살아 있어야 한다")
+        await h.scheduler.fire()
         #expect(h.committedTitles == ["A0"], "고른 액션이 예정대로 실행돼야 한다")
     }
 
