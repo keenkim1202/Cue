@@ -13,6 +13,7 @@ struct ContentView: View {
                 setSection
                 AppIconPickerSection()
                 logSection
+                probeSection
                 setupSection
                 resetSection
             }
@@ -186,6 +187,22 @@ struct ContentView: View {
                         .accessibilityIdentifier(CueID.clearLog)
                 }
             }
+        }
+    }
+
+    // MARK: 실측
+
+    /// 창 길이를 정하기 위한 진단 화면. 액션 버튼의 실제 발동 간격은 실기기에서만 잴 수 있다.
+    private var probeSection: some View {
+        Section {
+            NavigationLink {
+                PressProbeView()
+            } label: {
+                Label("발동 간격 실측", systemImage: "ruler")
+            }
+            .accessibilityIdentifier(CueID.probe)
+        } footer: {
+            Text("액션 버튼은 약 1초의 홀드를 요구하고, 앞선 실행이 끝나기 전에는 다음 누름을 전달하지 않습니다. 순환 창을 얼마로 잡을지 실기기에서 재서 정합니다.")
         }
     }
 

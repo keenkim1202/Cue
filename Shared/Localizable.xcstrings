@@ -1,6 +1,17 @@
 {
   "sourceLanguage": "ko",
   "strings": {
+    "%@초": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@s"
+          }
+        }
+      }
+    },
     "%lld/%lld · 손을 떼면 실행 · 항목을 두 번 탭하면 바로 실행": {
       "extractionState": "manual",
       "localizations": {
@@ -30,6 +41,61 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld actions"
+          }
+        }
+      }
+    },
+    "%lld초 넘게 쉬면 다른 묶음으로 나뉩니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A pause longer than %lld seconds starts a new burst."
+          }
+        }
+      }
+    },
+    "%lld회": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld presses"
+          }
+        }
+      }
+    },
+    "0이면 늘 1번 액션만 실행됩니다": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zero means only the first action ever runs"
+          }
+        }
+      }
+    },
+    "Apple은 사람들이 화면을 보지 않고 이 버튼을 쓴다고 봅니다. 그 조건도 재야 합니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple assumes people use this button without looking. That case has to be measured too."
+          }
+        }
+      }
+    },
+    "CSV로 복사": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy as CSV"
           }
         }
       }
@@ -111,6 +177,17 @@
         }
       }
     },
+    "Live Activity 시작·갱신이 포함된 시간입니다. 시스템은 perform()이 반환된 뒤에야 다음 누름을 전달하므로, 이 값이 크면 창 길이와 무관하게 누름이 버려집니다. 그때는 상수가 아니라 카드 표시를 기다리지 않도록 고쳐야 합니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This includes starting and updating the Live Activity. The system only delivers the next press after perform() returns, so a large value here means presses are dropped no matter how long the window is. That calls for not awaiting the card, rather than a bigger constant."
+          }
+        }
+      }
+    },
     "https://example.com": {
       "extractionState": "manual",
       "localizations": {
@@ -118,6 +195,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "https://example.com"
+          }
+        }
+      }
+    },
+    "perform() 소요": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "perform() duration"
           }
         }
       }
@@ -133,6 +221,39 @@
         }
       }
     },
+    "가장 느렸던 간격 + 0.5초": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slowest interval + 0.5s"
+          }
+        }
+      }
+    },
+    "가장 느림": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Slowest"
+          }
+        }
+      }
+    },
+    "가장 빠름": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fastest"
+          }
+        }
+      }
+    },
     "구성이 바뀌어 중단됨": {
       "extractionState": "manual",
       "localizations": {
@@ -140,6 +261,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stopped — setup changed"
+          }
+        }
+      }
+    },
+    "기기에서 숫자를 옮기려면 복사가 유일한 통로입니다. 표본은 최대 %lld개까지 남습니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copying is the only way to get the numbers off the device. Up to %lld samples are kept."
           }
         }
       }
@@ -173,6 +305,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Off"
+          }
+        }
+      }
+    },
+    "낮을수록 순환이 죽는다는 뜻입니다": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The lower this is, the more cycling is broken"
+          }
+        }
+      }
+    },
+    "놓친 누름은 원치 않는 액션의 실행으로 이어집니다. 중앙값이 아니라 최대값을 기준으로 관대하게 잡습니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A missed press means an unwanted action runs. The suggestion is generous on purpose — based on the slowest interval, not the median."
           }
         }
       }
@@ -243,6 +397,28 @@
         }
       }
     },
+    "매번 실행될 때까지 확실히 누르고 있다가 떼세요. 손에 익도록 몇 세트 반복합니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hold each press until it fires, then release. Repeat for a few rounds so your thumb settles."
+          }
+        }
+      }
+    },
+    "묶음별 간격 (초)": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Intervals per burst (seconds)"
+          }
+        }
+      }
+    },
     "미드나이트": {
       "extractionState": "manual",
       "localizations": {
@@ -250,6 +426,39 @@
           "stringUnit": {
             "state": "translated",
             "value": "Midnight"
+          }
+        }
+      }
+    },
+    "발동 간격": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press interval"
+          }
+        }
+      }
+    },
+    "발동 간격 실측": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press interval measurement"
+          }
+        }
+      }
+    },
+    "복사됨": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied"
           }
         }
       }
@@ -430,6 +639,17 @@
         }
       }
     },
+    "손전등이 계속 켜지지 않도록 '순간 기록'만 담긴 세트를 쓰는 편이 낫습니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use a set made only of Mark actions so the flashlight does not keep turning on."
+          }
+        }
+      }
+    },
     "순간 기록": {
       "extractionState": "manual",
       "localizations": {
@@ -448,6 +668,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cycle order"
+          }
+        }
+      }
+    },
+    "순환으로 인정된 횟수": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Presses counted as cycling"
           }
         }
       }
@@ -518,6 +749,17 @@
         }
       }
     },
+    "실행만 하는 세트로 바꾸세요": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to a harmless set"
+          }
+        }
+      }
+    },
     "아이보리": {
       "extractionState": "manual",
       "localizations": {
@@ -551,6 +793,17 @@
         }
       }
     },
+    "아직 표본이 없습니다. 실기기에서 액션 버튼을 빠르게 여러 번 눌러 주세요.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No samples yet. Press the Action button several times in a row on a real device."
+          }
+        }
+      }
+    },
     "액션 버튼 대신 — 시뮬레이터 테스트용": {
       "extractionState": "manual",
       "localizations": {
@@ -573,6 +826,17 @@
         }
       }
     },
+    "액션 버튼은 약 1초의 홀드를 요구하고, 앞선 실행이 끝나기 전에는 다음 누름을 전달하지 않습니다. 순환 창을 얼마로 잡을지 실기기에서 재서 정합니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The Action button needs about a second of hold, and it does not deliver the next press until the previous run finishes. Measure on a real device to decide how long the cycle window should be."
+          }
+        }
+      }
+    },
     "액션 버튼을 누를 때 이 순서대로 넘어갑니다. 끌어서 순서를 바꿀 수 있습니다.": {
       "extractionState": "manual",
       "localizations": {
@@ -580,6 +844,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pressing the Action button steps through in this order. Drag to reorder."
+          }
+        }
+      }
+    },
+    "액션 버튼을 최대한 빠르게 10번": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press the Action button 10 times, as fast as you can"
           }
         }
       }
@@ -628,6 +903,17 @@
         }
       }
     },
+    "앱 내 버튼 %lld회 제외": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld in-app presses excluded"
+          }
+        }
+      }
+    },
     "앱 아이콘": {
       "extractionState": "manual",
       "localizations": {
@@ -635,6 +921,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "App Icon"
+          }
+        }
+      }
+    },
+    "앱 안의 'Cue 누르기' 버튼은 홀드 제스처가 없어 간격의 의미가 다릅니다. 기록은 되지만 통계에서는 빠집니다.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The in-app Press Cue button has no hold gesture, so its intervals mean something different. It is recorded but left out of the statistics."
           }
         }
       }
@@ -668,6 +965,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Where to put it"
+          }
+        }
+      }
+    },
+    "여기로 돌아와 숫자를 봅니다": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Come back here and read the numbers"
+          }
+        }
+      }
+    },
+    "연속 누름 없음": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No consecutive press"
           }
         }
       }
@@ -793,6 +1112,17 @@
         }
       }
     },
+    "재는 방법": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How to measure"
+          }
+        }
+      }
+    },
     "정지 · %@": {
       "extractionState": "manual",
       "localizations": {
@@ -800,6 +1130,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Stopped · %@"
+          }
+        }
+      }
+    },
+    "제안 창": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggested window"
           }
         }
       }
@@ -859,6 +1200,17 @@
         }
       }
     },
+    "중앙값": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Median"
+          }
+        }
+      }
+    },
     "지우기": {
       "extractionState": "manual",
       "localizations": {
@@ -866,6 +1218,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "Clear"
+          }
+        }
+      }
+    },
+    "최대": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Max"
           }
         }
       }
@@ -936,6 +1299,39 @@
         }
       }
     },
+    "판정": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verdict"
+          }
+        }
+      }
+    },
+    "표본": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Samples"
+          }
+        }
+      }
+    },
+    "표본 지우기": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear samples"
+          }
+        }
+      }
+    },
     "플럼": {
       "extractionState": "manual",
       "localizations": {
@@ -965,6 +1361,28 @@
           "stringUnit": {
             "state": "translated",
             "value": "Cycles to the next action in the current set."
+          }
+        }
+      }
+    },
+    "현재 창 %@초 안에 들어온 비율": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share that landed inside the current %@s window"
+          }
+        }
+      }
+    },
+    "화면을 보지 않고도 한 세트": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do one round without looking at the screen"
           }
         }
       }

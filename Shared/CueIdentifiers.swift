@@ -20,6 +20,11 @@ enum CueID {
     static let addSet = "cue.addSet"
     static let doneEditing = "cue.doneEditing"
 
+    // 발동 간격 실측
+    static let probe = "cue.probe"
+    static let probeCopy = "cue.probe.copy"
+    static let probeClear = "cue.probe.clear"
+
     /// 액션 세트 행. 순서가 아니라 세트 식별자로 잡는다.
     static func setRow(_ id: UUID) -> String { "cue.set.\(id.uuidString)" }
 

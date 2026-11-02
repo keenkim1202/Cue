@@ -13,7 +13,9 @@ struct CuePressIntent: LiveActivityIntent {
     static let openAppWhenRun = false
 
     func perform() async throws -> some IntentResult {
-        await CueEngine.press()
+        // 계측이 액션 버튼의 발동 간격을 재는 지점이다. 앱 안의 버튼과 섞이지 않도록
+        // 경로를 표시해 넘긴다. `CuePressProbe` 참조.
+        await CueEngine.press(source: .intent)
         return .result()
     }
 }
