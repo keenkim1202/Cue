@@ -42,16 +42,28 @@ enum CueEngine {
     ///
     /// 실행은 여기서 일어나지 않는다 — 창이 닫힐 때 예약된 커밋이 한다.
     /// - Returns: 세트가 비어 무시됐으면 `false`.
+    /// - Parameter source: 계측용. 앱 안의 버튼은 홀드 제스처가 없어 발동 간격의 의미가
+    ///   다르므로, 어느 경로로 들어왔는지 표본에 남겨 통계에서 걸러낸다.
     @discardableResult
-    static func press() async -> Bool {
+    static func press(source: CuePressSample.Source = .inApp) async -> Bool {
+        let enteredAt = Date()
         let set = CueStore.activeSet
         guard !set.actions.isEmpty else { return false }
 
         let state = CueStore.state
-        let isContinuing = state.isArmed && Date().timeIntervalSince(state.lastPressAt) < cycleWindow
+        let isContinuing = state.isArmed && enteredAt.timeIntervalSince(state.lastPressAt) < cycleWindow
         let index = isContinuing ? (state.selectedIndex + 1) % set.actions.count : 0
 
         await arm(index: index, isItemTap: false, set: set)
+
+        // 기록은 **측정 구간이 끝난 뒤**다. 인코딩 비용이 performSeconds에 섞이면 안 된다.
+        CuePressProbe.record(CuePressSample(
+            at: enteredAt,
+            performSeconds: Date().timeIntervalSince(enteredAt),
+            continued: isContinuing,
+            selectedIndex: index,
+            source: source
+        ))
         return true
     }
 

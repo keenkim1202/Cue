@@ -62,7 +62,7 @@ final class CueViewModel: ObservableObject {
 
     func press() {
         Task { @MainActor in
-            await CueEngine.press()
+            await CueEngine.press(source: .inApp)
             reload()
         }
     }
